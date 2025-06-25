@@ -25,11 +25,11 @@ function tieButtons() {
         element.onclick = () => {modal.style.display = "flex"; inputFilling(new Date(), 60);};
     }
 
-    /*const modalButtons = modal.getElementsByClassName("modal-content__buttons--submit");
+    const modalButtons = modal.getElementsByClassName("modal-content__buttons--close");
     for (let i = 0; i < modalButtons.length; i++) {
         const element = modalButtons[i];
-        //element.onclick = () => modal.style.display = "none";
-    }*/
+        element.onclick = () => modal.style.display = "none";
+    }
 
     const calendarColumns = document.getElementsByClassName("calendar-grid__calendar-column-0");
     for (let i = 0; i < calendarColumns.length; i++) {
@@ -69,7 +69,7 @@ function readModalInput() {
         let formData = new FormData(event.target)
 
         const modal = document.getElementsByClassName("event-creation-modal")[0];
-        validateForm(formData, ()=>{modal.style.display = "none";})
+        validateForm(formData, ()=>{modal.style.display = "none"; modalForm.reset();})
 
         /*console.log(Object.fromEntries(formData));
         for (let o of formData.entries()){
