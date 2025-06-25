@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="event-creation-modal-layout.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body class="modal">
+    <form class="modal-content" id="new-event-modal-form">
+        <!--
+        <h2 class="modal-content__header">New Event</h2>
+        -->
+
+        <!--
+        <label class="modal-content__event-title" for="title">
+            Event title:
+        </label>
+        -->
+        <input id="title" class="modal-content__event-title-input" type="text" name="event-title" placeholder="Event title" />
+
+        <label class="modal-content__event-start-label" for="event-start">
+            <span class="material-symbols-outlined">calendar_clock</span>
+        </label>
+        <div>
+            <input id="event-start" class="modal-content__event-start-input" type="datetime-local" name="event-start" value="2025-06-23T08:00" />
+            <input id="event-end" class="modal-content__event-end-input" type="datetime-local" name="event-end" value="2025-06-23T08:30" />
+        </div>
+
+        <!--
+        <label class="modal-content__event-end" for="event-end">
+            Event end:
+        </label>
+        -->
+
+        <label class="modal-content__event-description-label" for="event-description">
+            <span class="material-symbols-outlined">notes</span>
+        </label>
+        <textarea id="event-description" class="modal-content__event-description-input" name="event-description" rows="5" cols="2" placeholder="Add description"></textarea>
+
+        <div class="modal-content__buttons">
+            <!--
+            <button class="modal-content__buttons--close">Cancel</button>
+            <button class="modal-content__buttons--submit">Save</button>
+            -->
+            <input type="submit" class="modal-content__buttons--submit" value="Save" />
+        </div>
+    </form>
+</body>
+</html>

@@ -1,0 +1,101 @@
+async function loadNewEventModal() {
+    await loadModalHTML();
+    tieButtons();
+    readModalInput();
+    //inputFilling(new Date(), 60);
+}
+
+async function loadModalHTML(){
+    const allElements = document.getElementsByTagName("*");
+    for (let i = 0; i < allElements.length; i++) {
+        const element = allElements[i];
+        const file = element.getAttribute("html-file");
+        if (file) {
+            const i = await fetch(file);
+            element.innerHTML = await i.text();
+        }
+    }
+}
+
+function tieButtons() {
+    const elements = document.getElementsByClassName("new-event-modal-caller")
+    const modal = document.getElementsByClassName("event-creation-modal")[0];
+    for (let i = 0; i < elements.length; i++) {
+        const element = elements[i];
+        element.onclick = () => {modal.style.display = "flex"; inputFilling(new Date(), 60);};
+    }
+
+    /*const modalButtons = modal.getElementsByClassName("modal-content__buttons--submit");
+    for (let i = 0; i < modalButtons.length; i++) {
+        const element = modalButtons[i];
+        //element.onclick = () => modal.style.display = "none";
+    }*/
+
+    const calendarColumns = document.getElementsByClassName("calendar-grid__calendar-column-0");
+    for (let i = 0; i < calendarColumns.length; i++) {
+        const calendarButtons = calendarColumns[i].getElementsByClassName("calendar-cell__button");
+        for (let j = 0; j < calendarButtons.length; j++) {
+            const element = calendarButtons[j];
+            element.onclick = () => {modal.style.display = "flex";
+                const date = new Date(calendarColumns[i].getAttribute("data-calendar-day"));
+                inputFilling(new Date(date.getTime() + j*60*60000), 60);
+            };
+        }
+    }
+
+}
+
+function inputFilling(startValue, minuteOffset) {
+
+    const endValue = new Date(startValue.getTime() + minuteOffset*60000)
+
+    const startInputElements = document.getElementsByClassName("modal-content__event-start-input");
+    for (let i = 0; i < startInputElements.length; i++) {
+        const element = startInputElements[i];
+        element.value = startValue.toISOLocaleString();
+    }
+    const endInputElements = document.getElementsByClassName("modal-content__event-end-input");
+    for (let i = 0; i < endInputElements.length; i++) {
+        const element = endInputElements[i];
+        element.value = endValue.toISOLocaleString();
+    }
+
+}
+
+function readModalInput() {
+    const modalForm = document.getElementById("new-event-modal-form");
+    modalForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        let formData = new FormData(event.target)
+
+        const modal = document.getElementsByClassName("event-creation-modal")[0];
+        validateForm(formData, ()=>{modal.style.display = "none";})
+
+        /*console.log(Object.fromEntries(formData));
+        for (let o of formData.entries()){
+            console.log(o);
+        }*/
+    })
+}
+
+function validateForm(formData, onSuccess) {
+    if (formData.get("event-title") === '')
+        return;
+    const eventEndTime = new Date(formData.get("event-end")).getTime();
+    const eventStartTime = new Date(formData.get("event-start")).getTime();
+    if (eventEndTime < eventStartTime)
+        return;
+
+    onSuccess();
+}
+
+Date.prototype.toISOLocaleString = function () {
+    return `${this.getFullYear()}-${(this.getMonth()+1).leftPad(2)}-${this.getDate().leftPad(2)}T${this.getHours().leftPad(2)}:${this.getMinutes().leftPad(2)}`;
+}
+Number.prototype.leftPad = function (size = 2) {
+    let s = String(this);
+    while (s.length < size) {
+        s = "0" + s;
+    }
+    return s;
+}

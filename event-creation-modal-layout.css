@@ -1,0 +1,86 @@
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+ol, ul {
+    list-style: none;
+}
+
+* {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+            "wdth" 100;
+    --input-padding: 0.5rem;
+}
+.modal{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 95dvw;
+    min-height: 95dvh;
+}
+.modal-content__header {
+    grid-column-end: span 2;
+    justify-self: center;
+    align-self: center;
+}
+.modal-content{
+    display: grid;
+    grid-template-rows: /*2fr*/ 1fr 1fr 3fr 1fr;
+    grid-template-columns: 0.1fr 1fr;
+    grid-gap: 0.5rem 1rem;
+    background-color: whitesmoke;
+    border-radius: 1rem;
+    padding: 2rem 1rem;
+}
+.modal-content__event-start-label,
+.modal-content__event-description-label{
+    padding-top: 0.2rem;
+    justify-self: end;
+}
+
+.modal-content__event-title-input,
+.modal-content__event-start-input,
+.modal-content__event-end-input {
+    padding: var(--input-padding);
+}
+
+.modal-content__event-title-input{
+    background-color: transparent;
+    border: none;
+    border-bottom: 0.08rem solid gray;
+    grid-column: 2;
+    font-size: 1.2rem;
+}
+.modal-content__event-title-input::placeholder{
+    color: #3e3e3e;
+}
+
+.modal-content__event-description-input{
+    resize: none;
+    padding: var(--input-padding);
+}
+.modal-content__buttons{
+    grid-column: span 2;
+    justify-self: end;
+    align-self: center;
+}
+.modal-content__buttons *{
+    background-color: dodgerblue;
+    border: none;
+    border-radius: 2rem;
+    color: white;
+    font-weight: bold;
+    padding: 0.4rem 0.8rem;
+}
+.modal-content__buttons button:hover{
+    background-color: #3399ff;
+}
+.modal-content__buttons button:active{
+    background-color: #0e7ff0;
+}

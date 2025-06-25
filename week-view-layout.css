@@ -1,0 +1,210 @@
+/* CSS Reset */
+* {
+    margin: 0;
+    padding: 0;
+}
+html {
+    box-sizing: border-box;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+ol, ul {
+    list-style: none;
+}
+
+/*
+TODO: Sort out the list to match html order
+TODO: Convert colours to variables
+*/
+
+
+:root {
+    --cell-size: 4rem;
+}
+* {
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+            "wdth" 100;
+}
+.material-symbols-outlined {
+ font-variation-settings:
+         'FILL' 0,
+         'wght' 400,
+         'GRAD' 0,
+         'opsz' 24;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid gray;
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+    grid-gap: 1.5rem;
+}
+.week-view-container {
+    display: grid;
+    padding-top: 1rem;
+}
+.week-view__dates-header-date-container {
+    display: grid;
+    grid-template-columns: 3rem repeat(7, 1fr);
+}
+.week-view__dates-header-timezone{
+    font-size: 0.75rem;
+    align-self: end;
+    border-bottom: 1px solid gray;
+}
+.week-view__dates-header-date,
+.week-view__dates-header-date--active {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    border-bottom: 1px solid gray;
+    padding-bottom: 0.5rem;
+}
+.week-view__dates-header-date--active .calendar-date-weekday{
+    color: dodgerblue;
+}
+.week-view__dates-header-date--active .calendar-date-day{
+    background-color: dodgerblue;
+    color: whitesmoke;
+    padding: 0.5rem;
+    border-radius: 50%;
+}
+
+.calendar-date-day{
+    font-size: 2rem;
+}
+.dates-header__all-day-row {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding-left: 3rem;
+    box-shadow: #a6a6a6 0 0.2rem 0.2rem -0.2rem;
+}
+.all-day-row__cell {
+    height: calc(var(--cell-size)/2);
+    border-left: 1px solid gray;
+    /* border-bottom: 1px solid deeppink; */
+}
+
+
+.week-view__calendar-grid {
+    display: grid;
+    grid-template-columns: 3rem repeat(7, 1fr);
+    grid-auto-flow: column;
+    height: 80vh;
+    overflow-y: auto;
+}
+.calendar-grid__time-column {
+    display: grid;
+    grid-template-rows: repeat(23, var(--cell-size));
+    grid-auto-flow: row;
+}
+.time-column__cell {
+    display: grid;
+    height: var(--cell-size);
+    border-bottom: 1px solid gray;
+    font-size: 0.75em;
+    align-items: end;
+}
+.calendar-column__calendar-cell {
+    border-left: 1px solid gray;
+    border-bottom: 1px solid gray;
+    height: var(--cell-size);
+
+    display: flex;
+}
+.calendar-cell__button {
+    flex: 1;
+
+    background: transparent;
+    border: none;
+}
+
+.aside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 2rem;
+    border-right: 1px solid gray;
+}
+.create-event-button{
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    border-radius: 1rem;
+    border: none;
+    box-shadow: #a6a6a6 0 0.1rem 0.3rem;
+    background-color: #eaeaea;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.create-event-button:hover{
+    background-color: #efefef;
+}
+.create-event-button:active{
+    background-color: #e1e1e1;
+}
+
+.calendar-modal {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    grid-gap: 0.5rem;
+}
+.calendar-modal__controls {
+    grid-column-end: span 7;
+    display: flex;
+    justify-content: space-between;
+}
+.calendar-modal__week-day-row-cell,
+.calendar-modal__day-cell{
+    justify-self: center;
+    align-self: center;
+}
+
+.button-backgroundless{
+    background: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    aspect-ratio: 1/1;
+}
+.button-backgroundless:hover{
+    background: #efefef;
+}
+.button-backgroundless:active{
+    background: #e1e1e1;
+}
+
+.event-creation-modal{
+    /*border: none;*/
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: #ffffffaa;
+
+    display: none;
+
+    place-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.event-creation-modal-content {
+
+}
