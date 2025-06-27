@@ -1,4 +1,5 @@
 const threeLetterWeekDays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const today = new Date();
 
 function loadWeekView(){
@@ -6,6 +7,7 @@ function loadWeekView(){
     loadTimezoneLabel();
     loadCalendarDateLabels();
     loadEvents();
+    loadHeaderDate(today);
 }
 
 function testing(){
@@ -53,4 +55,9 @@ function loadEvents() {
     events.forEach(event => {
         renderEvent(event.eventId, event.eventName, new Date(event.eventStart), new Date(event.eventEnd));
     })
+}
+
+function loadHeaderDate(date){
+    const element = document.getElementsByClassName("header__month-year-date");
+    element[0].innerText = `${date.getFullYear()} ${months[date.getMonth()]}`;
 }
