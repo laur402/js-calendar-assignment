@@ -19,8 +19,8 @@ function testing(){
 
 function loadTimezoneLabel(){
     let timezoneElement = document.getElementsByClassName("week-view__dates-header-timezone")[0];
-    let timezoneOffset = today.getTimezoneOffset()/-60; //TODO: Replace with timezone label from localized date
-    timezoneElement.innerText = `UTC${timezoneOffset > 0 ? "+" : ""}${timezoneOffset}`;
+    let timezoneOffset = today.toString().split("GMT")[1].slice(0, 3);
+    timezoneElement.innerText = `UTC${timezoneOffset}`;
 }
 
 function loadCalendarDateLabels(){
