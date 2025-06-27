@@ -21,6 +21,7 @@ TODO: Convert colours to variables
 
 :root {
     --cell-size: 4rem;
+    --column-size: repeat(7, 1fr);
     --header-size: 6vh;
     --content-size: calc(100vh - var(--header-size));
 }
@@ -67,7 +68,7 @@ main {
 }
 .week-view__dates-header-date-container {
     display: grid;
-    grid-template-columns: 3rem repeat(7, 1fr);
+    grid-template-columns: 3rem var(--column-size);
 }
 .week-view__dates-header-timezone{
     font-size: 0.75rem;
@@ -123,13 +124,16 @@ main {
     width: 100%;
     position: relative;
     pointer-events: none;
+
+    display: grid;
+    grid-template-columns: var(--column-size);
 }
 .week-view__calendar-grid {
     grid-column: 1 / span 2;
     grid-row: 1;
 
     display: grid;
-    grid-template-columns: 3rem repeat(7, 1fr);
+    grid-template-columns: 3rem var(--column-size);
     grid-auto-flow: column;
     /*overflow-y: auto;*/
 }

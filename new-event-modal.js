@@ -81,7 +81,7 @@ function readModalInput() {
                 elements[i].classList.remove("modal-content__input--error");
             }
 
-            renderEvent(new Date(formData.get("event-start")), new Date(formData.get("event-end")));
+            renderEvent(new Date(formData.get("event-start")), new Date(formData.get("event-end")), formData.get("event-title"));
         },
         (error) => {
             switch (error){
