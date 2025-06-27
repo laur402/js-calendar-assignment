@@ -75,8 +75,28 @@ function readModalInput() {
         validateForm(formData, ()=>{
             modal.style.display = "none";
             modalForm.reset();
+
+            const elements = modal.getElementsByTagName("*");
+            for (let i = 0; i < elements.length; i++) {
+                elements[i].classList.remove("modal-content__input--error");
+            }
+
             renderEvent(new Date(formData.get("event-start")), new Date(formData.get("event-end")));
-        })
+        },
+        (error) => {
+            switch (error){
+                case "title":
+                    const titleInput = modal.getElementsByClassName("modal-content__event-title-input")[0];
+                    titleInput.classList.add("modal-content__input--error");
+                    break;
+                case "time":
+                    const timeInput = modal.querySelectorAll(".modal-content__event-start-input, .modal-content__event-end-input");
+                    for (let i = 0; i < timeInput.length; i++) {
+                        timeInput[i].classList.add("modal-content__input--error");
+                    }
+                    break;
+            }
+        });
 
         /*console.log(Object.fromEntries(formData));
         for (let o of formData.entries()){
@@ -85,14 +105,19 @@ function readModalInput() {
     })
 }
 
-function validateForm(formData, onSuccess) {
-    if (formData.get("event-title") === '')
-        return;
-    const eventEndTime = new Date(formData.get("event-end")).getTime();
+function validateForm(formData, onSuccess, onError) {
+    const eventTitle = formData.get("event-title");
     const eventStartTime = new Date(formData.get("event-start")).getTime();
-    if (eventEndTime < eventStartTime)
+    const eventEndTime = new Date(formData.get("event-end")).getTime();
+    if (eventTitle === ''){
+        onError("title");
         return;
-
+    }
+    if (eventEndTime < eventStartTime)
+    {
+        onError("time");
+        return;
+    }
     onSuccess();
 }
 

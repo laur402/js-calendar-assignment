@@ -65,12 +65,18 @@ ol, ul {
     resize: none;
     padding: var(--input-padding);
 }
-.modal-content__buttons{
+.modal-content__buttons {
     grid-column: span 2;
     justify-self: end;
     align-self: center;
 }
 .modal-content__buttons *{
+    border: none;
+    background-color: transparent;
+    padding: 0 0.4rem;
+    color: dodgerblue;
+}
+.modal-content__buttons--submit {
     background-color: dodgerblue;
     border: none;
     border-radius: 2rem;
@@ -78,9 +84,16 @@ ol, ul {
     font-weight: bold;
     padding: 0.4rem 0.8rem;
 }
-.modal-content__buttons button:hover{
+.modal-content__buttons input:hover{
     background-color: #3399ff;
 }
-.modal-content__buttons button:active{
+.modal-content__buttons input:active{
     background-color: #0e7ff0;
+}
+
+.modal-content__input--error {
+    border-color: red;
+}
+.modal-content__input--error::placeholder{
+    color: red;
 }
