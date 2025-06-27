@@ -34,7 +34,7 @@ TODO: Convert colours to variables
             "wdth" 100;
 }
 .material-symbols-outlined {
- font-variation-settings:
+    font-variation-settings:
          'FILL' 0,
          'wght' 400,
          'GRAD' 0,
@@ -215,12 +215,12 @@ main {
     cursor: pointer;
     border-radius: 50%;
     aspect-ratio: 1/1;
-}
-.button-backgroundless:hover{
-    background: #efefef;
-}
-.button-backgroundless:active{
-    background: #e1e1e1;
+    & :hover {
+        background: #efefef;
+    }
+    & :active {
+        background: #e1e1e1;
+    }
 }
 
 .event-creation-modal{
@@ -235,8 +235,4 @@ main {
     place-content: center;
     align-items: center;
     z-index: 20;
-}
-
-.event-creation-modal-content {
-
 }

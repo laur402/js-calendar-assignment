@@ -4,7 +4,6 @@ async function loadNewEventModal() {
     await loadModalHTML();
     tieButtons();
     readModalInput();
-    //inputFilling(new Date(), 60);
 }
 
 async function loadModalHTML(){
@@ -81,7 +80,14 @@ function readModalInput() {
                 elements[i].classList.remove("modal-content__input--error");
             }
 
-            renderEvent(new Date(formData.get("event-start")), new Date(formData.get("event-end")), formData.get("event-title"));
+            const eventName = formData.get("event-title");
+            const eventDescription = formData.get("event-description");
+            const eventStart = formData.get("event-start");
+            const eventEnd = formData.get("event-end");
+            const eventID = performance.now().toString();
+
+            addEvent(eventID, eventName, eventStart, eventEnd, eventDescription);
+            renderEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd));
         },
         (error) => {
             switch (error){

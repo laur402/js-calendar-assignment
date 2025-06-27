@@ -5,6 +5,7 @@ function loadWeekView(){
     //testing();
     loadTimezoneLabel();
     loadCalendarDateLabels();
+    loadEvents();
 }
 
 function testing(){
@@ -45,4 +46,11 @@ function loadCalendarDateLabels(){
 
         firstDayOfTheWeek.setDate(firstDayOfTheWeek.getDate() + 1);
     }
+}
+
+function loadEvents() {
+    const events = fetchEvents();
+    events.forEach(event => {
+        renderEvent(event.eventId, event.eventName, new Date(event.eventStart), new Date(event.eventEnd));
+    })
 }

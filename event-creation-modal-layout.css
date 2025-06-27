@@ -56,9 +56,9 @@ ol, ul {
     border-bottom: 0.08rem solid gray;
     grid-column: 2;
     font-size: 1.2rem;
-}
-.modal-content__event-title-input::placeholder{
-    color: #3e3e3e;
+    & ::placeholder {
+        color: #3e3e3e;
+    }
 }
 
 .modal-content__event-description-input{
@@ -70,11 +70,19 @@ ol, ul {
     justify-self: end;
     align-self: center;
 }
-.modal-content__buttons *{
-    border: none;
-    background-color: transparent;
-    padding: 0 0.4rem;
-    color: dodgerblue;
+.modal-content__buttons {
+    & * {
+        border: none;
+        background-color: transparent;
+        padding: 0 0.4rem;
+        color: dodgerblue;
+    }
+    & input:hover{
+        background-color: #3399ff;
+    }
+    & input:active {
+        background-color: #0e7ff0;
+    }
 }
 .modal-content__buttons--submit {
     background-color: dodgerblue;
@@ -85,15 +93,15 @@ ol, ul {
     padding: 0.4rem 0.8rem;
 }
 .modal-content__buttons input:hover{
-    background-color: #3399ff;
+
 }
 .modal-content__buttons input:active{
-    background-color: #0e7ff0;
+
 }
 
 .modal-content__input--error {
     border-color: red;
-}
-.modal-content__input--error::placeholder{
-    color: red;
+    & ::placeholder {
+        color: red;
+    }
 }
