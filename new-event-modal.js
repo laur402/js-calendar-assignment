@@ -1,3 +1,5 @@
+
+
 async function loadNewEventModal() {
     await loadModalHTML();
     tieButtons();
@@ -39,6 +41,7 @@ function tieButtons() {
             element.onclick = () => {modal.style.display = "flex";
                 const date = new Date(calendarColumns[i].getAttribute("data-calendar-day"));
                 inputFilling(new Date(date.getTime() + j*60*60000), 60);
+
             };
         }
     }
@@ -66,10 +69,14 @@ function readModalInput() {
     const modalForm = document.getElementById("new-event-modal-form");
     modalForm.addEventListener("submit", (event) => {
         event.preventDefault();
-        let formData = new FormData(event.target)
+        let formData = new FormData(event.target);
 
         const modal = document.getElementsByClassName("event-creation-modal")[0];
-        validateForm(formData, ()=>{modal.style.display = "none"; modalForm.reset();})
+        validateForm(formData, ()=>{
+            modal.style.display = "none";
+            modalForm.reset();
+            renderEvent(new Date(formData.get("event-start")), new Date(formData.get("event-end")));
+        })
 
         /*console.log(Object.fromEntries(formData));
         for (let o of formData.entries()){

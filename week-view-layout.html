@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="week-view-loader.js"></script>
     <script src="new-event-modal.js"></script>
+    <script src="event-graphics.js"></script>
 </head>
 <body onload="loadWeekView(); loadNewEventModal();">
     <div class="event-creation-modal">
@@ -130,599 +131,602 @@
                     <div class="all-day-row__cell"></div>
                 </div>
             </header>
-            <section class="week-view__calendar-grid">
-                <section class="calendar-grid__time-column">
-                    <div class="time-column__cell">
-                        01:00
-                    </div>
-                    <div class="time-column__cell">
-                        02:00
-                    </div>
-                    <div class="time-column__cell">
-                        03:00
-                    </div>
-                    <div class="time-column__cell">
-                        04:00
-                    </div>
-                    <div class="time-column__cell">
-                        05:00
-                    </div>
-                    <div class="time-column__cell">
-                        06:00
-                    </div>
-                    <div class="time-column__cell">
-                        07:00
-                    </div>
-                    <div class="time-column__cell">
-                        08:00
-                    </div>
-                    <div class="time-column__cell">
-                        09:00
-                    </div>
-                    <div class="time-column__cell">
-                        10:00
-                    </div>
-                    <div class="time-column__cell">
-                        11:00
-                    </div>
-                    <div class="time-column__cell">
-                        12:00
-                    </div>
-                    <div class="time-column__cell">
-                        13:00
-                    </div>
-                    <div class="time-column__cell">
-                        14:00
-                    </div>
-                    <div class="time-column__cell">
-                        15:00
-                    </div>
-                    <div class="time-column__cell">
-                        16:00
-                    </div>
-                    <div class="time-column__cell">
-                        17:00
-                    </div>
-                    <div class="time-column__cell">
-                        18:00
-                    </div>
-                    <div class="time-column__cell">
-                        19:00
-                    </div>
-                    <div class="time-column__cell">
-                        20:00
-                    </div>
-                    <div class="time-column__cell">
-                        21:00
-                    </div>
-                    <div class="time-column__cell">
-                        22:00
-                    </div>
-                    <div class="time-column__cell">
-                        23:00
-                    </div>
-                    <div class="time-column__cell">
+            <section class="week-view__calendar-container">
+                <section class="week-view__calendar-grid">
+                    <section class="calendar-grid__time-column">
+                        <div class="time-column__cell">
+                            01:00
+                        </div>
+                        <div class="time-column__cell">
+                            02:00
+                        </div>
+                        <div class="time-column__cell">
+                            03:00
+                        </div>
+                        <div class="time-column__cell">
+                            04:00
+                        </div>
+                        <div class="time-column__cell">
+                            05:00
+                        </div>
+                        <div class="time-column__cell">
+                            06:00
+                        </div>
+                        <div class="time-column__cell">
+                            07:00
+                        </div>
+                        <div class="time-column__cell">
+                            08:00
+                        </div>
+                        <div class="time-column__cell">
+                            09:00
+                        </div>
+                        <div class="time-column__cell">
+                            10:00
+                        </div>
+                        <div class="time-column__cell">
+                            11:00
+                        </div>
+                        <div class="time-column__cell">
+                            12:00
+                        </div>
+                        <div class="time-column__cell">
+                            13:00
+                        </div>
+                        <div class="time-column__cell">
+                            14:00
+                        </div>
+                        <div class="time-column__cell">
+                            15:00
+                        </div>
+                        <div class="time-column__cell">
+                            16:00
+                        </div>
+                        <div class="time-column__cell">
+                            17:00
+                        </div>
+                        <div class="time-column__cell">
+                            18:00
+                        </div>
+                        <div class="time-column__cell">
+                            19:00
+                        </div>
+                        <div class="time-column__cell">
+                            20:00
+                        </div>
+                        <div class="time-column__cell">
+                            21:00
+                        </div>
+                        <div class="time-column__cell">
+                            22:00
+                        </div>
+                        <div class="time-column__cell">
+                            23:00
+                        </div>
+                        <div class="time-column__cell">
 
-                    </div>
+                        </div>
+                    </section>
+                    <section class="calendar-grid__calendar-column-0">
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                    </section>
+                    <section class="calendar-grid__calendar-column-0">
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                    </section>
+                    <section class="calendar-grid__calendar-column-0">
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                    </section>
+                    <section class="calendar-grid__calendar-column-0">
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                    </section>
+                    <section class="calendar-grid__calendar-column-0">
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                    </section>
+                    <section class="calendar-grid__calendar-column-0">
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                    </section>
+                    <section class="calendar-grid__calendar-column-0">
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                        <div class="calendar-column__calendar-cell">
+                            <button class="calendar-cell__button"></button>
+                        </div>
+                    </section>
                 </section>
-                <section class="calendar-grid__calendar-column-0">
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                </section>
-                <section class="calendar-grid__calendar-column-0">
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                </section>
-                <section class="calendar-grid__calendar-column-0">
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                </section>
-                <section class="calendar-grid__calendar-column-0">
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                </section>
-                <section class="calendar-grid__calendar-column-0">
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                </section>
-                <section class="calendar-grid__calendar-column-0">
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                </section>
-                <section class="calendar-grid__calendar-column-0">
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                    <div class="calendar-column__calendar-cell">
-                        <button class="calendar-cell__button"></button>
-                    </div>
-                </section>
+                <div class="week-view__calendar-event-overlay"></div>
             </section>
         </section>
     </main>

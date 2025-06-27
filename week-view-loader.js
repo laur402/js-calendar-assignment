@@ -19,7 +19,7 @@ function testing(){
 
 function loadTimezoneLabel(){
     let timezoneElement = document.getElementsByClassName("week-view__dates-header-timezone")[0];
-    let timezoneOffset = today.getTimezoneOffset()/-60; //TODO: Investigate daylight savings effect
+    let timezoneOffset = today.getTimezoneOffset()/-60; //TODO: Replace with timezone label from localized date
     timezoneElement.innerText = `UTC${timezoneOffset > 0 ? "+" : ""}${timezoneOffset}`;
 }
 
@@ -36,9 +36,9 @@ function loadCalendarDateLabels(){
         element.getElementsByClassName("calendar-date-weekday")[0].innerText = threeLetterWeekDays[firstDayOfTheWeek.getDay()];
         element.getElementsByClassName("calendar-date-day")[0].innerText = firstDayOfTheWeek.getDate();
 
-        const date = `${firstDayOfTheWeek.getFullYear()}-${firstDayOfTheWeek.getMonth()}-${firstDayOfTheWeek.getDate()}`;
+        const date = `${firstDayOfTheWeek.getFullYear()}-${firstDayOfTheWeek.getMonth() + 1}-${firstDayOfTheWeek.getDate()}`;
         dateColumns[i].setAttribute("data-calendar-day", date);
-        if (date === `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`){
+        if (date === `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`){ //NOTE: Rewrite with .toDateString()?
             element.classList.add("week-view__dates-header-date--active");
         }
 
