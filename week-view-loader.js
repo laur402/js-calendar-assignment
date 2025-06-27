@@ -38,7 +38,8 @@ function loadCalendarDateLabels(){
 
         const date = `${firstDayOfTheWeek.getFullYear()}-${firstDayOfTheWeek.getMonth() + 1}-${firstDayOfTheWeek.getDate()}`;
         dateColumns[i].setAttribute("data-calendar-day", date);
-        if (date === `${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`){ //NOTE: Rewrite with .toDateString()?
+
+        if (firstDayOfTheWeek.toDateString() === today.toDateString()){
             element.classList.add("week-view__dates-header-date--active");
         }
 
