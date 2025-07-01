@@ -15,7 +15,9 @@ function tieHeaderButtons(){
 
     todayButton.addEventListener("click", () => {
         weekOffset = 0;
+        sidebarCalendarOffset = 0;
         loadWeekView();
+        loadSidebarCalendar();
     });
     leftButton.addEventListener("click", () => {
         weekOffset -= 1;

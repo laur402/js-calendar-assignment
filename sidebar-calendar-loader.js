@@ -30,7 +30,7 @@ function loadSidebarCalendarDateLabels(){
         calendarCell.addEventListener("click", () => {
             const buttonDate = Number(calendarCell.getAttribute("data-sidebar-calendar-date"));
             const difference = new Date(buttonDate).getFirstDayOfWeek().getTime() - new Date().getFirstDayOfWeek().getTime();
-            weekOffset = Math.round(difference/(7 * 24 * 60 * 60 * 1000));
+            weekOffset = Math.round(difference/(7 * 24 * 60 * 60 * 1000)); //TODO: Move offset calc out into a function
             loadWeekView();
         });
 
