@@ -19,25 +19,31 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
         const columnDate = new Date(column.getAttribute("data-calendar-day"));
         if (columnDate.toDateString() === eventStart.toDateString()) {
             const eventBox = document.createElement("div");
+            const height = (columnHeight * eventDuration / timeInADay);
+            const isThinVersion = height < 40;
             eventBox.style.position = "absolute";
             eventBox.style.gridColumn = `${i+1} / span 1`;
             eventBox.style.top = ((columnHeight * eventTime)/timeInADay) + "px";
             eventBox.style.width = "100%";
-            eventBox.style.height = (columnHeight * eventDuration / timeInADay) + "px";
+            eventBox.style.height = height + "px";
+            eventBox.style.minHeight = cellHeight/4 + "px";
             eventBox.style.backgroundColor = "dodgerblue";
             eventBox.style.border = "2px solid #125699";
             eventBox.style.borderRadius = "0.5rem";
-            eventBox.style.padding = "0.3rem 0.5rem";
-            eventBox.onclick = () => {callModal(); inputFillingByID(eventID);}; //TODO: Open modal to modify data
+            eventBox.style.padding = height > cellHeight/2 ? "0.3rem 0.5rem" : "0 0.3rem";
+            eventBox.onclick = () => {callModal(); inputFillingByID(eventID);};
             eventBox.style.pointerEvents = "auto";
             eventBox.style.display = "grid";
-            eventBox.style.gridTemplateRows = "calc(100% - 0.8rem) 0.8rem";
+            if (isThinVersion) {
+                eventBox.style.gridTemplateColumns = "1fr auto";
+            }
+            else eventBox.style.gridTemplateRows = "calc(100% - 0.8rem) 0.8rem";
             eventBox.setAttribute("data-event-id", eventID);
 
             const eventTitleText = document.createElement("div");
             eventTitleText.innerText = eventTitle;
             eventTitleText.style.fontSize = "0.8rem";
-            eventTitleText.style.gridRow = "1";
+            //eventTitleText.style.gridRow = "1";
             eventTitleText.style.overflowWrap = "anywhere";
             eventTitleText.style.overflow = "hidden";
             eventTitleText.classList.add("event-title")
@@ -50,7 +56,7 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
             const eventTimeText = document.createElement("div");
             eventTimeText.innerText = `${startTimeText} - ${endTimeText}`;
             eventTimeText.style.fontSize = "0.6rem";
-            eventTimeText.style.gridRow = "2"
+            //eventTimeText.style.gridRow = "2"
             eventTimeText.classList.add("event-time")
             eventBox.appendChild(eventTimeText);
 

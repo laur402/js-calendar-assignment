@@ -190,7 +190,7 @@ main {
     flex-direction: column;
     align-items: center;
     gap: 1rem;
-    padding: 0 2rem;
+    padding: 0 1.5rem;
     border-right: 1px solid gray;
 }
 .create-event-button{
@@ -217,18 +217,29 @@ main {
 .calendar-modal {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    grid-template-rows: repeat(7, 1fr);
-    grid-gap: 0.5rem;
+    grid-template-rows: repeat(8, 1fr);
+    width: 100%;
 }
-.calendar-modal__controls {
+.calendar-modal__header {
     grid-column-end: span 7;
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+.calendar-modal-header__buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-content: center;
 }
 .calendar-modal__week-day-row-cell,
 .calendar-modal__day-cell{
     justify-self: center;
     align-self: center;
+}
+
+.calendar-modal__day-cell {
+    width: 100%;
+    height: 100%;
 }
 
 .button-backgroundless{

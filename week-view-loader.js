@@ -15,20 +15,6 @@ function loadWeekView(){
 function getOffsetDate(){
     return new Date(today.getTime() + weekOffset * (7 * 24 * 60 * 60 * 1000));
 }
-function getFirstDayOfWeek(date){
-    const firstDayOfTheWeek = new Date(date);
-    while (firstDayOfTheWeek.getDay() !== 1){
-        firstDayOfTheWeek.setDate(firstDayOfTheWeek.getDate() - 1);
-    }
-    return firstDayOfTheWeek;
-}
-function getLastDayOfWeek(date){
-    const lastDayOfTheWeek = new Date(date);
-    while (lastDayOfTheWeek.getDay() !== 6){
-        lastDayOfTheWeek.setDate(lastDayOfTheWeek.getDate() + 1);
-    }
-    return lastDayOfTheWeek;
-}
 
 function loadTimezoneLabel(){
     let timezoneElement = document.getElementsByClassName("week-view__dates-header-timezone")[0];
@@ -37,7 +23,7 @@ function loadTimezoneLabel(){
 }
 
 function loadCalendarDateLabels(){
-    const firstDayOfTheWeek = getFirstDayOfWeek(getOffsetDate());
+    const firstDayOfTheWeek = getOffsetDate().getFirstDayOfWeek();
 
     let elements = document.getElementsByClassName("week-view__dates-header-date");
     let dateColumns = document.getElementsByClassName("calendar-grid__calendar-column-0");
@@ -68,8 +54,8 @@ function loadEvents() {
 
 function loadHeaderDate(date){
     const element = document.getElementsByClassName("header__month-year-date");
-    const firstDayOfTheWeek = getFirstDayOfWeek(date);
-    const lastDayOfTheWeek = getLastDayOfWeek(date);
+    const firstDayOfTheWeek = date.getFirstDayOfWeek();
+    const lastDayOfTheWeek = date.getLastDayOfWeek();
     //console.log(firstDayOfTheWeek);
     //console.log(lastDayOfTheWeek);
     if (firstDayOfTheWeek.getMonth() !== lastDayOfTheWeek.getMonth()){

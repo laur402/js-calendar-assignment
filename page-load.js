@@ -2,6 +2,8 @@ window.onload = async () => {
     loadWeekView();
     await loadEventModal();
     tieHeaderButtons();
+    loadSidebarCalendar();
+    tieSidebarCalendarHeaderButtons();
 }
 
 
@@ -15,12 +17,24 @@ function tieHeaderButtons(){
         weekOffset = 0;
         loadWeekView();
     });
-    leftButton.addEventListener("click", (e) => {
+    leftButton.addEventListener("click", () => {
         weekOffset -= 1;
         loadWeekView();
     });
-    rightButton.addEventListener("click", (e) => {
+    rightButton.addEventListener("click", () => {
         weekOffset += 1;
         loadWeekView();
     });
+}
+function tieSidebarCalendarHeaderButtons(){
+    const buttonLeft = document.getElementsByClassName("calendar-modal-header-buttons__month-left")[0];
+    const buttonRight = document.getElementsByClassName("calendar-modal-header-buttons__month-right")[0];
+    buttonLeft.addEventListener("click", () => {
+        sidebarCalendarOffset--;
+        loadSidebarCalendar();
+    })
+    buttonRight.addEventListener("click", () => {
+        sidebarCalendarOffset++;
+        loadSidebarCalendar();
+    })
 }

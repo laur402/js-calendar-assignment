@@ -69,20 +69,14 @@ ol, ul {
     grid-column: span 2;
     justify-self: end;
     align-self: center;
-}
-.modal-content__buttons {
     & * {
         border: none;
         background-color: transparent;
         padding: 0 0.4rem;
         color: dodgerblue;
     }
-    & input:hover{
-        background-color: #3399ff;
-    }
-    & input:active {
-        background-color: #0e7ff0;
-    }
+
+    display: flex;
 }
 .modal-content__buttons--submit {
     background-color: dodgerblue;
@@ -91,6 +85,13 @@ ol, ul {
     color: white;
     font-weight: bold;
     padding: 0.4rem 0.8rem;
+    margin-left: 0.2rem;
+    &:hover{
+        background-color: #3399ff;
+    }
+    &:active {
+        background-color: #0e7ff0;
+    }
 }
 .modal-content__buttons input:hover{
 

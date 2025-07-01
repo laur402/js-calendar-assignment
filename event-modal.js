@@ -167,13 +167,3 @@ function validateForm(formData, onSuccess, onError) {
     onSuccess();
 }
 
-Date.prototype.toISOLocaleString = function () {
-    return `${this.getFullYear()}-${(this.getMonth()+1).leftPad(2)}-${this.getDate().leftPad(2)}T${this.getHours().leftPad(2)}:${this.getMinutes().leftPad(2)}`;
-}
-Number.prototype.leftPad = function (size = 2) {
-    let s = String(this);
-    while (s.length < size) {
-        s = "0" + s;
-    }
-    return s;
-}

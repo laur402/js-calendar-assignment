@@ -9,10 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <script src="page-load.js"></script>
+    <script src="helper-functions.js"></script>
     <script src="week-view-loader.js"></script>
     <script src="event-modal.js"></script>
     <script src="event-graphics.js"></script>
     <script src="event-storage.js"></script>
+    <script src="sidebar-calendar-loader.js"></script>
 </head>
 <body>
     <div class="event-creation-modal">
@@ -31,12 +33,12 @@
         <aside class="aside">
             <button class="create-event-button new-event-modal-caller"><span class="material-symbols-outlined">add</span><span>Create Event</span></button>
             <div class="calendar-modal">
-                <div class="calendar-modal__controls">
-                    Month Year
-                    <span class="calendar-modal-controls__buttons">
-                        <button class="button-backgroundless button-borderless material-symbols-outlined">chevron_left</button>
-                        <button class="button-backgroundless button-borderless material-symbols-outlined">chevron_right</button>
-                    </span>
+                <div class="calendar-modal__header">
+                    <div class="calendar-modal-header__date">Month Year</div>
+                    <div class="calendar-modal-header__buttons">
+                        <button class="calendar-modal-header-buttons__month-left button-backgroundless button-borderless material-symbols-outlined">chevron_left</button>
+                        <button class="calendar-modal-header-buttons__month-right button-backgroundless button-borderless material-symbols-outlined">chevron_right</button>
+                    </div>
                 </div>
                 <div class="calendar-modal__week-day-row-cell">M</div>
                 <div class="calendar-modal__week-day-row-cell">T</div>
@@ -45,48 +47,48 @@
                 <div class="calendar-modal__week-day-row-cell">F</div>
                 <div class="calendar-modal__week-day-row-cell">S</div>
                 <div class="calendar-modal__week-day-row-cell">S</div>
-                <div class="calendar-modal__day-cell">26</div>
-                <div class="calendar-modal__day-cell">27</div>
-                <div class="calendar-modal__day-cell">28</div>
-                <div class="calendar-modal__day-cell">29</div>
-                <div class="calendar-modal__day-cell">30</div>
-                <div class="calendar-modal__day-cell">1</div>
-                <div class="calendar-modal__day-cell">2</div>
-                <div class="calendar-modal__day-cell">26</div>
-                <div class="calendar-modal__day-cell">27</div>
-                <div class="calendar-modal__day-cell">28</div>
-                <div class="calendar-modal__day-cell">29</div>
-                <div class="calendar-modal__day-cell">30</div>
-                <div class="calendar-modal__day-cell">1</div>
-                <div class="calendar-modal__day-cell">2</div>
-                <div class="calendar-modal__day-cell">26</div>
-                <div class="calendar-modal__day-cell">27</div>
-                <div class="calendar-modal__day-cell">28</div>
-                <div class="calendar-modal__day-cell">29</div>
-                <div class="calendar-modal__day-cell">30</div>
-                <div class="calendar-modal__day-cell">1</div>
-                <div class="calendar-modal__day-cell">2</div>
-                <div class="calendar-modal__day-cell">26</div>
-                <div class="calendar-modal__day-cell">27</div>
-                <div class="calendar-modal__day-cell">28</div>
-                <div class="calendar-modal__day-cell">29</div>
-                <div class="calendar-modal__day-cell">30</div>
-                <div class="calendar-modal__day-cell">1</div>
-                <div class="calendar-modal__day-cell">2</div>
-                <div class="calendar-modal__day-cell">26</div>
-                <div class="calendar-modal__day-cell">27</div>
-                <div class="calendar-modal__day-cell">28</div>
-                <div class="calendar-modal__day-cell">29</div>
-                <div class="calendar-modal__day-cell">30</div>
-                <div class="calendar-modal__day-cell">1</div>
-                <div class="calendar-modal__day-cell">2</div>
-                <div class="calendar-modal__day-cell">26</div>
-                <div class="calendar-modal__day-cell">27</div>
-                <div class="calendar-modal__day-cell">28</div>
-                <div class="calendar-modal__day-cell">29</div>
-                <div class="calendar-modal__day-cell">30</div>
-                <div class="calendar-modal__day-cell">1</div>
-                <div class="calendar-modal__day-cell">2</div>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
+                <button class="calendar-modal__day-cell button-backgroundless button-borderless"></button>
             </div>
         </aside>
         <section class="week-view-container">
