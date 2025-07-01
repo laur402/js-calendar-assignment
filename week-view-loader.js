@@ -1,6 +1,9 @@
+"use strict";
+
 const threeLetterWeekDays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const today = new Date();
+const weekOffset = 0;
 
 function loadWeekView(){
     //testing();

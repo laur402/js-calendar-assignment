@@ -1,3 +1,5 @@
+"use strict";
+
 function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
     const cells = document.getElementsByClassName("calendar-column__calendar-cell");
     const cellHeight = cells[0]?.getBoundingClientRect().height;
@@ -26,10 +28,11 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
             eventBox.style.border = "2px solid #125699";
             eventBox.style.borderRadius = "0.5rem";
             eventBox.style.padding = "0.3rem 0.5rem";
-            eventBox.onclick = () => {removeEvent(eventID); eventBox.remove();}; //TODO: Open modal to modify data
+            eventBox.onclick = () => {callModal(); inputFillingByID(eventID);}; //TODO: Open modal to modify data
             eventBox.style.pointerEvents = "auto";
             eventBox.style.display = "grid";
             eventBox.style.gridTemplateRows = "calc(100% - 0.8rem) 0.8rem";
+            eventBox.setAttribute("data-event-id", eventID);
 
             const eventTitleText = document.createElement("div");
             eventTitleText.innerText = eventTitle;
@@ -37,6 +40,7 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
             eventTitleText.style.gridRow = "1";
             eventTitleText.style.overflowWrap = "anywhere";
             eventTitleText.style.overflow = "hidden";
+            eventTitleText.classList.add("event-title")
 
             eventBox.appendChild(eventTitleText);
 
@@ -47,9 +51,26 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
             eventTimeText.innerText = `${startTimeText} - ${endTimeText}`;
             eventTimeText.style.fontSize = "0.6rem";
             eventTimeText.style.gridRow = "2"
+            eventTimeText.classList.add("event-time")
             eventBox.appendChild(eventTimeText);
 
             eventOverlay.appendChild(eventBox);
+        }
+    }
+}
+
+function reRenderEvent(eventID, eventTitle, eventStart, eventEnd) {
+    removeRenderEvent(eventID);
+    renderEvent(eventID, eventTitle, eventStart, eventEnd);
+}
+
+function removeRenderEvent(eventID) {
+    const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0];
+    const events = eventOverlay.children;
+    for (let i = 0; i < events.length; i++) {
+        const event = events[i];
+        if (event.getAttribute("data-event-id") === eventID) {
+            event.remove();
         }
     }
 }

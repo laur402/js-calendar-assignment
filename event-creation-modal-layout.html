@@ -8,6 +8,8 @@
 </head>
 <body class="modal">
     <form class="modal-content" id="new-event-modal-form">
+        <input class="modal-content__event-id" type="hidden" name="event-id" value="" />
+
         <input id="title" class="modal-content__event-title-input" type="text" name="event-title" placeholder="Event title" />
 
         <label class="modal-content__event-start-label" for="event-start">
@@ -25,6 +27,7 @@
 
         <div class="modal-content__buttons">
             <button class="modal-content__buttons--close">Cancel</button>
+            <input type="submit" class="modal-content__buttons--delete" value="Delete" />
             <input type="submit" class="modal-content__buttons--submit" value="Save" />
         </div>
     </form>

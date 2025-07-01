@@ -1,3 +1,5 @@
+"use strict";
+
 function addEvent(eventId, eventName, eventStart, eventEnd, eventDescription) {
     const eventList = fetchEvents();
     const eventToAdd = new CalendarEvent(eventId, eventName, eventStart, eventEnd, eventDescription);
@@ -26,8 +28,24 @@ function modifyEvent(eventId, eventName, eventStart, eventEnd, eventDescription)
     storeEvents(eventList);
 }
 
+function getEvent(eventId){
+    const eventList = fetchEvents();
+    for (let i = 0; i < eventList.length; i++) {
+        const event = eventList[i];
+        if (event.eventId === eventId) {
+            return event;
+        }
+    }
+    return null;
+}
+
 function fetchEvents() {
-    return JSON.parse(localStorage.getItem("events")) ?? [];
+    return JSON.parse(localStorage.getItem("events"), (key, value) => {
+        if (key === "eventStart" || key === "eventEnd") {
+            return new Date(value);
+        }
+        else return value;
+    }) ?? [];
 }
 function storeEvents(eventList) {
     localStorage.setItem("events", JSON.stringify(eventList));

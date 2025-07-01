@@ -1,9 +1,9 @@
+"use strict";
 
-
-async function loadNewEventModal() {
+async function loadEventModal() {
     await loadModalHTML();
     tieButtons();
-    readModalInput();
+    setupModalInput();
 }
 
 async function loadModalHTML(){
@@ -19,16 +19,22 @@ async function loadModalHTML(){
 }
 
 function tieButtons() {
-    const elements = document.getElementsByClassName("new-event-modal-caller")
+    const elements = document.getElementsByClassName("new-event-modal-caller");
     const modal = document.getElementsByClassName("event-creation-modal")[0];
     for (let i = 0; i < elements.length; i++) {
         const element = elements[i];
-        element.onclick = () => {modal.style.display = "flex"; inputFilling(new Date(), 60);};
+        element.onclick = () => {callModal(); inputFillingByOffset(new Date(), 60);};
     }
 
-    const modalButtons = modal.getElementsByClassName("modal-content__buttons--close");
-    for (let i = 0; i < modalButtons.length; i++) {
-        const element = modalButtons[i];
+    const modalCancelButtons = modal.getElementsByClassName("modal-content__buttons--close");
+    for (let i = 0; i < modalCancelButtons.length; i++) {
+        const element = modalCancelButtons[i];
+        element.onclick = () => modal.style.display = "none";
+    }
+
+    const modalDeleteButtons = modal.getElementsByClassName("modal-content__buttons--delete");
+    for (let i = 0; i < modalDeleteButtons.length; i++) {
+        const element = modalDeleteButtons[i];
         element.onclick = () => modal.style.display = "none";
     }
 
@@ -37,39 +43,64 @@ function tieButtons() {
         const calendarButtons = calendarColumns[i].getElementsByClassName("calendar-cell__button");
         for (let j = 0; j < calendarButtons.length; j++) {
             const element = calendarButtons[j];
-            element.onclick = () => {modal.style.display = "flex";
+            element.onclick = () => {
+                callModal();
                 const date = new Date(calendarColumns[i].getAttribute("data-calendar-day"));
-                inputFilling(new Date(date.getTime() + j*60*60000), 60);
-
+                inputFillingByOffset(new Date(date.getTime() + j*60*60000), 60);
             };
         }
     }
-
 }
 
-function inputFilling(startValue, minuteOffset) {
-
-    const endValue = new Date(startValue.getTime() + minuteOffset*60000)
-
-    const startInputElements = document.getElementsByClassName("modal-content__event-start-input");
-    for (let i = 0; i < startInputElements.length; i++) {
-        const element = startInputElements[i];
-        element.value = startValue.toISOLocaleString();
-    }
-    const endInputElements = document.getElementsByClassName("modal-content__event-end-input");
-    for (let i = 0; i < endInputElements.length; i++) {
-        const element = endInputElements[i];
-        element.value = endValue.toISOLocaleString();
-    }
-
+function callModal() {
+    const modal = document.getElementsByClassName("event-creation-modal")[0];
+    modal.style.display = "flex";
 }
 
-function readModalInput() {
+function inputFillingByID(eventID){
+    const event = getEvent(eventID);
+    if (event === null) inputFilling(new Date(), new Date(), "", "", eventID);
+    else inputFilling(event.eventStart, event.eventEnd, event.eventName, event.eventDescription, event.eventId);
+}
+
+function inputFillingByOffset(startValue, minuteOffset) {
+    const endValue = new Date(startValue.getTime() + minuteOffset*60000);
+    inputFilling(startValue, endValue, "", "");
+}
+
+function inputFilling(startValue, endValue, title, description, eventID = "") {
+    const idInput = document.getElementsByClassName("modal-content__event-id")[0];
+    idInput.value = eventID;
+
+    const deleteButton = document.getElementsByClassName("modal-content__buttons--delete")[0];
+    if (eventID === "") deleteButton.style.display = "none";
+    else deleteButton.style.display = "block";
+
+    const eventTitleInputElement = document.getElementsByClassName("modal-content__event-title-input")[0];
+    eventTitleInputElement.value = title;
+
+    const startInputElement = document.getElementsByClassName("modal-content__event-start-input")[0];
+    startInputElement.value = startValue.toISOLocaleString();
+
+    const endInputElement = document.getElementsByClassName("modal-content__event-end-input")[0];
+    endInputElement.value = endValue.toISOLocaleString();
+
+    const eventDescriptionInputElement = document.getElementsByClassName("modal-content__event-description-input")[0];
+    eventDescriptionInputElement.value = description;
+}
+
+function setupModalInput() {
     const modalForm = document.getElementById("new-event-modal-form");
     modalForm.addEventListener("submit", (event) => {
         event.preventDefault();
         let formData = new FormData(event.target);
 
+        let eventID = formData.get("event-id");
+        if (event.submitter.classList.contains("modal-content__buttons--delete")) {
+            removeEvent(eventID);
+            removeRenderEvent(eventID);
+            return;
+        }
         const modal = document.getElementsByClassName("event-creation-modal")[0];
         validateForm(formData, ()=>{
             modal.style.display = "none";
@@ -84,10 +115,19 @@ function readModalInput() {
             const eventDescription = formData.get("event-description");
             const eventStart = formData.get("event-start");
             const eventEnd = formData.get("event-end");
-            const eventID = performance.now().toString();
 
-            addEvent(eventID, eventName, eventStart, eventEnd, eventDescription);
-            renderEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd));
+            //console.log(eventID);
+            if (event.submitter.classList.contains("modal-content__buttons--submit")) {
+                if (eventID === "") {
+                    eventID = performance.now().toString();
+                    addEvent(eventID, eventName, eventStart, eventEnd, eventDescription);
+                    renderEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd));
+                }
+                else {
+                    modifyEvent(eventID, eventName, eventStart, eventEnd, eventDescription);
+                    reRenderEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd));
+                }
+            }
         },
         (error) => {
             switch (error){
