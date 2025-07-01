@@ -64,6 +64,11 @@ function reRenderEvent(eventID, eventTitle, eventStart, eventEnd) {
     renderEvent(eventID, eventTitle, eventStart, eventEnd);
 }
 
+function clearEventOverlay() {
+    const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0];
+    eventOverlay.innerHTML = "";
+}
+
 function removeRenderEvent(eventID) {
     const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0];
     const events = eventOverlay.children;

@@ -3,24 +3,31 @@
 const threeLetterWeekDays = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const today = new Date();
-const weekOffset = 0;
+let weekOffset = 0;
 
 function loadWeekView(){
-    //testing();
     loadTimezoneLabel();
     loadCalendarDateLabels();
     loadEvents();
-    loadHeaderDate(today);
+    loadHeaderDate(getOffsetDate());
 }
 
-function testing(){
-    console.log(today);
-    console.log(today.getDay());
-    console.log(today.getDate());
-    const tomorrow = new Date();
-    tomorrow.setDate(today.getDate() + 1)
-    console.log(tomorrow);
-    console.log(tomorrow.getDay());
+function getOffsetDate(){
+    return new Date(today.getTime() + weekOffset * (7 * 24 * 60 * 60 * 1000));
+}
+function getFirstDayOfWeek(date){
+    const firstDayOfTheWeek = new Date(date);
+    while (firstDayOfTheWeek.getDay() !== 1){
+        firstDayOfTheWeek.setDate(firstDayOfTheWeek.getDate() - 1);
+    }
+    return firstDayOfTheWeek;
+}
+function getLastDayOfWeek(date){
+    const lastDayOfTheWeek = new Date(date);
+    while (lastDayOfTheWeek.getDay() !== 6){
+        lastDayOfTheWeek.setDate(lastDayOfTheWeek.getDate() + 1);
+    }
+    return lastDayOfTheWeek;
 }
 
 function loadTimezoneLabel(){
@@ -30,10 +37,7 @@ function loadTimezoneLabel(){
 }
 
 function loadCalendarDateLabels(){
-    const firstDayOfTheWeek = new Date();
-    while (firstDayOfTheWeek.getDay() !== 1){
-        firstDayOfTheWeek.setDate(firstDayOfTheWeek.getDate() - 1);
-    }
+    const firstDayOfTheWeek = getFirstDayOfWeek(getOffsetDate());
 
     let elements = document.getElementsByClassName("week-view__dates-header-date");
     let dateColumns = document.getElementsByClassName("calendar-grid__calendar-column-0");
@@ -48,12 +52,14 @@ function loadCalendarDateLabels(){
         if (firstDayOfTheWeek.toDateString() === today.toDateString()){
             element.classList.add("week-view__dates-header-date--active");
         }
+        else element.classList.remove("week-view__dates-header-date--active");
 
         firstDayOfTheWeek.setDate(firstDayOfTheWeek.getDate() + 1);
     }
 }
 
 function loadEvents() {
+    clearEventOverlay();
     const events = fetchEvents();
     events.forEach(event => {
         renderEvent(event.eventId, event.eventName, new Date(event.eventStart), new Date(event.eventEnd));
@@ -62,5 +68,15 @@ function loadEvents() {
 
 function loadHeaderDate(date){
     const element = document.getElementsByClassName("header__month-year-date");
-    element[0].innerText = `${date.getFullYear()} ${months[date.getMonth()]}`;
+    const firstDayOfTheWeek = getFirstDayOfWeek(date);
+    const lastDayOfTheWeek = getLastDayOfWeek(date);
+    //console.log(firstDayOfTheWeek);
+    //console.log(lastDayOfTheWeek);
+    if (firstDayOfTheWeek.getMonth() !== lastDayOfTheWeek.getMonth()){
+        if (firstDayOfTheWeek.getFullYear() !== lastDayOfTheWeek.getFullYear()){
+            element[0].innerText = `${firstDayOfTheWeek.getFullYear()} ${months[firstDayOfTheWeek.getMonth()]} - ${lastDayOfTheWeek.getFullYear()} ${months[lastDayOfTheWeek.getMonth()]}`;
+        }
+        else element[0].innerText = `${firstDayOfTheWeek.getFullYear()} ${months[firstDayOfTheWeek.getMonth()]} - ${months[lastDayOfTheWeek.getMonth()]}`;
+    }
+    else element[0].innerText = `${firstDayOfTheWeek.getFullYear()} ${months[firstDayOfTheWeek.getMonth()]}`;
 }

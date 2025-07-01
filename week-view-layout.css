@@ -41,13 +41,34 @@ TODO: Convert colours to variables
          'opsz' 24;
 }
 .header {
-    display: flex;
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: 1fr 1fr 3fr;
+    justify-items: center;
     align-items: center;
+
     padding: 0.5rem 1rem;
     border-bottom: 1px solid gray;
 
     grid-column: 0/span 2;
+}
+.header__app-title {
+    justify-self: left;
+}
+.header__month-year-date {
+    justify-self: right;
+}
+.header-buttons {
+    justify-self: left;
+
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    justify-items: center;
+    align-items: center;
+}
+.header-buttons__today {
+    font-size: 1rem;
+    border: 0.1rem solid gray;
+    padding: 0.5rem;
 }
 
 body {
@@ -90,12 +111,13 @@ main {
 .week-view__dates-header-date--active .calendar-date-day{
     background-color: dodgerblue;
     color: whitesmoke;
-    padding: 0.5rem;
     border-radius: 50%;
 }
 
 .calendar-date-day{
     font-size: 2rem;
+    aspect-ratio: 1/1;
+    text-align: center;
 }
 .dates-header__all-day-row {
     display: grid;
@@ -211,16 +233,17 @@ main {
 
 .button-backgroundless{
     background: none;
-    border: none;
     cursor: pointer;
-    border-radius: 50%;
-    aspect-ratio: 1/1;
-    & :hover {
+    border-radius: 1.2rem;
+    &:hover {
         background: #efefef;
     }
-    & :active {
+    &:active {
         background: #e1e1e1;
     }
+}
+.button-borderless {
+    border: none;
 }
 
 .event-creation-modal{
