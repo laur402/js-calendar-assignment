@@ -33,8 +33,8 @@ function loadSidebarCalendarDateLabels(){
         });
 
         if (i.toYearMonthString() === currentMonth.toYearMonthString())
-            calendarCell.style.color = "black";
-        else calendarCell.style.color = "gray";
+            calendarCell.classList.remove("calendar-modal__day-cell-not-current");
+        else calendarCell.classList.add("calendar-modal__day-cell-not-current");
 
         calendarCellCounter++;
     }

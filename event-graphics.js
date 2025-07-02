@@ -37,13 +37,8 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
             eventBox.style.left = `${100 - width}%`;
             eventBox.style.height = height + "px";
             eventBox.style.minHeight = cellHeight/4 + "px";
-            eventBox.style.backgroundColor = "dodgerblue";
-            eventBox.style.border = "2px solid #125699";
-            eventBox.style.borderRadius = "0.5rem";
             eventBox.style.padding = !isSmallVersion ? "0.3rem 0.5rem" : "0 0.3rem";
             eventBox.onclick = () => {callModal(); inputFillingByID(eventID);};
-            eventBox.style.pointerEvents = "auto";
-            eventBox.style.display = "grid";
             if (isThinHeightVersion) {
                 eventBox.style.gridTemplateColumns = "1fr 1fr";
                 eventBox.style.columnGap = "0.1rem";
@@ -56,11 +51,7 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
             const eventTitleText = document.createElement("div");
             eventTitleText.innerText = eventTitle;
             eventTitleText.style.fontSize = !isSmallVersion ? "0.8rem" : "0.7rem";
-            //eventTitleText.style.gridRow = "1";
-            eventTitleText.style.overflowWrap = "anywhere";
-            eventTitleText.style.overflow = "hidden";
-            eventTitleText.classList.add("event-title")
-
+            eventTitleText.classList.add("event-box__event-title")
             eventBox.appendChild(eventTitleText);
 
             const startTimeText = eventStart.toTimeString().split(":").slice(0, 2).join(":");
@@ -70,8 +61,7 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
             eventTimeText.innerText = `${startTimeText} - ${endTimeText}`;
             eventTimeText.style.fontSize = !isSmallVersion ? "0.6rem" : "0.5rem";
             eventTimeText.style.justifySelf = !isSmallVersion ? "auto" : "end";
-            //eventTimeText.style.gridRow = "2"
-            eventTimeText.classList.add("event-time")
+            eventTimeText.classList.add("event-box__event-time")
             eventBox.appendChild(eventTimeText);
 
             eventOverlay.appendChild(eventBox);
