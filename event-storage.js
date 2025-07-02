@@ -40,12 +40,14 @@ function getEvent(eventId){
 }
 
 function fetchEvents() {
-    return JSON.parse(localStorage.getItem("events"), (key, value) => {
+    const eventList = JSON.parse(localStorage.getItem("events"), (key, value) => {
         if (key === "eventStart" || key === "eventEnd") {
             return new Date(value);
         }
         else return value;
     }) ?? [];
+    eventList.sort((a, b) => a.eventStart.getTime() - b.eventStart.getTime());
+    return eventList;
 }
 function storeEvents(eventList) {
     localStorage.setItem("events", JSON.stringify(eventList));

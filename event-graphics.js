@@ -17,53 +17,66 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
     for (let i = 0; i < columns.length; i++) {
         const column = columns[i];
         const columnDate = new Date(column.getAttribute("data-calendar-day"));
-        if (columnDate.toDateString() === eventStart.toDateString()) {
-            const eventBox = document.createElement("div");
-            const height = (columnHeight * eventDuration / timeInADay);
+        const isEventThisWeek = columnDate.toDateString() === eventStart.toDateString();
+        const isEventOverflowIntoThisWeek = columnDate.getDay() === 1
+            && columnDate.getFirstDayOfWeek() <= eventEnd.getFirstDayOfWeek()
+            && columnDate.getFirstDayOfWeek() >= eventStart.getFirstDayOfWeek();
+        if (isEventThisWeek || isEventOverflowIntoThisWeek) {
+            console.log(isEventThisWeek);
+            console.log(isEventOverflowIntoThisWeek);
+            let height = isEventOverflowIntoThisWeek
+                ? (columnHeight * eventDuration / timeInADay) - ((columnDate.getTime()-eventStart.getTime())*columnHeight/timeInADay)
+                : (columnHeight * eventDuration / timeInADay);
+            console.log(height)
+            const columnsToFill = Math.floor(height / columnHeight)+1;
+            for (let j = 0; j < columnsToFill; j++) {
+                const eventBox = document.createElement("div");
+                const eventBoxTop = j === 0 && !isEventOverflowIntoThisWeek ? (columnHeight * eventTime / timeInADay) : 0;
+                const eventBoxBottom = height < columnHeight ? eventBoxTop + height : columnHeight;
+                const eventGridColumn = i+j+1;
+                if (eventGridColumn > columns.length) return;
+                const overlappingElements = getOverlaps(eventBoxTop, eventBoxBottom, eventGridColumn);
+                const width = 100/Math.pow((overlappingElements.length+1), 1/3);//100 - 100/(overlappingElements.length+1);
+                const isThinHeightVersion = height < 40;
+                const isThinWidthVersion = width <= 50;
+                const isSmallVersion = isThinHeightVersion || isThinWidthVersion;
+                eventBox.style.position = "absolute";
+                eventBox.style.gridColumn = `${eventGridColumn} / span 1`;
+                eventBox.style.top = eventBoxTop + "px";
+                eventBox.style.width = `${width}%`;
+                eventBox.style.left = `${100 - width}%`;
+                eventBox.style.height = eventBoxBottom - eventBoxTop + "px";
+                eventBox.style.minHeight = cellHeight/4 + "px";
+                eventBox.style.padding = !isSmallVersion ? "0.3rem 0.5rem" : "0 0.3rem";
+                eventBox.onclick = () => {callModal(); inputFillingByID(eventID);};
+                if (isThinHeightVersion) {
+                    eventBox.style.gridTemplateColumns = "1fr 1fr";
+                    eventBox.style.columnGap = "0.1rem";
+                }
+                else eventBox.style.gridTemplateRows = "calc(100% - 0.8rem) 0.8rem";
+                eventBox.setAttribute("data-event-id", eventID);
+                eventBox.classList.add("calendar-event-overlay__event-box");
+                console.log(eventBox);
 
-            const eventTop = (columnHeight * eventTime / timeInADay);
-            const eventBottom = eventTop + height;
-            const eventGridColumn = i+1;
-            const overlappingElements = getOverlaps(eventTop, eventBottom, eventGridColumn);
-            const width = 100/(overlappingElements.length+1);
-            const isThinHeightVersion = height < 40;
-            const isThinWidthVersion = width <= 50;
-            const isSmallVersion = isThinHeightVersion || isThinWidthVersion;
+                const eventTitleText = document.createElement("div");
+                eventTitleText.innerText = eventTitle;
+                eventTitleText.style.fontSize = !isSmallVersion ? "0.8rem" : "0.7rem";
+                eventTitleText.classList.add("event-box__event-title")
+                eventBox.appendChild(eventTitleText);
 
-            eventBox.style.position = "absolute";
-            eventBox.style.gridColumn = `${eventGridColumn} / span 1`;
-            eventBox.style.top = eventTop + "px";
-            eventBox.style.width = `${width}%`;
-            eventBox.style.left = `${100 - width}%`;
-            eventBox.style.height = height + "px";
-            eventBox.style.minHeight = cellHeight/4 + "px";
-            eventBox.style.padding = !isSmallVersion ? "0.3rem 0.5rem" : "0 0.3rem";
-            eventBox.onclick = () => {callModal(); inputFillingByID(eventID);};
-            if (isThinHeightVersion) {
-                eventBox.style.gridTemplateColumns = "1fr 1fr";
-                eventBox.style.columnGap = "0.1rem";
+                const startTimeText = eventStart.toTimeString().split(":").slice(0, 2).join(":");
+                const endTimeText = eventEnd.toTimeString().split(":").slice(0, 2).join(":"); //TODO: Redo this for multiple days
+
+                const eventTimeText = document.createElement("div");
+                eventTimeText.innerText = `${startTimeText} - ${endTimeText}`;
+                eventTimeText.style.fontSize = !isSmallVersion ? "0.6rem" : "0.5rem";
+                eventTimeText.style.justifySelf = !isSmallVersion ? "auto" : "end";
+                eventTimeText.classList.add("event-box__event-time")
+                eventBox.appendChild(eventTimeText);
+
+                eventOverlay.appendChild(eventBox);
+                height -= (eventBoxBottom - eventBoxTop);
             }
-            else eventBox.style.gridTemplateRows = "calc(100% - 0.8rem) 0.8rem";
-            eventBox.setAttribute("data-event-id", eventID);
-            eventBox.classList.add("calendar-event-overlay__event-box");
-
-            const eventTitleText = document.createElement("div");
-            eventTitleText.innerText = eventTitle;
-            eventTitleText.style.fontSize = !isSmallVersion ? "0.8rem" : "0.7rem";
-            eventTitleText.classList.add("event-box__event-title")
-            eventBox.appendChild(eventTitleText);
-
-            const startTimeText = eventStart.toTimeString().split(":").slice(0, 2).join(":");
-            const endTimeText = eventEnd.toTimeString().split(":").slice(0, 2).join(":"); //TODO: Redo this for multiple days
-
-            const eventTimeText = document.createElement("div");
-            eventTimeText.innerText = `${startTimeText} - ${endTimeText}`;
-            eventTimeText.style.fontSize = !isSmallVersion ? "0.6rem" : "0.5rem";
-            eventTimeText.style.justifySelf = !isSmallVersion ? "auto" : "end";
-            eventTimeText.classList.add("event-box__event-time")
-            eventBox.appendChild(eventTimeText);
-
-            eventOverlay.appendChild(eventBox);
         }
     }
 }
@@ -80,7 +93,7 @@ function clearEventOverlay() {
 
 function removeRenderEvent(eventID) {
     const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0];
-    const events = eventOverlay.children;
+    const events = Array.from(eventOverlay.children);
     for (let i = 0; i < events.length; i++) {
         const event = events[i];
         if (event.getAttribute("data-event-id") === eventID) {
