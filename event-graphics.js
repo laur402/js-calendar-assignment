@@ -45,7 +45,6 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
             }
             else eventBox.style.gridTemplateRows = "calc(100% - 0.8rem) 0.8rem";
             eventBox.setAttribute("data-event-id", eventID);
-            eventBox.setAttribute("data-event-overlap-count", 0);
             eventBox.classList.add("calendar-event-overlay__event-box");
 
             const eventTitleText = document.createElement("div");

@@ -52,12 +52,12 @@ function tieModalInputs() {
     }
 
     const modalTitleInput = modal.getElementsByClassName("modal-content__event-title-input")[0];
-    modalTitleInput.addEventListener("input", event => {
+    modalTitleInput.addEventListener("input", () => {
         modalTitleInput.classList.remove("modal-content__input--error");
     });
     const modalTimeInputs = modal.querySelectorAll(".modal-content__event-start-input, .modal-content__event-end-input");
     for (let i = 0; i < modalTimeInputs.length; i++) {
-        modalTimeInputs[i].addEventListener("input", event => {
+        modalTimeInputs[i].addEventListener("input", () => {
             for (let j = 0; j < modalTimeInputs.length; j++) {
                 modalTimeInputs[j].classList.remove("modal-content__input--error");
             }

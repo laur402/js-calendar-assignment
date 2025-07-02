@@ -187,6 +187,7 @@ main {
 
 .week-view-container {
     display: grid;
+    grid-template-rows: min-content auto;
     padding-top: 1rem;
 }
 
@@ -251,7 +252,6 @@ main {
 .week-view__calendar-container {
     height: auto;
     overflow-y: auto;
-
     display: grid;
     grid-template-columns: 3rem 1fr;
     grid-template-rows: 1fr;

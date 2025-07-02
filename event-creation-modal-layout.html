@@ -10,20 +10,20 @@
     <form class="modal-content" id="new-event-modal-form">
         <input class="modal-content__event-id" type="hidden" name="event-id" value="" />
 
-        <input id="title" class="modal-content__event-title-input" type="text" name="event-title" placeholder="Event title" />
+        <input aria-label="Event title" id="title" class="modal-content__event-title-input" type="text" name="event-title" placeholder="Event title" />
 
         <label class="modal-content__event-start-label" for="event-start">
             <span class="material-symbols-outlined">calendar_clock</span>
         </label>
         <div>
-            <input id="event-start" class="modal-content__event-start-input" type="datetime-local" name="event-start" value="2025-06-23T08:00" />
-            <input id="event-end" class="modal-content__event-end-input" type="datetime-local" name="event-end" value="2025-06-23T08:30" />
+            <input aria-label="Event start" id="event-start" class="modal-content__event-start-input" type="datetime-local" name="event-start" value="2025-06-23T08:00" />
+            <input aria-label="Event end" id="event-end" class="modal-content__event-end-input" type="datetime-local" name="event-end" value="2025-06-23T08:30" />
         </div>
 
         <label class="modal-content__event-description-label" for="event-description">
             <span class="material-symbols-outlined">notes</span>
         </label>
-        <textarea id="event-description" class="modal-content__event-description-input" name="event-description" rows="5" cols="2" placeholder="Add description"></textarea>
+        <textarea aria-label="Event description" id="event-description" class="modal-content__event-description-input" name="event-description" rows="5" cols="2" placeholder="Add description"></textarea>
 
         <div class="modal-content__buttons">
             <button class="modal-content__buttons--close">Cancel</button>
