@@ -2,7 +2,7 @@
 
 async function loadEventModal() {
     await loadModalHTML();
-    tieButtons();
+    tieModalInputs();
     setupModalInput();
 }
 
@@ -18,7 +18,7 @@ async function loadModalHTML(){
     }
 }
 
-function tieButtons() {
+function tieModalInputs() {
     const elements = document.getElementsByClassName("new-event-modal-caller");
     const modal = document.getElementsByClassName("event-creation-modal")[0];
     for (let i = 0; i < elements.length; i++) {
@@ -50,9 +50,30 @@ function tieButtons() {
             };
         }
     }
+
+    const modalTitleInput = modal.getElementsByClassName("modal-content__event-title-input")[0];
+    modalTitleInput.addEventListener("input", event => {
+        modalTitleInput.classList.remove("modal-content__input--error");
+    });
+    const modalTimeInputs = modal.querySelectorAll(".modal-content__event-start-input, .modal-content__event-end-input");
+    for (let i = 0; i < modalTimeInputs.length; i++) {
+        modalTimeInputs[i].addEventListener("input", event => {
+            for (let j = 0; j < modalTimeInputs.length; j++) {
+                modalTimeInputs[j].classList.remove("modal-content__input--error");
+            }
+        });
+    }
+}
+
+function clearInputErrorUI(){
+    const erroredInputs = Array.from(document.getElementsByClassName("modal-content__input--error"));
+    for (let i = 0; i < erroredInputs.length; i++) {
+        erroredInputs[i].classList.remove("modal-content__input--error");
+    }
 }
 
 function callModal() {
+    clearInputErrorUI();
     const modal = document.getElementsByClassName("event-creation-modal")[0];
     modal.style.display = "flex";
 }

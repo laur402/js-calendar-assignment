@@ -6,7 +6,7 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
 
     const columns = document.getElementsByClassName("calendar-grid__calendar-column-0");
     const columnHeight = columns[0].getBoundingClientRect().height;
-    const columnWidth = columns[0].getBoundingClientRect().width;
+    const columnWidth = columns[0].offsetWidth;
 
     const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0];
 
@@ -20,29 +20,42 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
         if (columnDate.toDateString() === eventStart.toDateString()) {
             const eventBox = document.createElement("div");
             const height = (columnHeight * eventDuration / timeInADay);
-            const isThinVersion = height < 40;
+
+            const eventTop = (columnHeight * eventTime / timeInADay);
+            const eventBottom = eventTop + height;
+            const eventGridColumn = i+1;
+            const overlappingElements = getOverlaps(eventTop, eventBottom, eventGridColumn);
+            const width = 100/(overlappingElements.length+1);
+            const isThinHeightVersion = height < 40;
+            const isThinWidthVersion = width <= 50;
+            const isSmallVersion = isThinHeightVersion || isThinWidthVersion;
+
             eventBox.style.position = "absolute";
-            eventBox.style.gridColumn = `${i+1} / span 1`;
-            eventBox.style.top = ((columnHeight * eventTime)/timeInADay) + "px";
-            eventBox.style.width = "100%";
+            eventBox.style.gridColumn = `${eventGridColumn} / span 1`;
+            eventBox.style.top = eventTop + "px";
+            eventBox.style.width = `${width}%`;
+            eventBox.style.left = `${100 - width}%`;
             eventBox.style.height = height + "px";
             eventBox.style.minHeight = cellHeight/4 + "px";
             eventBox.style.backgroundColor = "dodgerblue";
             eventBox.style.border = "2px solid #125699";
             eventBox.style.borderRadius = "0.5rem";
-            eventBox.style.padding = height > cellHeight/2 ? "0.3rem 0.5rem" : "0 0.3rem";
+            eventBox.style.padding = !isSmallVersion ? "0.3rem 0.5rem" : "0 0.3rem";
             eventBox.onclick = () => {callModal(); inputFillingByID(eventID);};
             eventBox.style.pointerEvents = "auto";
             eventBox.style.display = "grid";
-            if (isThinVersion) {
-                eventBox.style.gridTemplateColumns = "1fr auto";
+            if (isThinHeightVersion) {
+                eventBox.style.gridTemplateColumns = "1fr 1fr";
+                eventBox.style.columnGap = "0.1rem";
             }
             else eventBox.style.gridTemplateRows = "calc(100% - 0.8rem) 0.8rem";
             eventBox.setAttribute("data-event-id", eventID);
+            eventBox.setAttribute("data-event-overlap-count", 0);
+            eventBox.classList.add("calendar-event-overlay__event-box");
 
             const eventTitleText = document.createElement("div");
             eventTitleText.innerText = eventTitle;
-            eventTitleText.style.fontSize = "0.8rem";
+            eventTitleText.style.fontSize = !isSmallVersion ? "0.8rem" : "0.7rem";
             //eventTitleText.style.gridRow = "1";
             eventTitleText.style.overflowWrap = "anywhere";
             eventTitleText.style.overflow = "hidden";
@@ -55,7 +68,8 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
 
             const eventTimeText = document.createElement("div");
             eventTimeText.innerText = `${startTimeText} - ${endTimeText}`;
-            eventTimeText.style.fontSize = "0.6rem";
+            eventTimeText.style.fontSize = !isSmallVersion ? "0.6rem" : "0.5rem";
+            eventTimeText.style.justifySelf = !isSmallVersion ? "auto" : "end";
             //eventTimeText.style.gridRow = "2"
             eventTimeText.classList.add("event-time")
             eventBox.appendChild(eventTimeText);
@@ -84,4 +98,57 @@ function removeRenderEvent(eventID) {
             event.remove();
         }
     }
+}
+
+function getOverlaps(eventTop, eventBottom, eventGridColumn) {
+    const events = document.getElementsByClassName("calendar-event-overlay__event-box");
+    const overlappingEvents = [];
+    for (let i = 0; i < events.length; i++) {
+        const comparedEventElement = events[i];
+        const comparedEventTop = comparedEventElement.offsetTop;
+        const comparedEventBottom = comparedEventTop + comparedEventElement.offsetHeight;
+        const comparedEventGridColumn = Number(comparedEventElement.style.gridColumnStart);
+        if (comparedEventGridColumn === eventGridColumn
+            && !(
+                (comparedEventTop >= eventBottom
+                    && comparedEventBottom >= eventTop)
+                || (comparedEventTop <= eventBottom
+                    && comparedEventBottom <= eventTop)
+            )){
+            overlappingEvents.push(comparedEventElement);
+        }
+        /*if (comparedEventGridColumn === eventGridColumn
+            && !(
+                (comparedEventTop > eventTop
+                    && comparedEventBottom > eventBottom
+                    && comparedEventTop > eventBottom
+                    && comparedEventBottom > eventTop)
+                || (comparedEventTop < eventTop
+                    && comparedEventBottom < eventBottom
+                    && comparedEventTop < eventBottom
+                    && comparedEventBottom < eventTop)
+            )){
+            overlappingEvents.push(comparedEventElement);
+            console.log(overlappingEvents);
+        }*/
+        /*
+        const comparedEventID = comparedEventElement.getAttribute("data-event-id");
+        const comparedEvent = getEvent(comparedEventID);
+        if (comparedEvent !== null &&
+        !(
+            (comparedEvent.eventStart.getTime() > eventStart.getTime()
+                && comparedEvent.eventEnd.getTime() > eventEnd.getTime()
+                && comparedEvent.eventStart.getTime() > eventEnd.getTime()
+                && comparedEvent.eventEnd.getTime() > eventStart.getTime())
+            || (comparedEvent.eventStart.getTime() < eventStart.getTime()
+                && comparedEvent.eventEnd.getTime() < eventEnd.getTime()
+                && comparedEvent.eventStart.getTime() < eventEnd.getTime()
+                && comparedEvent.eventEnd.getTime() < eventStart.getTime())
+        )){
+            overlappingEvents.push(comparedEvent);
+        }
+         */
+    }
+
+    return overlappingEvents;
 }

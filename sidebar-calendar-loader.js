@@ -26,11 +26,9 @@ function loadSidebarCalendarDateLabels(){
         calendarCell.style.display = "block";
         calendarCell.innerText = i.getDate();
         calendarCell.setAttribute("data-sidebar-calendar-date", i.getTime().toString());
-
         calendarCell.addEventListener("click", () => {
             const buttonDate = Number(calendarCell.getAttribute("data-sidebar-calendar-date"));
-            const difference = new Date(buttonDate).getFirstDayOfWeek().getTime() - new Date().getFirstDayOfWeek().getTime();
-            weekOffset = Math.round(difference/(7 * 24 * 60 * 60 * 1000)); //TODO: Move offset calc out into a function
+            weekOffset = weekOffsetCalc(new Date(), buttonDate);
             loadWeekView();
         });
 
@@ -54,3 +52,8 @@ function loadSidebarCalendarDate() {
     headerDate.innerText = `${currentMonth.getFullYear()} ${months[currentMonth.getMonth()]}`
 }
 
+function weekOffsetCalc(baseDate, shiftDate){
+    const difference = new Date(shiftDate).getFirstDayOfWeek().getTime() - new Date(baseDate).getFirstDayOfWeek().getTime();
+    const weekOffset = difference / (7 * 24 * 60 * 60 * 1000);
+    return Math.round(weekOffset);
+}
