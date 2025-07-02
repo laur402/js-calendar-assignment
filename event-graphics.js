@@ -1,5 +1,5 @@
 "use strict";
-
+const threeLetterMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
     const cells = document.getElementsByClassName("calendar-column__calendar-cell");
     const cellHeight = cells[0]?.getBoundingClientRect().height;
@@ -51,9 +51,9 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
                 eventBox.onclick = () => {callModal(); inputFillingByID(eventID);};
                 if (isThinHeightVersion) {
                     eventBox.style.gridTemplateColumns = "1fr 1fr";
-                    eventBox.style.columnGap = "0.1rem";
+                    eventBox.style.columnGap = "0.2rem";
                 }
-                else eventBox.style.gridTemplateRows = "calc(100% - 0.8rem) 0.8rem";
+                else eventBox.style.gridTemplateRows = "1fr auto";
                 eventBox.setAttribute("data-event-id", eventID);
                 eventBox.classList.add("calendar-event-overlay__event-box");
                 console.log(eventBox);
@@ -64,8 +64,12 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
                 eventTitleText.classList.add("event-box__event-title")
                 eventBox.appendChild(eventTitleText);
 
-                const startTimeText = eventStart.toTimeString().split(":").slice(0, 2).join(":");
-                const endTimeText = eventEnd.toTimeString().split(":").slice(0, 2).join(":"); //TODO: Redo this for multiple days
+                let startTimeText = eventStart.toTimeString().split(":").slice(0, 2).join(":");
+                let endTimeText = eventEnd.toTimeString().split(":").slice(0, 2).join(":");
+                if (eventStart.toDateString() !== eventEnd.toDateString()) {
+                    startTimeText = `${threeLetterMonths[eventStart.getMonth()]} ${eventStart.getDate()} ${startTimeText}`;
+                    endTimeText = `${threeLetterMonths[eventEnd.getMonth()]} ${eventEnd.getDate()} ${endTimeText}`;
+                }
 
                 const eventTimeText = document.createElement("div");
                 eventTimeText.innerText = `${startTimeText} - ${endTimeText}`;
