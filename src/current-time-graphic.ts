@@ -1,7 +1,7 @@
 "use strict";
 
 function loadCurrentTimeGraphic(currentTime: Date) {
-    const columns = document.getElementsByClassName("calendar-grid__calendar-column-0");
+    const columns: HTMLCollection = document.getElementsByClassName("calendar-grid__calendar-column-0");
     const columnHeight: number = columns[0].getBoundingClientRect().height;
     const eventOverlay: HTMLElement = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
     const timeOfDay: number = currentTime.getTime() - new Date(currentTime.toDateString()).getTime(); //ms from start of day

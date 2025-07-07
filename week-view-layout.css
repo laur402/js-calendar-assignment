@@ -84,6 +84,11 @@ body {
 .header__app-title {
     justify-self: left;
     color: var(--color-gray-active);
+
+    display: grid;
+    align-items: center;
+    grid-template-columns: 1fr auto;
+    grid-column-gap: 0.5rem;
 }
 
 .header__month-year-date {

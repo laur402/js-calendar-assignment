@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Foogle Calendar</title>
+    <link rel="icon" href="public/logo.svg">
     <link rel="stylesheet" href="week-view-layout.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +23,10 @@
         <div class="event-creation-modal-content" html-file="event-creation-modal-layout.html"></div>
     </div>
     <header class="header">
-        <h1 class="header__app-title">Calendar</h1>
+        <div class="header__app-title">
+            <img src="public/logo.svg" alt="Calendar Logo" height="32"/>
+            <h1>Calendar</h1>
+        </div>
         <div class="header-buttons">
             <button class="header-buttons__today button-backgroundless">Today</button>
             <button class="header-buttons__week-left button-backgroundless button-borderless material-symbols-outlined">chevron_left</button>

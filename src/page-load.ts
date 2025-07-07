@@ -1,11 +1,13 @@
 window.onload = async () => {
-    loadWeekView();
     await loadEventModal();
     tieHeaderButtons();
     loadSidebarCalendar();
     tieSidebarCalendarHeaderButtons();
-    loadCurrentTimeGraphic(TODAY);
-    setInterval(() => {removeCurrentTimeGraphic(); loadCurrentTimeGraphic(new Date());}, 60*1000);
+    loadMainCalendarElements();
+    setInterval(() => {
+        removeCurrentTimeGraphic();
+        loadCurrentTimeGraphic(new Date());
+        }, 60*1000);
 }
 
 function loadMainCalendarElements() {

@@ -18,26 +18,31 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
     for (let i = 0; i < columns.length; i++) {
         const column: HTMLElement = columns[i] as HTMLElement;
         const columnDate: Date = new Date(column.getAttribute("data-calendar-day")?.toString() ?? ""); //TODO: Replace with error
+
         const isEventThisWeek: boolean = columnDate.toDateString() === eventStart.toDateString();
         const isEventOverflowIntoThisWeek: boolean = columnDate.getDay() === 1
             && columnDate.getFirstDayOfWeek() <= eventEnd.getFirstDayOfWeek()
             && columnDate.getFirstDayOfWeek() >= eventStart.getFirstDayOfWeek();
+
         if (isEventThisWeek || isEventOverflowIntoThisWeek) {
             let height: number = isEventOverflowIntoThisWeek
                 ? (columnHeight * eventDuration / timeInADay) - ((columnDate.getTime()-eventStart.getTime())*columnHeight/timeInADay)
                 : (columnHeight * eventDuration / timeInADay);
             const columnsToFill = Math.floor(height / columnHeight)+1;
             for (let j = 0; j < columnsToFill; j++) {
+                const eventGridColumn: number = i+j+1;
+                if (eventGridColumn > columns.length) return;
+
                 const eventBox: HTMLElement = document.createElement("div");
                 const eventBoxTop: number = j === 0 && !isEventOverflowIntoThisWeek ? (columnHeight * eventTime / timeInADay) : 0;
                 const eventBoxBottom: number = height < columnHeight ? eventBoxTop + height : columnHeight;
-                const eventGridColumn: number = i+j+1;
-                if (eventGridColumn > columns.length) return;
+
                 const overlappingElements: HTMLElement[] = getOverlaps(eventBoxTop, eventBoxBottom, eventGridColumn);
                 const width: number = 100/Math.pow((overlappingElements.length+1), 1/3);
                 const isThinHeightVersion: boolean = height < 40;
                 const isThinWidthVersion: boolean = width <= 50;
                 const isSmallVersion: boolean = isThinHeightVersion || isThinWidthVersion;
+
                 eventBox.style.position = "absolute";
                 eventBox.style.gridColumn = `${eventGridColumn} / span 1`;
                 eventBox.style.top = eventBoxTop + "px";
@@ -46,7 +51,10 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
                 eventBox.style.height = eventBoxBottom - eventBoxTop + "px";
                 eventBox.style.minHeight = cellHeight/4 + "px";
                 eventBox.style.padding = !isSmallVersion ? "0.3rem 0.5rem" : "0 0.3rem";
-                eventBox.onclick = () => {callModal(); inputFillingByID(eventID);};
+                eventBox.onclick = () => {
+                    callModal();
+                    inputFillingByID(eventID);
+                };
                 if (isThinHeightVersion) {
                     eventBox.style.gridTemplateColumns = "1fr 1fr";
                     eventBox.style.columnGap = "0.2rem";
@@ -88,15 +96,15 @@ function reRenderEvent(eventID: string, eventTitle: string, eventStart: Date, ev
 }
 
 function clearEventOverlay() {
-    const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0];
+    const eventOverlay: HTMLElement = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
     eventOverlay.innerHTML = "";
 }
 
 function removeRenderEvent(eventID: string) {
-    const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0];
-    const events = Array.from(eventOverlay.children);
+    const eventOverlay: HTMLElement = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
+    const events: HTMLElement[] = Array.from(eventOverlay.children) as HTMLElement[];
     for (let i = 0; i < events.length; i++) {
-        const event = events[i];
+        const event: HTMLElement = events[i];
         if (event.getAttribute("data-event-id") === eventID) {
             event.remove();
         }
@@ -104,10 +112,10 @@ function removeRenderEvent(eventID: string) {
 }
 
 function getOverlaps(eventTop: number, eventBottom: number, eventGridColumn: number): HTMLElement[] {
-    const events = document.getElementsByClassName("calendar-event-overlay__event-box");
-    const overlappingEvents = [];
+    const overlappingEvents: HTMLElement[] = [];
+    const events: HTMLCollection = document.getElementsByClassName("calendar-event-overlay__event-box");
     for (let i = 0; i < events.length; i++) {
-        const comparedEventElement = events[i] as HTMLElement;
+        const comparedEventElement: HTMLElement = events[i] as HTMLElement;
         const comparedEventTop: number = comparedEventElement.offsetTop;
         const comparedEventBottom: number = comparedEventTop + comparedEventElement.offsetHeight;
         const comparedEventGridColumn: number = Number(comparedEventElement.style.gridColumnStart);
@@ -117,7 +125,8 @@ function getOverlaps(eventTop: number, eventBottom: number, eventGridColumn: num
                     && comparedEventBottom >= eventTop)
                 || (comparedEventTop <= eventBottom
                     && comparedEventBottom <= eventTop)
-            )){
+            )
+        ){
             overlappingEvents.push(comparedEventElement);
         }
     }

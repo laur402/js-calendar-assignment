@@ -7,10 +7,10 @@ async function loadEventModal() {
 }
 
 async function loadModalHTML(){
-    const allElements = document.getElementsByTagName("*");
+    const allElements: HTMLCollection = document.getElementsByTagName("*");
     for (let i = 0; i < allElements.length; i++) {
-        const element = allElements[i];
-        const file = element.getAttribute("html-file");
+        const element: HTMLElement = allElements[i] as HTMLElement;
+        const file: string | null = element.getAttribute("html-file");
         if (file) {
             const i = await fetch(file);
             element.innerHTML = await i.text();
@@ -19,30 +19,34 @@ async function loadModalHTML(){
 }
 
 function tieModalInputs() {
-    const elements = document.getElementsByClassName("new-event-modal-caller");
-    const modal = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
-    for (let i = 0; i < elements.length; i++) {
-        const element = elements[i] as HTMLElement;
-        element.onclick = () => {callModal(); inputFillingByOffset(new Date(), 60);};
+    const modal: HTMLElement = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
+
+    const newEventModalCallers: HTMLCollection = document.getElementsByClassName("new-event-modal-caller");
+    for (let i = 0; i < newEventModalCallers.length; i++) {
+        const element = newEventModalCallers[i] as HTMLElement;
+        element.onclick = () => {
+            callModal();
+            inputFillingByOffset(new Date(), 60);
+        };
     }
 
-    const modalCancelButtons = modal.getElementsByClassName("modal-content__buttons--close");
+    const modalCancelButtons: HTMLCollection = modal.getElementsByClassName("modal-content__buttons--close");
     for (let i = 0; i < modalCancelButtons.length; i++) {
-        const element = modalCancelButtons[i] as HTMLElement;
+        const element: HTMLElement = modalCancelButtons[i] as HTMLElement;
         element.onclick = () => modal.style.display = "none";
     }
 
-    const modalDeleteButtons = modal.getElementsByClassName("modal-content__buttons--delete");
+    const modalDeleteButtons: HTMLCollection = modal.getElementsByClassName("modal-content__buttons--delete");
     for (let i = 0; i < modalDeleteButtons.length; i++) {
-        const element = modalDeleteButtons[i] as HTMLElement;
+        const element: HTMLElement = modalDeleteButtons[i] as HTMLElement;
         element.onclick = () => modal.style.display = "none";
     }
 
-    const calendarColumns = document.getElementsByClassName("calendar-grid__calendar-column-0");
+    const calendarColumns: HTMLCollection = document.getElementsByClassName("calendar-grid__calendar-column-0");
     for (let i = 0; i < calendarColumns.length; i++) {
-        const calendarButtons = calendarColumns[i].getElementsByClassName("calendar-cell__button");
+        const calendarButtons: HTMLCollection = calendarColumns[i].getElementsByClassName("calendar-cell__button");
         for (let j = 0; j < calendarButtons.length; j++) {
-            const element = calendarButtons[j] as HTMLElement;
+            const element: HTMLElement = calendarButtons[j] as HTMLElement;
             element.onclick = () => {
                 callModal();
                 const date = new Date(calendarColumns[i].getAttribute("data-calendar-day") ?? "");
@@ -51,7 +55,7 @@ function tieModalInputs() {
         }
     }
 
-    const modalTitleInput = modal.getElementsByClassName("modal-content__event-title-input")[0];
+    const modalTitleInput: HTMLElement = modal.getElementsByClassName("modal-content__event-title-input")[0] as HTMLElement;
     modalTitleInput.addEventListener("input", () => {
         modalTitleInput.classList.remove("modal-content__input--error");
     });
@@ -66,7 +70,7 @@ function tieModalInputs() {
 }
 
 function clearInputErrorUI(){
-    const erroredInputs = Array.from(document.getElementsByClassName("modal-content__input--error"));
+    const erroredInputs: HTMLElement[] = Array.from(document.getElementsByClassName("modal-content__input--error")) as HTMLElement[];
     for (let i = 0; i < erroredInputs.length; i++) {
         erroredInputs[i].classList.remove("modal-content__input--error");
     }
@@ -74,18 +78,18 @@ function clearInputErrorUI(){
 
 function callModal() {
     clearInputErrorUI();
-    const modal = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
+    const modal: HTMLElement = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
     modal.style.display = "flex";
 }
 
 function inputFillingByID(eventID: string){
-    const event = getEvent(eventID);
+    const event: CalendarEvent | null = getEvent(eventID);
     if (event === null) inputFilling(new Date(), new Date(), "", "", eventID);
     else inputFilling(event.eventStart, event.eventEnd, event.eventName, event.eventDescription, event.eventId);
 }
 
 function inputFillingByOffset(startValue: Date, minuteOffset: number) {
-    const endValue = new Date(startValue.getTime() + minuteOffset*60000);
+    const endValue: Date = new Date(startValue.getTime() + minuteOffset * 60000);
     inputFilling(startValue, endValue, "", "");
 }
 
@@ -111,23 +115,23 @@ function inputFilling(startValue: Date, endValue: Date, title: string, descripti
 }
 
 function setupModalInput() {
-    const modalForm = document.getElementById("new-event-modal-form") as HTMLFormElement;
+    const modalForm: HTMLFormElement | null = document.getElementById("new-event-modal-form") as HTMLFormElement | null;
     modalForm?.addEventListener("submit", (event) => {
         event.preventDefault();
-        let formData = new FormData(event.target as HTMLFormElement);
+        let formData: FormData = new FormData(event.target as HTMLFormElement);
 
-        let eventID = formData.get("event-id")?.toString() ?? "";
+        let eventID: string = formData.get("event-id")?.toString() ?? ""; //TODO: Replace with error
         if (event.submitter?.classList.contains("modal-content__buttons--delete")) {
             removeEvent(eventID);
             removeRenderEvent(eventID);
             return;
         }
-        const modal = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
+        const modal: HTMLElement = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
         validateForm(formData, ()=>{
             modal.style.display = "none";
             modalForm.reset();
 
-            const elements = modal.getElementsByTagName("*");
+            const elements: HTMLCollection = modal.getElementsByTagName("*");
             for (let i = 0; i < elements.length; i++) {
                 elements[i].classList.remove("modal-content__input--error");
             }
@@ -167,15 +171,14 @@ function setupModalInput() {
 }
 
 function validateForm(formData: FormData, onSuccess: () => void, onError: (error: ValidationErrors) => void) {
-    const eventTitle = formData.get("event-title");
-    const eventStartTime = new Date(formData.get("event-start")?.toString() ?? "").getTime(); //TODO: Replace with error
-    const eventEndTime = new Date(formData.get("event-end")?.toString() ?? "").getTime();
-    if (eventTitle === ''){
+    const eventTitle: string = formData.get("event-title")?.toString() ?? ""; //TODO: Replace with error
+    const eventStartTime: number = new Date(formData.get("event-start")?.toString() ?? "").getTime();
+    const eventEndTime: number = new Date(formData.get("event-end")?.toString() ?? "").getTime();
+    if (eventTitle === '') {
         onError(ValidationErrors.Title);
         return;
     }
-    if (eventEndTime < eventStartTime)
-    {
+    if (eventEndTime < eventStartTime) {
         onError(ValidationErrors.Time);
         return;
     }

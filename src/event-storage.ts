@@ -1,16 +1,16 @@
 "use strict";
 
 function addEvent(eventId: string, eventName: string, eventStart: Date, eventEnd: Date, eventDescription: string) {
-    const eventList = fetchEvents();
+    const eventList: CalendarEvent[] = fetchEvents();
     const eventToAdd: CalendarEvent = {eventId, eventName, eventStart, eventEnd, eventDescription};
     eventList.push(eventToAdd);
     storeEvents(eventList);
 }
 
 function removeEvent(eventId: string) {
-    const eventList = fetchEvents();
+    const eventList: CalendarEvent[] = fetchEvents();
     for (let i = 0; i < eventList.length; i++) {
-        const event = eventList[i];
+        const event: CalendarEvent = eventList[i];
         if (event.eventId === eventId) {
             eventList.splice(i, 1);
         }
@@ -18,9 +18,9 @@ function removeEvent(eventId: string) {
     storeEvents(eventList);
 }
 function modifyEvent(eventId: string, eventName: string, eventStart: Date, eventEnd: Date, eventDescription: string) {
-    const eventList = fetchEvents();
+    const eventList: CalendarEvent[] = fetchEvents();
     for (let i = 0; i < eventList.length; i++) {
-        let event = eventList[i];
+        let event: CalendarEvent = eventList[i];
         if (event.eventId === eventId) {
             event = {eventId, eventName, eventStart, eventEnd, eventDescription};
         }
@@ -29,9 +29,9 @@ function modifyEvent(eventId: string, eventName: string, eventStart: Date, event
 }
 
 function getEvent(eventId: string): CalendarEvent | null {
-    const eventList = fetchEvents();
+    const eventList: CalendarEvent[] = fetchEvents();
     for (let i = 0; i < eventList.length; i++) {
-        const event = eventList[i];
+        const event: CalendarEvent = eventList[i];
         if (event.eventId === eventId) {
             return event;
         }
