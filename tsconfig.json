@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "outDir": "./built",
+    "allowJs": true,
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.js",
+    "src/types/*.d.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    ".idea"
+  ]
+}

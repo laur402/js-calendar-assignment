@@ -1,4 +1,4 @@
-let sidebarCalendarOffset = 0;
+let sidebarCalendarOffset: number = 0;
 //const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function loadSidebarCalendar(){
@@ -21,14 +21,14 @@ function loadSidebarCalendarDateLabels(){
          i.toDateString() !== lastDayOfMonthWeek.addDays(1).toDateString();
          i.setDate(i.getDate() + 1)) {
 
-        const calendarCell = calendarCells[calendarCellCounter];
+        const calendarCell: HTMLElement = calendarCells[calendarCellCounter] as HTMLElement;
 
         calendarCell.style.display = "block";
-        calendarCell.innerText = i.getDate();
+        calendarCell.innerText = String(i.getDate());
         calendarCell.setAttribute("data-sidebar-calendar-date", i.getTime().toString());
         calendarCell.addEventListener("click", () => {
             const buttonDate = Number(calendarCell.getAttribute("data-sidebar-calendar-date"));
-            weekOffset = weekOffsetCalc(new Date(), buttonDate);
+            weekOffset = weekOffsetCalc(new Date(), new Date(buttonDate));
             loadWeekView();
         });
 
@@ -39,21 +39,22 @@ function loadSidebarCalendarDateLabels(){
         calendarCellCounter++;
     }
     while (calendarCellCounter < calendarCells.length) {
-        calendarCells[calendarCellCounter].style.display = "none";
-        calendarCells[calendarCellCounter].innerText = "";
+        const calendarCell: HTMLElement = calendarCells[calendarCellCounter] as HTMLElement;
+        calendarCell.style.display = "none";
+        calendarCell.innerText = "";
         calendarCellCounter++;
     }
 }
 
 function loadSidebarCalendarDate() {
-    const headerDate = document.getElementsByClassName("calendar-modal-header__date")[0];
+    const headerDate = document.getElementsByClassName("calendar-modal-header__date")[0] as HTMLElement;
     const currentMonth = new Date();
     currentMonth.setMonth(currentMonth.getMonth() + sidebarCalendarOffset);
     headerDate.innerText = `${currentMonth.getFullYear()} ${MONTHS[currentMonth.getMonth()]}`
 }
 
-function weekOffsetCalc(baseDate, shiftDate){
-    const difference = new Date(shiftDate).getFirstDayOfWeek().getTime() - new Date(baseDate).getFirstDayOfWeek().getTime();
-    const weekOffset = difference / (7 * 24 * 60 * 60 * 1000);
+function weekOffsetCalc(baseDate: Date, shiftDate: Date){
+    const difference: number = shiftDate.getFirstDayOfWeek().getTime() - baseDate.getFirstDayOfWeek().getTime();
+    const weekOffset: number = difference / (7 * 24 * 60 * 60 * 1000);
     return Math.round(weekOffset);
 }
