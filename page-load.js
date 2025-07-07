@@ -4,6 +4,13 @@ window.onload = async () => {
     tieHeaderButtons();
     loadSidebarCalendar();
     tieSidebarCalendarHeaderButtons();
+    loadCurrentTimeGraphic(TODAY);
+    setInterval(() => {removeCurrentTimeGraphic(); loadCurrentTimeGraphic(new Date());}, 60*1000);
+}
+
+function loadMainCalendarElements() {
+    loadWeekView();
+    loadCurrentTimeGraphic(TODAY);
 }
 
 
@@ -16,16 +23,16 @@ function tieHeaderButtons(){
     todayButton.addEventListener("click", () => {
         weekOffset = 0;
         sidebarCalendarOffset = 0;
-        loadWeekView();
+        loadMainCalendarElements();
         loadSidebarCalendar();
     });
     leftButton.addEventListener("click", () => {
         weekOffset -= 1;
-        loadWeekView();
+        loadMainCalendarElements();
     });
     rightButton.addEventListener("click", () => {
         weekOffset += 1;
-        loadWeekView();
+        loadMainCalendarElements();
     });
 }
 function tieSidebarCalendarHeaderButtons(){

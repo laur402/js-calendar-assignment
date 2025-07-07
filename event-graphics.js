@@ -1,5 +1,5 @@
 "use strict";
-const threeLetterMonths = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+const THREE_LETTER_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
     const cells = document.getElementsByClassName("calendar-column__calendar-cell");
     const cellHeight = cells[0]?.getBoundingClientRect().height;
@@ -22,12 +22,9 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
             && columnDate.getFirstDayOfWeek() <= eventEnd.getFirstDayOfWeek()
             && columnDate.getFirstDayOfWeek() >= eventStart.getFirstDayOfWeek();
         if (isEventThisWeek || isEventOverflowIntoThisWeek) {
-            console.log(isEventThisWeek);
-            console.log(isEventOverflowIntoThisWeek);
             let height = isEventOverflowIntoThisWeek
                 ? (columnHeight * eventDuration / timeInADay) - ((columnDate.getTime()-eventStart.getTime())*columnHeight/timeInADay)
                 : (columnHeight * eventDuration / timeInADay);
-            console.log(height)
             const columnsToFill = Math.floor(height / columnHeight)+1;
             for (let j = 0; j < columnsToFill; j++) {
                 const eventBox = document.createElement("div");
@@ -56,7 +53,6 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
                 else eventBox.style.gridTemplateRows = "1fr auto";
                 eventBox.setAttribute("data-event-id", eventID);
                 eventBox.classList.add("calendar-event-overlay__event-box");
-                console.log(eventBox);
 
                 const eventTitleText = document.createElement("div");
                 eventTitleText.innerText = eventTitle;
@@ -67,8 +63,8 @@ function renderEvent(eventID, eventTitle, eventStart, eventEnd) {
                 let startTimeText = eventStart.toTimeString().split(":").slice(0, 2).join(":");
                 let endTimeText = eventEnd.toTimeString().split(":").slice(0, 2).join(":");
                 if (eventStart.toDateString() !== eventEnd.toDateString()) {
-                    startTimeText = `${threeLetterMonths[eventStart.getMonth()]} ${eventStart.getDate()} ${startTimeText}`;
-                    endTimeText = `${threeLetterMonths[eventEnd.getMonth()]} ${eventEnd.getDate()} ${endTimeText}`;
+                    startTimeText = `${THREE_LETTER_MONTHS[eventStart.getMonth()]} ${eventStart.getDate()} ${startTimeText}`;
+                    endTimeText = `${THREE_LETTER_MONTHS[eventEnd.getMonth()]} ${eventEnd.getDate()} ${endTimeText}`;
                 }
 
                 const eventTimeText = document.createElement("div");

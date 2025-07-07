@@ -49,7 +49,7 @@ function loadSidebarCalendarDate() {
     const headerDate = document.getElementsByClassName("calendar-modal-header__date")[0];
     const currentMonth = new Date();
     currentMonth.setMonth(currentMonth.getMonth() + sidebarCalendarOffset);
-    headerDate.innerText = `${currentMonth.getFullYear()} ${months[currentMonth.getMonth()]}`
+    headerDate.innerText = `${currentMonth.getFullYear()} ${MONTHS[currentMonth.getMonth()]}`
 }
 
 function weekOffsetCalc(baseDate, shiftDate){

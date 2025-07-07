@@ -288,6 +288,27 @@ main {
     color: var(--color-white-on-color);
 }
 
+.calendar-event-overlay__current-time-graphic {
+    position: absolute;
+    width: 100%;
+    z-index: 10;
+    display: grid;
+    align-items: center;
+    & .current-time-graphic__line {
+        height: 1px;
+        width: 100%;
+        border-bottom: 0.1rem solid red;
+    }
+    & .current-time-graphic__bauble {
+        width: 0.8rem;
+        height: 0.8rem;
+        border-radius: 0.4rem;
+        background-color: red;
+        align-self: center;
+        margin-left: -0.4rem;
+    }
+}
+
 .week-view__calendar-grid {
     grid-column: 1 / span 2;
     grid-row: 1;
