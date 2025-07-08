@@ -7,7 +7,9 @@ function loadCurrentTimeGraphic(currentTime: Date) {
     const timeOfDay: number = currentTime.getTime() - new Date(currentTime.toDateString()).getTime(); //ms from start of day
     for (let i = 0; i < columns.length; i++) {
         const column: HTMLElement = columns[i] as HTMLElement;
-        const columnDate: Date = new Date(column.getAttribute("data-calendar-day")?.toString() ?? ""); //TODO: Replace with error
+        const columnDateString: string | undefined = column.getAttribute("data-calendar-day")?.toString();
+        if (columnDateString === undefined) throw new AttributeError("Cannot get data-calendar-day attribute");
+        const columnDate: Date = new Date(columnDateString);
         if (columnDate.toDateString() === currentTime.toDateString()){
             const currentTimeGraphic: HTMLElement = document.createElement("div");
             const currentTimeGraphicTop: number = (columnHeight * timeOfDay / TIME_IN_A_DAY_MS);

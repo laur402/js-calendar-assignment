@@ -13,7 +13,9 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
 
     for (let i = 0; i < calendarColumns.length; i++) {
         const column: HTMLElement = calendarColumns[i] as HTMLElement;
-        const columnDate: Date = new Date(column.getAttribute("data-calendar-day")?.toString() ?? ""); //TODO: Replace with error
+        const columnDateString: string | undefined = column.getAttribute("data-calendar-day")?.toString();
+        if (columnDateString === undefined) throw new AttributeError("Cannot get data-calendar-day attribute");
+        const columnDate: Date = new Date(columnDateString);
 
         const isEventThisWeek: boolean = columnDate.toDateString() === eventStart.toDateString();
         const isEventOverflowIntoThisWeek: boolean = columnDate.getDay() === 1

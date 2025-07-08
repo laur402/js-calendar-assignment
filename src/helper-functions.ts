@@ -42,3 +42,21 @@ Date.prototype.addDays = function (days: number): Date {
 Date.prototype.toYearMonthString = function (): string {
     return `${this.getFullYear()} ${MONTHS[this.getMonth()+1]}`;
 }
+
+async function asyncTryCatch<T>(operation: () => Promise<T>, errorMessage: string): Promise<T> {
+    try {
+        const result = await operation();
+        return result;
+    }
+    catch(error) {
+        //console.error(error);
+        throw new Error(errorMessage);
+    }
+}
+
+class AttributeError extends Error {
+    constructor (message: string) {
+        super(message);
+        this.name = "AttributeError";
+    }
+}

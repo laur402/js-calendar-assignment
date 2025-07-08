@@ -116,18 +116,18 @@ function inputFilling(startValue: Date, endValue: Date, title: string, descripti
 
 function setupModalInput() {
     const modalForm: HTMLFormElement | null = document.getElementById("new-event-modal-form") as HTMLFormElement | null;
-    modalForm?.addEventListener("submit", (event) => {
+    modalForm?.addEventListener("submit", async (event) => {
         event.preventDefault();
         let formData: FormData = new FormData(event.target as HTMLFormElement);
-
-        let eventID: string = formData.get("event-id")?.toString() ?? ""; //TODO: Replace with error
+        let eventID: string | undefined = formData.get("event-id")?.toString();
+        if (eventID === undefined) throw new AttributeError("Cannot get event-id form attribute");
         if (event.submitter?.classList.contains("modal-content__buttons--delete")) {
-            removeEvent(eventID);
+            await removeEvent(eventID);
             removeRenderEvent(eventID);
             return;
         }
         const modal: HTMLElement = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
-        validateForm(formData, ()=>{
+        validateForm(formData, async ()=>{
             modal.style.display = "none";
             modalForm.reset();
 
@@ -144,11 +144,11 @@ function setupModalInput() {
             if (event.submitter?.classList.contains("modal-content__buttons--submit")) {
                 if (eventID === "") {
                     eventID = performance.now().toString();
-                    addEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd), eventDescription);
+                    await addEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd), eventDescription);
                     renderEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd));
                 }
-                else {
-                    modifyEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd), eventDescription);
+                else if (eventID !== undefined) {
+                    await modifyEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd), eventDescription);
                     reRenderEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd));
                 }
             }
@@ -171,9 +171,16 @@ function setupModalInput() {
 }
 
 function validateForm(formData: FormData, onSuccess: () => void, onError: (error: ValidationErrors) => void) {
-    const eventTitle: string = formData.get("event-title")?.toString() ?? ""; //TODO: Replace with error
-    const eventStartTime: number = new Date(formData.get("event-start")?.toString() ?? "").getTime();
-    const eventEndTime: number = new Date(formData.get("event-end")?.toString() ?? "").getTime();
+    const eventTitle: string | undefined = formData.get("event-title")?.toString();
+    const eventStartTimeString: string | undefined = formData.get("event-start")?.toString();
+    const eventEndTimeString: string | undefined = formData.get("event-end")?.toString();
+
+    if (eventStartTimeString === undefined) throw new AttributeError("Cannot get event-start form attribute");
+    if (eventEndTimeString === undefined) throw new AttributeError("Cannot get event-end form attribute");
+    if (eventTitle === undefined) throw new AttributeError("Cannot get event-title form attribute");
+
+    const eventStartTime: number = new Date(eventStartTimeString).getTime();
+    const eventEndTime: number = new Date(eventEndTimeString).getTime();
     if (eventTitle === '') {
         onError(ValidationErrors.Title);
         return;
