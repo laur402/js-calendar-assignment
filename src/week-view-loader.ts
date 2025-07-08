@@ -5,10 +5,10 @@ const MONTHS = ["January", "February", "March", "April", "May", "June", "July", 
 const TODAY = new Date();
 let weekOffset = 0;
 
-function loadWeekView(){
+async function loadWeekView(){
     loadTimezoneLabel();
     loadCalendarDateLabels();
-    loadEvents();
+    await loadEvents();
     loadHeaderDate(getOffsetDate());
 }
 
@@ -46,9 +46,9 @@ function loadCalendarDateLabels(){
     }
 }
 
-function loadEvents() {
+async function loadEvents() {
     clearEventOverlay();
-    const events = fetchEvents();
+    const events = await fetchEvents();
     events.forEach(event => {
         renderEvent(event.eventId, event.eventName, new Date(event.eventStart), new Date(event.eventEnd));
     })

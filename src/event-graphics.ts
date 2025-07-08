@@ -51,9 +51,9 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
                 eventBox.style.height = eventBoxBottom - eventBoxTop + "px";
                 eventBox.style.minHeight = cellHeight/4 + "px";
                 eventBox.style.padding = !isSmallVersion ? "0.3rem 0.5rem" : "0 0.3rem";
-                eventBox.onclick = () => {
+                eventBox.onclick = async () => {
                     callModal();
-                    inputFillingByID(eventID);
+                    await inputFillingByID(eventID);
                 };
                 if (isThinHeightVersion) {
                     eventBox.style.gridTemplateColumns = "1fr 1fr";

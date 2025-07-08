@@ -82,8 +82,8 @@ function callModal() {
     modal.style.display = "flex";
 }
 
-function inputFillingByID(eventID: string){
-    const event: CalendarEvent | null = getEvent(eventID);
+async function inputFillingByID(eventID: string){
+    const event: CalendarEvent | null = await getEvent(eventID);
     if (event === null) inputFilling(new Date(), new Date(), "", "", eventID);
     else inputFilling(event.eventStart, event.eventEnd, event.eventName, event.eventDescription, event.eventId);
 }
