@@ -3,7 +3,12 @@
 let weekOffset = 0;
 
 async function loadWeekView(){
+    loadCalendarGrid(7);
     loadTimezoneLabel();
+    await reloadWeekView();
+}
+
+async function reloadWeekView(){
     loadCalendarDateLabels();
     await loadEvents();
     loadHeaderDate(getOffsetDate());
@@ -23,7 +28,7 @@ function loadCalendarDateLabels(){
     const firstDayOfTheWeek = getOffsetDate().getFirstDayOfWeek();
 
     let elements = document.getElementsByClassName("week-view__dates-header-date");
-    let dateColumns = document.getElementsByClassName("calendar-grid__calendar-column-0");
+    let dateColumns = document.getElementsByClassName("calendar-grid__calendar-column");
     for (let i = 0; i < elements.length; i++) {
         let element = elements[i];
         const elementWeekdayLabel = element.getElementsByClassName("calendar-date-weekday")[0] as HTMLElement;
@@ -40,6 +45,24 @@ function loadCalendarDateLabels(){
         else element.classList.remove("week-view__dates-header-date--active");
 
         firstDayOfTheWeek.setDate(firstDayOfTheWeek.getDate() + 1);
+    }
+}
+
+function loadCalendarGrid(columnCount: number) {
+    const calendarGrid = document.getElementsByClassName("week-view__calendar-grid")[0] as HTMLElement;
+    for (let i = 0; i < columnCount; i++){
+        const calendarGridColumn = document.createElement("section");
+        calendarGridColumn.classList.add("calendar-grid__calendar-column");
+        for (let j = 0; j < 24; j++){
+            const calendarGridColumnCell = document.createElement("div");
+            calendarGridColumnCell.classList.add("calendar-column__calendar-cell");
+            const calendarGridColumnCellButton = document.createElement("button");
+            calendarGridColumnCellButton.classList.add("calendar-cell__button");
+
+            calendarGridColumnCell.appendChild(calendarGridColumnCellButton);
+            calendarGridColumn.appendChild(calendarGridColumnCell);
+        }
+        calendarGrid.appendChild(calendarGridColumn);
     }
 }
 

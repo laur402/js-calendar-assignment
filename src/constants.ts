@@ -3,3 +3,13 @@ const TIME_IN_A_DAY_MS: number = 24*60*60*1000; //ms in a day
 const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const THREE_LETTER_WEEK_DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
 const LOAD_TIME = new Date();
+
+enum WeekDays {
+    "Sunday" = 0,
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+}

@@ -25,10 +25,10 @@ function loadSidebarCalendarDateLabels(){
         calendarCell.style.display = "block";
         calendarCell.innerText = String(i.getDate());
         calendarCell.setAttribute("data-sidebar-calendar-date", i.getTime().toString());
-        calendarCell.addEventListener("click", () => {
+        calendarCell.addEventListener("click", async () => {
             const buttonDate = Number(calendarCell.getAttribute("data-sidebar-calendar-date"));
             weekOffset = weekOffsetCalc(new Date(), new Date(buttonDate));
-            loadWeekView();
+            await reloadWeekView();
         });
 
         if (i.toYearMonthString() === currentMonth.toYearMonthString())

@@ -40,16 +40,19 @@ Date.prototype.addDays = function (days: number): Date {
     return date;
 }
 Date.prototype.toYearMonthString = function (): string {
-    return `${this.getFullYear()} ${MONTHS[this.getMonth()+1]}`;
+    return `${this.getFullYear()} ${MONTHS[this.getMonth()]}`;
 }
 
-async function asyncTryCatch<T>(operation: () => Promise<T>, errorMessage: string): Promise<T> {
+async function asyncTryCatch<T>(operation: () => Promise<T>, errorMessage: string, errorFunction?: () => void): Promise<T> {
     try {
         const result = await operation();
         return result;
     }
-    catch(error) {
+    catch (error) {
         //console.error(error);
+        if (errorFunction) {
+            errorFunction();
+        }
         throw new Error(errorMessage);
     }
 }

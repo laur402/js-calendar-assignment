@@ -15,7 +15,6 @@ async function removeEvent(eventId: string) {
 }
 
 async function modifyEvent(eventId: string, eventName: string, eventStart: Date, eventEnd: Date, eventDescription: string) {
-
     const APIEvent: APIResponseEvent = {id: eventId, eventName, eventStart, eventEnd, eventDescription};
     const value: Response = await fetch(`http://localhost:3000/events/${APIEvent.id}`, {
         method: "PUT",
@@ -49,8 +48,8 @@ async function getEvent(eventId: string): Promise<CalendarEvent | null> {
 }
 
 async function fetchEvents(): Promise<CalendarEvent[]> {
-    let eventsFetch = await asyncTryCatch(() => fetch("http://localhost:3000/events"),
-        "Events server unavailable");
+    let eventsFetch: Response = await asyncTryCatch(() => fetch("http://localhost:3000/events"),
+        "Events server unavailable", ()=> alert("Events server is unavailable!"));
 
     if (eventsFetch.status !== 200) throw new Error("Invalid event server link");
     const APIEventList: APIResponseEvent[] = JSON.parse(await eventsFetch.text(), (key, value) => {

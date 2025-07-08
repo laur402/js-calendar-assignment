@@ -1,7 +1,7 @@
 "use strict";
 function renderEvent(eventID: string, eventTitle: string, eventStart: Date, eventEnd: Date) {
 
-    const calendarColumns: HTMLCollection = document.getElementsByClassName("calendar-grid__calendar-column-0");
+    const calendarColumns: HTMLCollection = document.getElementsByClassName("calendar-grid__calendar-column");
     const firstColumn: HTMLElement = calendarColumns[0] as HTMLElement;
     const columnHeight: number = firstColumn.getBoundingClientRect().height;
     //const columnWidth: number = firstColumn.offsetWidth;
@@ -15,13 +15,12 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
         const column: HTMLElement = calendarColumns[i] as HTMLElement;
         const columnDateString: string | undefined = column.getAttribute("data-calendar-day")?.toString();
         if (columnDateString === undefined) throw new AttributeError("Cannot get data-calendar-day attribute");
-        const columnDate: Date = new Date(columnDateString);
 
+        const columnDate: Date = new Date(columnDateString);
         const isEventThisWeek: boolean = columnDate.toDateString() === eventStart.toDateString();
-        const isEventOverflowIntoThisWeek: boolean = columnDate.getDay() === 1
+        const isEventOverflowIntoThisWeek: boolean = columnDate.getDay() === WeekDays.Monday
             && columnDate.getFirstDayOfWeek() <= eventEnd.getFirstDayOfWeek()
             && columnDate.getFirstDayOfWeek() >= eventStart.getFirstDayOfWeek();
-
         if (!isEventThisWeek && !isEventOverflowIntoThisWeek) continue;
 
         let height: number = (columnHeight * eventDuration / TIME_IN_A_DAY_MS);

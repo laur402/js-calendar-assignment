@@ -42,7 +42,7 @@ function tieModalInputs() {
         element.onclick = () => modal.style.display = "none";
     }
 
-    const calendarColumns: HTMLCollection = document.getElementsByClassName("calendar-grid__calendar-column-0");
+    const calendarColumns: HTMLCollection = document.getElementsByClassName("calendar-grid__calendar-column");
     for (let i = 0; i < calendarColumns.length; i++) {
         const calendarButtons: HTMLCollection = calendarColumns[i].getElementsByClassName("calendar-cell__button");
         for (let j = 0; j < calendarButtons.length; j++) {
