@@ -12,7 +12,7 @@ window.onload = async () => {
 
 async function loadMainCalendarElements() {
     await loadWeekView();
-    loadCurrentTimeGraphic(TODAY);
+    loadCurrentTimeGraphic(LOAD_TIME);
 }
 
 
@@ -22,19 +22,19 @@ function tieHeaderButtons(){
     const leftButton: Element = header.getElementsByClassName("header-buttons__week-left")[0];
     const rightButton: Element = header.getElementsByClassName("header-buttons__week-right")[0];
 
-    todayButton.addEventListener("click", () => {
+    todayButton.addEventListener("click", async () => {
         weekOffset = 0;
         sidebarCalendarOffset = 0;
-        loadMainCalendarElements();
+        await loadMainCalendarElements();
         loadSidebarCalendar();
     });
-    leftButton.addEventListener("click", () => {
+    leftButton.addEventListener("click", async () => {
         weekOffset -= 1;
-        loadMainCalendarElements();
+        await loadMainCalendarElements();
     });
-    rightButton.addEventListener("click", () => {
+    rightButton.addEventListener("click", async () => {
         weekOffset += 1;
-        loadMainCalendarElements();
+        await loadMainCalendarElements();
     });
 }
 function tieSidebarCalendarHeaderButtons(){

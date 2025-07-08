@@ -1,8 +1,5 @@
 "use strict";
 
-const THREE_LETTER_WEEK_DAYS = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
-const MONTHS = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-const TODAY = new Date();
 let weekOffset = 0;
 
 async function loadWeekView(){
@@ -13,12 +10,12 @@ async function loadWeekView(){
 }
 
 function getOffsetDate(){
-    return new Date(TODAY.getTime() + weekOffset * (7 * 24 * 60 * 60 * 1000));
+    return new Date(LOAD_TIME.getTime() + weekOffset * 7 * TIME_IN_A_DAY_MS);
 }
 
 function loadTimezoneLabel(){
     let timezoneElement = document.getElementsByClassName("week-view__dates-header-timezone")[0] as HTMLElement;
-    let timezoneOffset = TODAY.toString().split("GMT")[1].slice(0, 3);
+    let timezoneOffset = LOAD_TIME.toString().split("GMT")[1].slice(0, 3);
     timezoneElement.innerText = `UTC${timezoneOffset}`;
 }
 
@@ -37,7 +34,7 @@ function loadCalendarDateLabels(){
         const date = `${firstDayOfTheWeek.getFullYear()}-${firstDayOfTheWeek.getMonth() + 1}-${firstDayOfTheWeek.getDate()}`;
         dateColumns[i].setAttribute("data-calendar-day", date);
 
-        if (firstDayOfTheWeek.toDateString() === TODAY.toDateString()){
+        if (firstDayOfTheWeek.toDateString() === LOAD_TIME.toDateString()){
             element.classList.add("week-view__dates-header-date--active");
         }
         else element.classList.remove("week-view__dates-header-date--active");

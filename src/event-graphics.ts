@@ -1,5 +1,4 @@
 "use strict";
-const THREE_LETTER_MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 function renderEvent(eventID: string, eventTitle: string, eventStart: Date, eventEnd: Date) {
 
     const calendarColumns: HTMLCollection = document.getElementsByClassName("calendar-grid__calendar-column-0");
@@ -11,7 +10,6 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
 
     const eventTime: number = eventStart.getTime() - new Date(eventStart.toDateString()).getTime(); //ms from start of day
     const eventDuration: number = eventEnd.getTime() - eventStart.getTime(); //ms event duration
-    const TIME_IN_A_DAY_MS: number = 24*60*60*1000; //ms in a day
 
     for (let i = 0; i < calendarColumns.length; i++) {
         const column: HTMLElement = calendarColumns[i] as HTMLElement;

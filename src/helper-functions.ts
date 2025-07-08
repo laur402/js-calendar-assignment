@@ -40,6 +40,5 @@ Date.prototype.addDays = function (days: number): Date {
     return date;
 }
 Date.prototype.toYearMonthString = function (): string {
-    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-    return `${this.getFullYear()} ${months[this.getMonth()+1]}`;
+    return `${this.getFullYear()} ${MONTHS[this.getMonth()+1]}`;
 }

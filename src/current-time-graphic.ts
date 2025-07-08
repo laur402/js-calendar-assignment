@@ -5,13 +5,12 @@ function loadCurrentTimeGraphic(currentTime: Date) {
     const columnHeight: number = columns[0].getBoundingClientRect().height;
     const eventOverlay: HTMLElement = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
     const timeOfDay: number = currentTime.getTime() - new Date(currentTime.toDateString()).getTime(); //ms from start of day
-    const timeInADay: number = 86400000; //ms in a day
     for (let i = 0; i < columns.length; i++) {
         const column: HTMLElement = columns[i] as HTMLElement;
         const columnDate: Date = new Date(column.getAttribute("data-calendar-day")?.toString() ?? ""); //TODO: Replace with error
         if (columnDate.toDateString() === currentTime.toDateString()){
             const currentTimeGraphic: HTMLElement = document.createElement("div");
-            const currentTimeGraphicTop: number = (columnHeight * timeOfDay / timeInADay);
+            const currentTimeGraphicTop: number = (columnHeight * timeOfDay / TIME_IN_A_DAY_MS);
             currentTimeGraphic.style.position = "absolute";
             currentTimeGraphic.style.top = currentTimeGraphicTop + "px";
             currentTimeGraphic.style.gridColumn = `${i+1} / span 1`;
