@@ -29,29 +29,21 @@ async function modifyEvent(eventId: string, eventName: string, eventStart: Date,
 }
 
 async function getEvent(eventId: string): Promise<CalendarEvent | null> {
-    /*const eventList: CalendarEvent[] = await fetchEvents();
-    for (let i = 0; i < eventList.length; i++) {
-        const event: CalendarEvent = eventList[i];
-        if (event.eventId === eventId) {
-            return event;
-        }
-    }
-    return null;*/
     const eventFetch = await fetch(`http://localhost:3000/events/${eventId}`);
     if (eventFetch.status === 200)
     {
-        const eventJSON: APIResponseEvent[] = JSON.parse(await eventFetch.text(), (key, value) => {
+        const eventJSON: APIResponseEvent = JSON.parse(await eventFetch.text(), (key, value) => {
             if (key === "eventStart" || key === "eventEnd") {
                 return new Date(value);
             }
             else return value;
         });
         const event: CalendarEvent = {
-            eventId: eventJSON[0].id,
-            eventName: eventJSON[0].eventName,
-            eventStart: eventJSON[0].eventStart,
-            eventEnd: eventJSON[0].eventEnd,
-            eventDescription: eventJSON[0].eventDescription
+            eventId: eventJSON.id,
+            eventName: eventJSON.eventName,
+            eventStart: eventJSON.eventStart,
+            eventEnd: eventJSON.eventEnd,
+            eventDescription: eventJSON.eventDescription
         }
         return event;
     }
