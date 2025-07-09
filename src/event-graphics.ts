@@ -2,17 +2,17 @@
 function renderEvent(eventID: string, eventTitle: string, eventStart: Date, eventEnd: Date) {
 
     const calendarColumns: HTMLCollection = document.getElementsByClassName("calendar-grid__calendar-column");
-    const firstColumn: HTMLElement = calendarColumns[0] as HTMLElement;
+    const firstColumn = calendarColumns[0] as HTMLElement;
     const columnHeight: number = firstColumn.getBoundingClientRect().height;
     //const columnWidth: number = firstColumn.offsetWidth;
 
-    const eventOverlay: HTMLElement = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
+    const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
 
     const eventTime: number = eventStart.getTime() - new Date(eventStart.toDateString()).getTime(); //ms from start of day
     const eventDuration: number = eventEnd.getTime() - eventStart.getTime(); //ms event duration
 
     for (let i = 0; i < calendarColumns.length; i++) {
-        const column: HTMLElement = calendarColumns[i] as HTMLElement;
+        const column = calendarColumns[i] as HTMLElement;
         const columnDateString: string | undefined = column.getAttribute("data-calendar-day")?.toString();
         if (columnDateString === undefined) throw new AttributeError("Cannot get data-calendar-day attribute");
 
@@ -104,13 +104,13 @@ function reRenderEvent(eventID: string, eventTitle: string, eventStart: Date, ev
 }
 
 function clearEventOverlay() {
-    const eventOverlay: HTMLElement = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
+    const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
     eventOverlay.innerHTML = "";
 }
 
 function removeRenderEvent(eventID: string) {
-    const eventOverlay: HTMLElement = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
-    const events: HTMLElement[] = Array.from(eventOverlay.children) as HTMLElement[];
+    const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
+    const events = Array.from(eventOverlay.children) as HTMLElement[];
     for (let i = 0; i < events.length; i++) {
         const event: HTMLElement = events[i];
         if (event.getAttribute("data-event-id") === eventID) {
@@ -123,7 +123,7 @@ function getOverlaps(eventTop: number, eventBottom: number, eventGridColumn: num
     const overlappingEvents: HTMLElement[] = [];
     const events: HTMLCollection = document.getElementsByClassName("calendar-event-overlay__event-box");
     for (let i = 0; i < events.length; i++) {
-        const comparedEventElement: HTMLElement = events[i] as HTMLElement;
+        const comparedEventElement = events[i] as HTMLElement;
         const comparedEventTop: number = comparedEventElement.offsetTop;
         const comparedEventBottom: number = comparedEventTop + comparedEventElement.offsetHeight;
 

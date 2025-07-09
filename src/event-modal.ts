@@ -9,7 +9,7 @@ async function loadEventModal() {
 async function loadModalHTML(){
     const allElements: HTMLCollection = document.getElementsByTagName("*");
     for (let i = 0; i < allElements.length; i++) {
-        const element: HTMLElement = allElements[i] as HTMLElement;
+        const element = allElements[i] as HTMLElement;
         const file: string | null = element.getAttribute("html-file");
         if (file) {
             const i: Response = await fetch(file);
@@ -19,11 +19,11 @@ async function loadModalHTML(){
 }
 
 function tieModalInputs() {
-    const modal: HTMLElement = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
+    const modal = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
 
     const newEventModalCallers: HTMLCollection = document.getElementsByClassName("new-event-modal-caller");
     for (let i = 0; i < newEventModalCallers.length; i++) {
-        const element: HTMLElement = newEventModalCallers[i] as HTMLElement;
+        const element = newEventModalCallers[i] as HTMLElement;
         element.onclick = () => {
             callModal();
             inputFillingByOffset(new Date(), 60);
@@ -32,13 +32,13 @@ function tieModalInputs() {
 
     const modalCancelButtons: HTMLCollection = modal.getElementsByClassName("modal-content__buttons--close");
     for (let i = 0; i < modalCancelButtons.length; i++) {
-        const element: HTMLElement = modalCancelButtons[i] as HTMLElement;
+        const element = modalCancelButtons[i] as HTMLElement;
         element.onclick = () => modal.style.display = "none";
     }
 
     const modalDeleteButtons: HTMLCollection = modal.getElementsByClassName("modal-content__buttons--delete");
     for (let i = 0; i < modalDeleteButtons.length; i++) {
-        const element: HTMLElement = modalDeleteButtons[i] as HTMLElement;
+        const element = modalDeleteButtons[i] as HTMLElement;
         element.onclick = () => modal.style.display = "none";
     }
 
@@ -46,7 +46,7 @@ function tieModalInputs() {
     for (let i = 0; i < calendarColumns.length; i++) {
         const calendarButtons: HTMLCollection = calendarColumns[i].getElementsByClassName("calendar-cell__button");
         for (let j = 0; j < calendarButtons.length; j++) {
-            const element: HTMLElement = calendarButtons[j] as HTMLElement;
+            const element = calendarButtons[j] as HTMLElement;
             element.onclick = () => {
                 callModal();
                 const date: Date = new Date(calendarColumns[i].getAttribute("data-calendar-day") ?? "");
@@ -55,7 +55,7 @@ function tieModalInputs() {
         }
     }
 
-    const modalTitleInput: HTMLElement = modal.getElementsByClassName("modal-content__event-title-input")[0] as HTMLElement;
+    const modalTitleInput = modal.getElementsByClassName("modal-content__event-title-input")[0] as HTMLElement;
     modalTitleInput.addEventListener("input", () => {
         modalTitleInput.classList.remove("modal-content__input--error");
     });
@@ -70,7 +70,7 @@ function tieModalInputs() {
 }
 
 function clearInputErrorUI(){
-    const erroredInputs: HTMLElement[] = Array.from(document.getElementsByClassName("modal-content__input--error")) as HTMLElement[];
+    const erroredInputs = Array.from(document.getElementsByClassName("modal-content__input--error")) as HTMLElement[];
     for (let i = 0; i < erroredInputs.length; i++) {
         erroredInputs[i].classList.remove("modal-content__input--error");
     }
@@ -78,7 +78,7 @@ function clearInputErrorUI(){
 
 function callModal() {
     clearInputErrorUI();
-    const modal: HTMLElement = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
+    const modal = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
     modal.style.display = "flex";
 }
 
@@ -115,7 +115,7 @@ function inputFilling(startValue: Date, endValue: Date, title: string, descripti
 }
 
 function setupModalInput() {
-    const modalForm: HTMLFormElement | null = document.getElementById("new-event-modal-form") as HTMLFormElement | null;
+    const modalForm = document.getElementById("new-event-modal-form") as HTMLFormElement | null;
     modalForm?.addEventListener("submit", async (event) => {
         event.preventDefault();
         let formData: FormData = new FormData(event.target as HTMLFormElement);
@@ -126,7 +126,7 @@ function setupModalInput() {
             removeRenderEvent(eventID);
             return;
         }
-        const modal: HTMLElement = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
+        const modal = document.getElementsByClassName("event-creation-modal")[0] as HTMLElement;
         validateForm(formData, async ()=>{
             modal.style.display = "none";
             modalForm.reset();

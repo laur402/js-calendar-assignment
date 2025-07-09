@@ -8,8 +8,8 @@ function loadSidebarCalendar(){
 function loadSidebarCalendarDateLabels(){
     const currentMonth: Date = new Date();
     currentMonth.setMonth(currentMonth.getMonth() + sidebarCalendarOffset);
-    const calendarModule: HTMLElement = document.getElementsByClassName("calendar-module")[0] as HTMLElement;
-    const calendarModuleDateButtons: HTMLElement[] = Array.from(calendarModule.getElementsByClassName("calendar-module__day-cell")) as HTMLElement[];
+    const calendarModule = document.getElementsByClassName("calendar-module")[0] as HTMLElement;
+    const calendarModuleDateButtons = Array.from(calendarModule.getElementsByClassName("calendar-module__day-cell")) as HTMLElement[];
 
     const firstDay: Date = new Date(currentMonth).getFirstDayOfMonth();
     const lastDay: Date = new Date(currentMonth).getLastDayOfMonth();
@@ -41,7 +41,7 @@ function loadSidebarCalendarDateLabels(){
 }
 
 function loadSidebarCalendarDate() {
-    const headerDate: HTMLElement = document.getElementsByClassName("calendar-module-header__date")[0] as HTMLElement;
+    const headerDate = document.getElementsByClassName("calendar-module-header__date")[0] as HTMLElement;
     const currentMonth: Date = new Date();
     currentMonth.setMonth(currentMonth.getMonth() + sidebarCalendarOffset);
     headerDate.innerText = `${currentMonth.getFullYear()} ${MONTHS[currentMonth.getMonth()]}`

@@ -3,10 +3,10 @@
 function loadCurrentTimeGraphic(currentTime: Date) {
     const columns: HTMLCollection = document.getElementsByClassName("calendar-grid__calendar-column");
     const columnHeight: number = columns[0].getBoundingClientRect().height;
-    const eventOverlay: HTMLElement = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
+    const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
     const timeOfDay: number = currentTime.getTime() - new Date(currentTime.toDateString()).getTime(); //ms from start of day
     for (let i = 0; i < columns.length; i++) {
-        const column: HTMLElement = columns[i] as HTMLElement;
+        const column = columns[i] as HTMLElement;
         const columnDateString: string | undefined = column.getAttribute("data-calendar-day")?.toString();
         if (columnDateString === undefined) throw new AttributeError("Cannot get data-calendar-day attribute");
         const columnDate: Date = new Date(columnDateString);
@@ -37,7 +37,7 @@ function createCurrentTimeGraphicElement(currentTimeGraphicTop: number, currentT
 }
 
 function removeCurrentTimeGraphic() {
-    const currentTimeGraphics: HTMLElement[] = Array.from(document.getElementsByClassName("calendar-event-overlay__current-time-graphic")) as HTMLElement[];
+    const currentTimeGraphics = Array.from(document.getElementsByClassName("calendar-event-overlay__current-time-graphic")) as HTMLElement[];
     for (let i = 0; i < currentTimeGraphics.length; i++) {
         const currentTimeGraphic: HTMLElement = currentTimeGraphics[i];
         currentTimeGraphic.remove();
