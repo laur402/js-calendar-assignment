@@ -43,7 +43,7 @@ Date.prototype.toYearMonthString = function (): string {
     return `${this.getFullYear()} ${MONTHS[this.getMonth()]}`;
 }
 
-async function asyncTryCatch<T>(operation: () => Promise<T>, errorMessage: string, errorFunction?: () => void): Promise<T> {
+async function asyncTryCatch<T>(operation: () => Promise<T>, defaultValue: T, errorFunction?: () => void): Promise<T> {
     try {
         const result = await operation();
         return result;
@@ -53,7 +53,7 @@ async function asyncTryCatch<T>(operation: () => Promise<T>, errorMessage: strin
         if (errorFunction) {
             errorFunction();
         }
-        throw new Error(errorMessage);
+        return defaultValue;
     }
 }
 
