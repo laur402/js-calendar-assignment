@@ -12,7 +12,7 @@ async function loadModalHTML(){
         const element: HTMLElement = allElements[i] as HTMLElement;
         const file: string | null = element.getAttribute("html-file");
         if (file) {
-            const i = await fetch(file);
+            const i: Response = await fetch(file);
             element.innerHTML = await i.text();
         }
     }
@@ -23,7 +23,7 @@ function tieModalInputs() {
 
     const newEventModalCallers: HTMLCollection = document.getElementsByClassName("new-event-modal-caller");
     for (let i = 0; i < newEventModalCallers.length; i++) {
-        const element = newEventModalCallers[i] as HTMLElement;
+        const element: HTMLElement = newEventModalCallers[i] as HTMLElement;
         element.onclick = () => {
             callModal();
             inputFillingByOffset(new Date(), 60);
@@ -49,7 +49,7 @@ function tieModalInputs() {
             const element: HTMLElement = calendarButtons[j] as HTMLElement;
             element.onclick = () => {
                 callModal();
-                const date = new Date(calendarColumns[i].getAttribute("data-calendar-day") ?? "");
+                const date: Date = new Date(calendarColumns[i].getAttribute("data-calendar-day") ?? "");
                 inputFillingByOffset(new Date(date.getTime() + j*60*60000), 60);
             };
         }

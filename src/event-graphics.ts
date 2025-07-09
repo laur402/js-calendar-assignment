@@ -26,7 +26,7 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
         let height: number = (columnHeight * eventDuration / TIME_IN_A_DAY_MS);
         if (isEventOverflowIntoThisWeek)
             height -= ((columnDate.getTime() - eventStart.getTime()) * columnHeight / TIME_IN_A_DAY_MS);
-        const columnsToFill = Math.floor(height / columnHeight)+1;
+        const columnsToFill: number = Math.floor(height / columnHeight)+1;
         for (let j = 0; j < columnsToFill; j++) {
             const eventGridColumn: number = i+j+1;
             if (eventGridColumn > calendarColumns.length) return;

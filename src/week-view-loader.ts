@@ -25,18 +25,18 @@ function loadTimezoneLabel(){
 }
 
 function loadCalendarDateLabels(){
-    const firstDayOfTheWeek = getOffsetDate().getFirstDayOfWeek();
+    const firstDayOfTheWeek: Date = getOffsetDate().getFirstDayOfWeek();
 
     let elements = document.getElementsByClassName("week-view__dates-header-date");
     let dateColumns = document.getElementsByClassName("calendar-grid__calendar-column");
     for (let i = 0; i < elements.length; i++) {
         let element = elements[i];
-        const elementWeekdayLabel = element.getElementsByClassName("calendar-date-weekday")[0] as HTMLElement;
-        const elementDateLabel = element.getElementsByClassName("calendar-date-day")[0] as HTMLElement;
+        const elementWeekdayLabel: HTMLElement = element.getElementsByClassName("calendar-date-weekday")[0] as HTMLElement;
+        const elementDateLabel: HTMLElement = element.getElementsByClassName("calendar-date-day")[0] as HTMLElement;
         elementWeekdayLabel.innerText = THREE_LETTER_WEEK_DAYS[firstDayOfTheWeek.getDay()];
         elementDateLabel.innerText = firstDayOfTheWeek.getDate().toString();
 
-        const date = `${firstDayOfTheWeek.getFullYear()}-${firstDayOfTheWeek.getMonth() + 1}-${firstDayOfTheWeek.getDate()}`;
+        const date: string = `${firstDayOfTheWeek.getFullYear()}-${firstDayOfTheWeek.getMonth() + 1}-${firstDayOfTheWeek.getDate()}`;
         dateColumns[i].setAttribute("data-calendar-day", date);
 
         if (firstDayOfTheWeek.toDateString() === LOAD_TIME.toDateString()){
@@ -49,25 +49,25 @@ function loadCalendarDateLabels(){
 }
 
 function loadCalendarGrid(columnCount: number) {
-    const calendarGrid = document.getElementsByClassName("week-view__calendar-grid")[0] as HTMLElement;
+    const calendarGrid: HTMLElement = document.getElementsByClassName("week-view__calendar-grid")[0] as HTMLElement;
 
-    const calendarGridTimeColumn = document.createElement("section");
+    const calendarGridTimeColumn: HTMLElement = document.createElement("section");
     calendarGridTimeColumn.classList.add("calendar-grid__time-column");
     for (let i = 1; i <= 24; i++){
-        const calendarGridTimeColumnCell = document.createElement("div");
+        const calendarGridTimeColumnCell: HTMLElement = document.createElement("div");
         calendarGridTimeColumnCell.classList.add("time-column__cell");
         calendarGridTimeColumnCell.innerText = i===24? "" : `${i.leftPad(2)}:00`;
         calendarGridTimeColumn.appendChild(calendarGridTimeColumnCell);
     }
     calendarGrid.appendChild(calendarGridTimeColumn);
     for (let i = 0; i < columnCount; i++){
-        const calendarGridColumn = document.createElement("section");
+        const calendarGridColumn: HTMLElement = document.createElement("section");
         calendarGridColumn.classList.add("calendar-grid__calendar-column");
         for (let j = 0; j < 24; j++){
-            const calendarGridColumnCell = document.createElement("div");
+            const calendarGridColumnCell: HTMLElement = document.createElement("div");
             calendarGridColumnCell.classList.add("calendar-column__calendar-cell");
 
-            const calendarGridColumnCellButton = document.createElement("button");
+            const calendarGridColumnCellButton: HTMLElement = document.createElement("button");
             calendarGridColumnCellButton.classList.add("calendar-cell__button");
             calendarGridColumnCell.appendChild(calendarGridColumnCellButton);
 
@@ -79,14 +79,14 @@ function loadCalendarGrid(columnCount: number) {
 
 async function loadEvents() {
     clearEventOverlay();
-    const events = await fetchEvents();
+    const events: CalendarEvent[] = await fetchEvents();
     events.forEach(event => {
         renderEvent(event.eventId, event.eventName, new Date(event.eventStart), new Date(event.eventEnd));
     })
 }
 
 function loadHeaderDate(date: Date){
-    const element = document.getElementsByClassName("header__month-year-date")[0] as HTMLElement;
+    const element: HTMLElement = document.getElementsByClassName("header__month-year-date")[0] as HTMLElement;
     const firstDayOfTheWeek = date.getFirstDayOfWeek();
     const lastDayOfTheWeek = date.getLastDayOfWeek();
     //console.log(firstDayOfTheWeek);

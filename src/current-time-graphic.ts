@@ -12,7 +12,7 @@ function loadCurrentTimeGraphic(currentTime: Date) {
         const columnDate: Date = new Date(columnDateString);
         if (columnDate.toDateString() === currentTime.toDateString()){
             const currentTimeGraphicTop: number = (columnHeight * timeOfDay / TIME_IN_A_DAY_MS);
-            const currentTimeGraphic = createCurrentTimeGraphicElement(currentTimeGraphicTop, i);
+            const currentTimeGraphic: HTMLElement = createCurrentTimeGraphicElement(currentTimeGraphicTop, i);
             eventOverlay.appendChild(currentTimeGraphic);
         }
     }

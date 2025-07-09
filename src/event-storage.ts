@@ -26,7 +26,7 @@ async function modifyEvent(eventId: string, eventName: string, eventStart: Date,
 }
 
 async function getEvent(eventId: string): Promise<CalendarEvent | null> {
-    const eventFetch = await fetch(`http://localhost:3000/events/${eventId}`);
+    const eventFetch: Response = await fetch(`http://localhost:3000/events/${eventId}`);
     if (eventFetch.status === 200)
     {
         const eventJSON: APIResponseEvent = JSON.parse(await eventFetch.text(), (key, value) => {
