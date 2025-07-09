@@ -1,6 +1,6 @@
 "use strict";
 
-let weekOffset = 0;
+let weekOffset: number = 0;
 
 async function loadWeekView(){
     loadCalendarGrid(7);
@@ -50,16 +50,27 @@ function loadCalendarDateLabels(){
 
 function loadCalendarGrid(columnCount: number) {
     const calendarGrid = document.getElementsByClassName("week-view__calendar-grid")[0] as HTMLElement;
+
+    const calendarGridTimeColumn = document.createElement("section");
+    calendarGridTimeColumn.classList.add("calendar-grid__time-column");
+    for (let i = 1; i <= 24; i++){
+        const calendarGridTimeColumnCell = document.createElement("div");
+        calendarGridTimeColumnCell.classList.add("time-column__cell");
+        calendarGridTimeColumnCell.innerText = i===24? "" : `${i.leftPad(2)}:00`;
+        calendarGridTimeColumn.appendChild(calendarGridTimeColumnCell);
+    }
+    calendarGrid.appendChild(calendarGridTimeColumn);
     for (let i = 0; i < columnCount; i++){
         const calendarGridColumn = document.createElement("section");
         calendarGridColumn.classList.add("calendar-grid__calendar-column");
         for (let j = 0; j < 24; j++){
             const calendarGridColumnCell = document.createElement("div");
             calendarGridColumnCell.classList.add("calendar-column__calendar-cell");
+
             const calendarGridColumnCellButton = document.createElement("button");
             calendarGridColumnCellButton.classList.add("calendar-cell__button");
-
             calendarGridColumnCell.appendChild(calendarGridColumnCellButton);
+
             calendarGridColumn.appendChild(calendarGridColumnCell);
         }
         calendarGrid.appendChild(calendarGridColumn);

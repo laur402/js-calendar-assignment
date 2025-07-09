@@ -42,8 +42,8 @@ function tieHeaderButtons(){
     });
 }
 function tieSidebarCalendarHeaderButtons(){
-    const buttonLeft: Element = document.getElementsByClassName("calendar-modal-header-buttons__month-left")[0];
-    const buttonRight: Element = document.getElementsByClassName("calendar-modal-header-buttons__month-right")[0];
+    const buttonLeft: Element = document.getElementsByClassName("calendar-module-header-buttons__month-left")[0];
+    const buttonRight: Element = document.getElementsByClassName("calendar-module-header-buttons__month-right")[0];
     buttonLeft.addEventListener("click", () => {
         sidebarCalendarOffset--;
         loadSidebarCalendar();

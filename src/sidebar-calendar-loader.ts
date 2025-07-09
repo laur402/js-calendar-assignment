@@ -8,7 +8,7 @@ function loadSidebarCalendar(){
 function loadSidebarCalendarDateLabels(){
     const currentMonth = new Date();
     currentMonth.setMonth(currentMonth.getMonth() + sidebarCalendarOffset);
-    const calendarCells = document.getElementsByClassName("calendar-modal__day-cell");
+    const calendarCells = document.getElementsByClassName("calendar-module__day-cell");
 
     const firstDay = new Date(currentMonth).getFirstDayOfMonth();
     const lastDay = new Date(currentMonth).getLastDayOfMonth();
@@ -32,8 +32,8 @@ function loadSidebarCalendarDateLabels(){
         });
 
         if (i.toYearMonthString() === currentMonth.toYearMonthString())
-            calendarCell.classList.remove("calendar-modal__day-cell-not-current");
-        else calendarCell.classList.add("calendar-modal__day-cell-not-current");
+            calendarCell.classList.remove("calendar-module__day-cell-not-current");
+        else calendarCell.classList.add("calendar-module__day-cell-not-current");
 
         calendarCellCounter++;
     }
@@ -46,7 +46,7 @@ function loadSidebarCalendarDateLabels(){
 }
 
 function loadSidebarCalendarDate() {
-    const headerDate = document.getElementsByClassName("calendar-modal-header__date")[0] as HTMLElement;
+    const headerDate = document.getElementsByClassName("calendar-module-header__date")[0] as HTMLElement;
     const currentMonth = new Date();
     currentMonth.setMonth(currentMonth.getMonth() + sidebarCalendarOffset);
     headerDate.innerText = `${currentMonth.getFullYear()} ${MONTHS[currentMonth.getMonth()]}`
