@@ -105,10 +105,10 @@ function inputFilling(startValue: Date, endValue: Date, title: string, descripti
     eventTitleInputElement.value = title;
 
     const startInputElement = document.getElementsByClassName("modal-content__event-start-input")[0] as HTMLInputElement;
-    startInputElement.value = startValue.toISOLocaleString();
+    startInputElement.value = toISOLocaleString(startValue);
 
     const endInputElement = document.getElementsByClassName("modal-content__event-end-input")[0] as HTMLInputElement;
-    endInputElement.value = endValue.toISOLocaleString();
+    endInputElement.value = toISOLocaleString(endValue);
 
     const eventDescriptionInputElement = document.getElementsByClassName("modal-content__event-description-input")[0] as HTMLInputElement;
     eventDescriptionInputElement.value = description;

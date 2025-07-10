@@ -27,17 +27,17 @@ function tieHeaderButtons(){
     const rightButton: Element = header.getElementsByClassName("header-buttons__week-right")[0];
 
     todayButton.addEventListener("click", async () => {
-        weekOffset = 0;
-        sidebarCalendarOffset = 0;
+        setWeekOffset(0);
+        setSidebarCalendarOffset(0);
         await reloadMainCalendarElements();
         loadSidebarCalendar();
     });
     leftButton.addEventListener("click", async () => {
-        weekOffset -= 1;
+        setWeekOffset(getWeekOffset()-1);
         await reloadMainCalendarElements();
     });
     rightButton.addEventListener("click", async () => {
-        weekOffset += 1;
+        setWeekOffset(getWeekOffset()+1);
         await reloadMainCalendarElements();
     });
 }
@@ -45,11 +45,11 @@ function tieSidebarCalendarHeaderButtons(){
     const buttonLeft: Element = document.getElementsByClassName("calendar-module-header-buttons__month-left")[0];
     const buttonRight: Element = document.getElementsByClassName("calendar-module-header-buttons__month-right")[0];
     buttonLeft.addEventListener("click", () => {
-        sidebarCalendarOffset--;
+        setSidebarCalendarOffset(getSidebarCalendarOffset()-1);
         loadSidebarCalendar();
     })
     buttonRight.addEventListener("click", () => {
-        sidebarCalendarOffset++;
+        setSidebarCalendarOffset(getSidebarCalendarOffset()+1);
         loadSidebarCalendar();
     })
 }

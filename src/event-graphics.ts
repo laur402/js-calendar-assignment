@@ -19,8 +19,8 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
         const columnDate: Date = new Date(columnDateString);
         const isEventThisWeek: boolean = columnDate.toDateString() === eventStart.toDateString();
         const isEventOverflowIntoThisWeek: boolean = columnDate.getDay() === WeekDays.Monday
-            && columnDate.getFirstDayOfWeek() <= eventEnd.getFirstDayOfWeek()
-            && columnDate.getFirstDayOfWeek() >= eventStart.getFirstDayOfWeek();
+            && getFirstDayOfWeek(columnDate) <= getFirstDayOfWeek(eventEnd)
+            && getFirstDayOfWeek(columnDate) >= getFirstDayOfWeek(eventStart);
         if (!isEventThisWeek && !isEventOverflowIntoThisWeek) continue;
 
         let height: number = (columnHeight * eventDuration / TIME_IN_A_DAY_MS);
@@ -45,7 +45,7 @@ function createEventBox(eventID: string, eventTitle: string, eventStart: Date, e
     const eventBox: HTMLElement = document.createElement("div");
 
     const calendarCells: HTMLCollection = document.getElementsByClassName("calendar-column__calendar-cell");
-    const calendarCellHeight: number = calendarCells[0]?.getBoundingClientRect().height;
+    const calendarCellHeight: number | undefined = calendarCells[0]?.getBoundingClientRect().height;
     //const calendarCellWidth: number = calendarCells[0]?.getBoundingClientRect().width;
 
     const overlappingElements: HTMLElement[] = getOverlaps(eventBoxTop, eventBoxBottom, eventGridColumn);

@@ -1,6 +1,12 @@
 "use strict";
 
 let weekOffset: number = 0;
+function getWeekOffset(){
+    return weekOffset;
+}
+function setWeekOffset(setValue: number){
+    weekOffset = setValue;
+}
 
 async function loadWeekView(){
     loadCalendarGrid(7);
@@ -25,7 +31,7 @@ function loadTimezoneLabel(){
 }
 
 function loadCalendarDateLabels(){
-    const firstDayOfTheWeek: Date = getOffsetDate().getFirstDayOfWeek();
+    const firstDayOfTheWeek: Date = getFirstDayOfWeek(getOffsetDate());
 
     let elements = document.getElementsByClassName("week-view__dates-header-date");
     let dateColumns = document.getElementsByClassName("calendar-grid__calendar-column");
@@ -49,21 +55,22 @@ function loadCalendarDateLabels(){
 }
 
 function loadCalendarGrid(columnCount: number) {
+    const hoursInADay = 24;
     const calendarGrid = document.getElementsByClassName("week-view__calendar-grid")[0] as HTMLElement;
 
     const calendarGridTimeColumn: HTMLElement = document.createElement("section");
     calendarGridTimeColumn.classList.add("calendar-grid__time-column");
-    for (let i = 1; i <= 24; i++){
+    for (let i = 1; i <= hoursInADay; i++){
         const calendarGridTimeColumnCell: HTMLElement = document.createElement("div");
         calendarGridTimeColumnCell.classList.add("time-column__cell");
-        calendarGridTimeColumnCell.innerText = i===24? "" : `${i.leftPad(2)}:00`;
+        calendarGridTimeColumnCell.innerText = i === hoursInADay ? "" : `${leftPad(i,2)}:00`;
         calendarGridTimeColumn.appendChild(calendarGridTimeColumnCell);
     }
     calendarGrid.appendChild(calendarGridTimeColumn);
     for (let i = 0; i < columnCount; i++){
         const calendarGridColumn: HTMLElement = document.createElement("section");
         calendarGridColumn.classList.add("calendar-grid__calendar-column");
-        for (let j = 0; j < 24; j++){
+        for (let j = 0; j < hoursInADay; j++){
             const calendarGridColumnCell: HTMLElement = document.createElement("div");
             calendarGridColumnCell.classList.add("calendar-column__calendar-cell");
 
@@ -87,8 +94,8 @@ async function loadEvents() {
 
 function loadHeaderDate(date: Date){
     const element = document.getElementsByClassName("header__month-year-date")[0] as HTMLElement;
-    const firstDayOfTheWeek = date.getFirstDayOfWeek();
-    const lastDayOfTheWeek = date.getLastDayOfWeek();
+    const firstDayOfTheWeek = getFirstDayOfWeek(date);
+    const lastDayOfTheWeek = getLastDayOfWeek(date);
     //console.log(firstDayOfTheWeek);
     //console.log(lastDayOfTheWeek);
     if (firstDayOfTheWeek.getMonth() !== lastDayOfTheWeek.getMonth()){
