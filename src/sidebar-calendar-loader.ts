@@ -26,7 +26,7 @@ function loadSidebarCalendarDateLabels(){
         button.remove();
     });
     for (let i: Date = new Date(firstDayOfMonthWeek);
-         i.toDateString() !== addDays(lastDayOfMonthWeek,1).toDateString();
+         !isSameDay(i, addDays(lastDayOfMonthWeek, 1));
          i.setDate(i.getDate() + 1)) {
 
         const calendarButton: HTMLElement = document.createElement("button");

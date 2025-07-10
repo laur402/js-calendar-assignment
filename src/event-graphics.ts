@@ -8,7 +8,7 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
 
     const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
 
-    const eventTime: number = eventStart.getTime() - new Date(eventStart.toDateString()).getTime(); //ms from start of day
+    const eventTime: number = eventStart.getTime() - getNormalizedLocalDate(eventStart).getTime(); //ms from start of day
     const eventDuration: number = eventEnd.getTime() - eventStart.getTime(); //ms event duration
 
     for (let i = 0; i < calendarColumns.length; i++) {
@@ -17,7 +17,7 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
         if (columnDateString === undefined) throw new AttributeError("Cannot get data-calendar-day attribute");
 
         const columnDate: Date = new Date(columnDateString);
-        const isEventThisWeek: boolean = columnDate.toDateString() === eventStart.toDateString();
+        const isEventThisWeek: boolean = isSameDay(columnDate, eventStart);
         const isEventOverflowIntoThisWeek: boolean = columnDate.getDay() === WeekDays.Monday
             && getFirstDayOfWeek(columnDate) <= getFirstDayOfWeek(eventEnd)
             && getFirstDayOfWeek(columnDate) >= getFirstDayOfWeek(eventStart);
@@ -83,7 +83,7 @@ function createEventBox(eventID: string, eventTitle: string, eventStart: Date, e
 
     let startTimeText: string = eventStart.toTimeString().split(":").slice(0, 2).join(":");
     let endTimeText: string = eventEnd.toTimeString().split(":").slice(0, 2).join(":");
-    if (eventStart.toDateString() !== eventEnd.toDateString()) {
+    if (!isSameDay(eventStart, eventEnd)) {
         startTimeText = `${THREE_LETTER_MONTHS[eventStart.getMonth()]} ${eventStart.getDate()} ${startTimeText}`;
         endTimeText = `${THREE_LETTER_MONTHS[eventEnd.getMonth()]} ${eventEnd.getDate()} ${endTimeText}`;
     }

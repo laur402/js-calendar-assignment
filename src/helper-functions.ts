@@ -41,6 +41,28 @@ function addDays(dateInput: Date, days: number): Date {
 function toYearMonthString (dateInput: Date): string {
     return `${dateInput.getFullYear()} ${MONTHS[dateInput.getMonth()]}`;
 }
+function isSameDay(date1: Date, date2: Date): boolean {
+    const date1modified = new Date(date1);
+    const date2modified = new Date(date2);
+    const time1 = getNormalizedLocalDate(date1modified).getTime();
+    const time2 = getNormalizedLocalDate(date2modified).getTime();
+    return time1 === time2;
+}
+function getNormalizedLocalDate(date: Date): Date {
+    const mDate = new Date(date);
+    // Add timezone offset, making the UTC time numerically equal to local time at UTC midnight
+    mDate.setTime(mDate.getTime() + (getTimezone(mDate) * TIME_IN_AN_HOUR_MS));
+    // Normalize time to midnight, the day of
+    mDate.setTime(mDate.getTime() - (mDate.getTime() % TIME_IN_A_DAY_MS));
+    // Remove timezone offset to go back to UTC time
+    mDate.setTime(mDate.getTime() - (getTimezone(mDate) * TIME_IN_AN_HOUR_MS));
+    return mDate;
+}
+function getTimezone(date: Date): number {
+    const minutesInAnHour = 60;
+    return date.getTimezoneOffset() / minutesInAnHour * -1;
+    //return Number(date.toString().split("GMT")[1].slice(0, 3));
+}
 
 async function asyncTryCatch<T>(operation: () => Promise<T>, defaultValue: T, errorFunction?: () => void): Promise<T> {
     try {

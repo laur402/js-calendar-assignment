@@ -25,9 +25,10 @@ function getOffsetDate(){
 }
 
 function loadTimezoneLabel(){
-    let timezoneElement = document.getElementsByClassName("week-view__dates-header-timezone")[0] as HTMLElement;
-    let timezoneOffset = LOAD_TIME.toString().split("GMT")[1].slice(0, 3);
-    timezoneElement.innerText = `UTC${timezoneOffset}`;
+    const timezoneElement = document.getElementsByClassName("week-view__dates-header-timezone")[0] as HTMLElement;
+    const timezoneOffset = getTimezone(LOAD_TIME);
+    let timezoneOffsetString = leftPad(timezoneOffset,2);
+    timezoneElement.innerText = `UTC${timezoneOffset < 0 ? "-" : "+"}${timezoneOffsetString}`;
 }
 
 function loadCalendarDateLabels(){
@@ -45,7 +46,7 @@ function loadCalendarDateLabels(){
         const date: string = `${firstDayOfTheWeek.getFullYear()}-${firstDayOfTheWeek.getMonth() + 1}-${firstDayOfTheWeek.getDate()}`;
         dateColumns[i].setAttribute("data-calendar-day", date);
 
-        if (firstDayOfTheWeek.toDateString() === LOAD_TIME.toDateString()){
+        if (isSameDay(firstDayOfTheWeek, LOAD_TIME)){
             element.classList.add("week-view__dates-header-date--active");
         }
         else element.classList.remove("week-view__dates-header-date--active");
