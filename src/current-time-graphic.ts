@@ -4,21 +4,22 @@ function loadCurrentTimeGraphic(currentTime: Date) {
     const columns: HTMLCollection = document.getElementsByClassName(CLASSES.WeekView_CalendarGrid_CalendarColumn);
     const columnHeight: number = columns[0].getBoundingClientRect().height;
     const eventOverlay = document.getElementsByClassName(CLASSES.WeekView_CalendarEventOverlay)[0] as HTMLElement;
-    const timeOfDay: number = currentTime.getTime() - getNormalizedLocalDate(currentTime).getTime(); //ms from start of day
     for (let i = 0; i < columns.length; i++) {
         const column = columns[i] as HTMLElement;
         const columnDateString: string | undefined = column.getAttribute(ATTRIBUTES.CalendarDay)?.toString();
         if (columnDateString === undefined) throw new AttributeError("Cannot get data-calendar-day attribute");
         const columnDate: Date = new Date(columnDateString);
         if (isSameDay(columnDate, currentTime)){
-            const currentTimeGraphicTop: number = (columnHeight * timeOfDay / TIME_IN_A_DAY_MS);
-            const currentTimeGraphic: HTMLElement = createCurrentTimeGraphicElement(currentTimeGraphicTop, i);
+            const currentTimeGraphic: HTMLElement = createCurrentTimeGraphicElement(currentTime, columnHeight, i);
             eventOverlay.appendChild(currentTimeGraphic);
         }
     }
 }
 
-function createCurrentTimeGraphicElement(currentTimeGraphicTop: number, currentTimeGraphicColumn: number){
+function createCurrentTimeGraphicElement(currentTime: Date, columnHeight: number, currentTimeGraphicColumn: number){
+    const timeOfDay: number = currentTime.getTime() - getNormalizedLocalDate(currentTime).getTime(); //ms from start of day
+    const currentTimeGraphicTop: number = (columnHeight * timeOfDay / TIME_IN_A_DAY_MS);
+
     const currentTimeGraphic: HTMLElement = document.createElement("div");
     currentTimeGraphic.style.position = "absolute";
     currentTimeGraphic.style.top = currentTimeGraphicTop + "px";

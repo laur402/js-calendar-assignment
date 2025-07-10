@@ -15,27 +15,27 @@ function renderEvent(calendarEvent: CalendarEvent) {
         const column = calendarColumns[i] as HTMLElement;
         const columnDateString: string | undefined = column.getAttribute(ATTRIBUTES.CalendarDay)?.toString();
         if (columnDateString === undefined) throw new AttributeError("Cannot get data-calendar-day attribute");
-
         const columnDate: Date = new Date(columnDateString);
+
         const isEventThisWeek: boolean = isSameDay(columnDate, calendarEvent.eventStart);
         const isEventOverflowIntoThisWeek: boolean = columnDate.getDay() === WeekDays.Monday
             && getFirstDayOfWeek(columnDate) <= getFirstDayOfWeek(calendarEvent.eventEnd)
             && getFirstDayOfWeek(columnDate) >= getFirstDayOfWeek(calendarEvent.eventStart);
         if (!isEventThisWeek && !isEventOverflowIntoThisWeek) continue;
 
-        let height: number = (columnHeight * eventDuration / TIME_IN_A_DAY_MS);
+        let totalEventHeight: number = (columnHeight * eventDuration / TIME_IN_A_DAY_MS);
         if (isEventOverflowIntoThisWeek)
-            height -= ((columnDate.getTime() - calendarEvent.eventStart.getTime()) * columnHeight / TIME_IN_A_DAY_MS);
-        const columnsToFill: number = Math.floor(height / columnHeight)+1;
+            totalEventHeight -= (columnDate.getTime() - calendarEvent.eventStart.getTime()) * columnHeight / TIME_IN_A_DAY_MS;
+        const columnsToFill: number = Math.floor(totalEventHeight / columnHeight)+1;
         for (let j = 0; j < columnsToFill; j++) {
-            const eventGridColumn: number = i+j+1;
+            const eventGridColumn: number = i + j + 1;
             if (eventGridColumn > calendarColumns.length) return;
-            const eventBoxTop: number = j !== 0 || isEventOverflowIntoThisWeek ? 0 : (columnHeight * eventTime / TIME_IN_A_DAY_MS);
-            const eventBoxBottom: number = height > columnHeight ? columnHeight : eventBoxTop + height;
+            const eventBoxTop: number = j !== 0 || isEventOverflowIntoThisWeek ? 0 : columnHeight * eventTime / TIME_IN_A_DAY_MS;
+            const eventBoxBottom: number = totalEventHeight > columnHeight ? columnHeight : eventBoxTop + totalEventHeight;
 
             const eventBox: HTMLElement = createEventBox(calendarEvent, eventBoxTop, eventBoxBottom, eventGridColumn);
             eventOverlay.appendChild(eventBox);
-            height -= eventBox.offsetHeight;
+            totalEventHeight -= eventBox.offsetHeight;
         }
     }
 }

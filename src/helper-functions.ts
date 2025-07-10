@@ -63,6 +63,9 @@ function getTimezone(date: Date): number {
     return date.getTimezoneOffset() / minutesInAnHour * -1;
     //return Number(date.toString().split("GMT")[1].slice(0, 3));
 }
+function getDateString(date: Date): string {
+    return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
 
 async function asyncTryCatch<T>(operation: () => Promise<T>, defaultValue: T, errorFunction?: () => void): Promise<T> {
     try {

@@ -11,6 +11,23 @@ function loadSidebarCalendar(){
     loadSidebarCalendarDate();
 }
 
+function createSidebarCalendarButton(date: Date, currentMonth: Date) {
+    const calendarButton: HTMLElement = document.createElement("button");
+    calendarButton.innerText = String(date.getDate());
+    calendarButton.classList.add(CLASSES.CalendarModule_DayCell, CLASSES.Button_Backgroundless, CLASSES.Button_Borderless);
+    if (toYearMonthString(date) !== toYearMonthString(currentMonth))
+        calendarButton.classList.add(CLASSES.CalendarModule_DayCell_NotCurrent);
+
+    calendarButton.setAttribute(ATTRIBUTES.SidebarCalendarDate, date.getTime().toString());
+
+    calendarButton.addEventListener("click", async () => {
+        const buttonDate: number = Number(calendarButton.getAttribute(ATTRIBUTES.SidebarCalendarDate));
+        setWeekOffset(weekOffsetCalc(new Date(), new Date(buttonDate)));
+        await reloadWeekView();
+    });
+    return calendarButton;
+}
+
 function loadSidebarCalendarDateLabels(){
     const currentMonth: Date = new Date();
     currentMonth.setMonth(currentMonth.getMonth() + sidebarCalendarOffset);
@@ -26,22 +43,10 @@ function loadSidebarCalendarDateLabels(){
         button.remove();
     });
     for (let i: Date = new Date(firstDayOfMonthWeek);
-         !isSameDay(i, addDays(lastDayOfMonthWeek, 1));
-         i.setDate(i.getDate() + 1)) {
-
-        const calendarButton: HTMLElement = document.createElement("button");
-        calendarButton.innerText = String(i.getDate());
-        calendarButton.classList.add(CLASSES.CalendarModule_DayCell, CLASSES.Button_Backgroundless, CLASSES.Button_Borderless);
-        calendarButton.setAttribute(ATTRIBUTES.SidebarCalendarDate, i.getTime().toString());
-        calendarButton.addEventListener("click", async () => {
-            const buttonDate: number = Number(calendarButton.getAttribute(ATTRIBUTES.SidebarCalendarDate));
-            setWeekOffset(weekOffsetCalc(new Date(), new Date(buttonDate)));
-            await reloadWeekView();
-        });
-
-        if (toYearMonthString(i) !== toYearMonthString(currentMonth))
-            calendarButton.classList.add(CLASSES.CalendarModule_DayCell_NotCurrent);
-
+         i.getTime() < addDays(lastDayOfMonthWeek, 1).getTime();
+         i.setDate(i.getDate() + 1))
+    {
+        const calendarButton = createSidebarCalendarButton(i, currentMonth);
         calendarModule.appendChild(calendarButton);
     }
 }
