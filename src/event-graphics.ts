@@ -1,19 +1,19 @@
 "use strict";
 function renderEvent(eventID: string, eventTitle: string, eventStart: Date, eventEnd: Date) {
 
-    const calendarColumns: HTMLCollection = document.getElementsByClassName("calendar-grid__calendar-column");
+    const calendarColumns: HTMLCollection = document.getElementsByClassName(CLASSES.WeekView_CalendarGrid_CalendarColumn);
     const firstColumn = calendarColumns[0] as HTMLElement;
     const columnHeight: number = firstColumn.getBoundingClientRect().height;
     //const columnWidth: number = firstColumn.offsetWidth;
 
-    const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
+    const eventOverlay = document.getElementsByClassName(CLASSES.WeekView_CalendarEventOverlay)[0] as HTMLElement;
 
     const eventTime: number = eventStart.getTime() - getNormalizedLocalDate(eventStart).getTime(); //ms from start of day
     const eventDuration: number = eventEnd.getTime() - eventStart.getTime(); //ms event duration
 
     for (let i = 0; i < calendarColumns.length; i++) {
         const column = calendarColumns[i] as HTMLElement;
-        const columnDateString: string | undefined = column.getAttribute("data-calendar-day")?.toString();
+        const columnDateString: string | undefined = column.getAttribute(ATTRIBUTES.CalendarDay)?.toString();
         if (columnDateString === undefined) throw new AttributeError("Cannot get data-calendar-day attribute");
 
         const columnDate: Date = new Date(columnDateString);
@@ -44,7 +44,7 @@ function createEventBox(eventID: string, eventTitle: string, eventStart: Date, e
                         eventBoxTop: number, eventBoxBottom: number, eventGridColumn: number): HTMLElement {
     const eventBox: HTMLElement = document.createElement("div");
 
-    const calendarCells: HTMLCollection = document.getElementsByClassName("calendar-column__calendar-cell");
+    const calendarCells: HTMLCollection = document.getElementsByClassName(CLASSES.WeekView_CalendarGrid_CalendarColumn_Cell);
     const calendarCellHeight: number | undefined = calendarCells[0]?.getBoundingClientRect().height;
     //const calendarCellWidth: number = calendarCells[0]?.getBoundingClientRect().width;
 
@@ -72,13 +72,13 @@ function createEventBox(eventID: string, eventTitle: string, eventStart: Date, e
         eventBox.style.columnGap = "0.2rem";
     }
     else eventBox.style.gridTemplateRows = "1fr auto";
-    eventBox.setAttribute("data-event-id", eventID);
-    eventBox.classList.add("calendar-event-overlay__event-box");
+    eventBox.setAttribute(ATTRIBUTES.EventID, eventID);
+    eventBox.classList.add(CLASSES.WeekView_CalendarEventOverlay_EventBox);
 
     const eventTitleText: HTMLElement = document.createElement("div");
     eventTitleText.innerText = eventTitle;
     eventTitleText.style.fontSize = isSmallVersion ? "0.7rem" : "0.8rem";
-    eventTitleText.classList.add("event-box__event-title")
+    eventTitleText.classList.add(CLASSES.WeekView_CalendarEventOverlay_EventBox_EventTitle)
     eventBox.appendChild(eventTitleText);
 
     let startTimeText: string = eventStart.toTimeString().split(":").slice(0, 2).join(":");
@@ -92,7 +92,7 @@ function createEventBox(eventID: string, eventTitle: string, eventStart: Date, e
     eventTimeText.innerText = `${startTimeText} - ${endTimeText}`;
     eventTimeText.style.fontSize = isSmallVersion ? "0.5rem" : "0.6rem" ;
     eventTimeText.style.justifySelf = isSmallVersion ? "end" : "auto";
-    eventTimeText.classList.add("event-box__event-time")
+    eventTimeText.classList.add(CLASSES.WeekView_CalendarEventOverlay_EventBox_EventTime)
     eventBox.appendChild(eventTimeText);
 
     return eventBox;
@@ -104,16 +104,16 @@ function reRenderEvent(eventID: string, eventTitle: string, eventStart: Date, ev
 }
 
 function clearEventOverlay() {
-    const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
+    const eventOverlay = document.getElementsByClassName(CLASSES.WeekView_CalendarEventOverlay)[0] as HTMLElement;
     eventOverlay.innerHTML = "";
 }
 
 function removeRenderEvent(eventID: string) {
-    const eventOverlay = document.getElementsByClassName("week-view__calendar-event-overlay")[0] as HTMLElement;
+    const eventOverlay = document.getElementsByClassName(CLASSES.WeekView_CalendarEventOverlay)[0] as HTMLElement;
     const events = Array.from(eventOverlay.children) as HTMLElement[];
     for (let i = 0; i < events.length; i++) {
         const event: HTMLElement = events[i];
-        if (event.getAttribute("data-event-id") === eventID) {
+        if (event.getAttribute(ATTRIBUTES.EventID) === eventID) {
             event.remove();
         }
     }
@@ -121,7 +121,7 @@ function removeRenderEvent(eventID: string) {
 
 function getOverlaps(eventTop: number, eventBottom: number, eventGridColumn: number): HTMLElement[] {
     const overlappingEvents: HTMLElement[] = [];
-    const events: HTMLCollection = document.getElementsByClassName("calendar-event-overlay__event-box");
+    const events: HTMLCollection = document.getElementsByClassName(CLASSES.WeekView_CalendarEventOverlay_EventBox);
     for (let i = 0; i < events.length; i++) {
         const comparedEventElement = events[i] as HTMLElement;
         const comparedEventTop: number = comparedEventElement.offsetTop;

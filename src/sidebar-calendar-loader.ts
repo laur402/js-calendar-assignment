@@ -14,8 +14,8 @@ function loadSidebarCalendar(){
 function loadSidebarCalendarDateLabels(){
     const currentMonth: Date = new Date();
     currentMonth.setMonth(currentMonth.getMonth() + sidebarCalendarOffset);
-    const calendarModule = document.getElementsByClassName("calendar-module")[0] as HTMLElement;
-    const calendarModuleDateButtons = Array.from(calendarModule.getElementsByClassName("calendar-module__day-cell")) as HTMLElement[];
+    const calendarModule = document.getElementsByClassName(CLASSES.Aside_CalendarModule)[0] as HTMLElement;
+    const calendarModuleDateButtons = Array.from(calendarModule.getElementsByClassName(CLASSES.CalendarModule_DayCell)) as HTMLElement[];
 
     const firstDay: Date = getFirstDayOfMonth(new Date(currentMonth));
     const lastDay: Date = getLastDayOfMonth(new Date(currentMonth));
@@ -31,23 +31,23 @@ function loadSidebarCalendarDateLabels(){
 
         const calendarButton: HTMLElement = document.createElement("button");
         calendarButton.innerText = String(i.getDate());
-        calendarButton.classList.add("calendar-module__day-cell", "button-backgroundless", "button-borderless");
-        calendarButton.setAttribute("data-sidebar-calendar-date", i.getTime().toString());
+        calendarButton.classList.add(CLASSES.CalendarModule_DayCell, CLASSES.Button_Backgroundless, CLASSES.Button_Borderless);
+        calendarButton.setAttribute(ATTRIBUTES.SidebarCalendarDate, i.getTime().toString());
         calendarButton.addEventListener("click", async () => {
-            const buttonDate: number = Number(calendarButton.getAttribute("data-sidebar-calendar-date"));
+            const buttonDate: number = Number(calendarButton.getAttribute(ATTRIBUTES.SidebarCalendarDate));
             setWeekOffset(weekOffsetCalc(new Date(), new Date(buttonDate)));
             await reloadWeekView();
         });
 
         if (toYearMonthString(i) !== toYearMonthString(currentMonth))
-            calendarButton.classList.add("calendar-module__day-cell-not-current");
+            calendarButton.classList.add(CLASSES.CalendarModule_DayCell_NotCurrent);
 
         calendarModule.appendChild(calendarButton);
     }
 }
 
 function loadSidebarCalendarDate() {
-    const headerDate = document.getElementsByClassName("calendar-module-header__date")[0] as HTMLElement;
+    const headerDate = document.getElementsByClassName(CLASSES.CalendarModule_Header_Date)[0] as HTMLElement;
     const currentMonth: Date = new Date();
     currentMonth.setMonth(currentMonth.getMonth() + sidebarCalendarOffset);
     headerDate.innerText = `${currentMonth.getFullYear()} ${MONTHS[currentMonth.getMonth()]}`
