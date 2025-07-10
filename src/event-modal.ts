@@ -84,34 +84,46 @@ function callModal() {
 
 async function inputFillingByID(eventID: string){
     const event: CalendarEvent | null = await getEvent(eventID);
-    if (event === null) inputFilling(new Date(), new Date(), "", "", eventID);
-    else inputFilling(event.eventStart, event.eventEnd, event.eventName, event.eventDescription, event.eventId);
+    if (event === null) inputFilling({eventId: eventID,
+        eventName: "",
+        eventStart: new Date(),
+        eventEnd: new Date(),
+        eventDescription: ""
+    });
+    else inputFilling(event);
 }
 
 function inputFillingByOffset(startValue: Date, minuteOffset: number) {
     const endValue: Date = new Date(startValue.getTime() + minuteOffset * 60000);
-    inputFilling(startValue, endValue, "", "");
+    const event: CalendarEvent = {
+        eventId: "",
+        eventName: "",
+        eventStart: startValue,
+        eventEnd: endValue,
+        eventDescription: ""
+    }
+    inputFilling(event);
 }
 
-function inputFilling(startValue: Date, endValue: Date, title: string, description: string, eventID: string = "") {
+function inputFilling(event: CalendarEvent) {
     const idInput = document.getElementsByClassName(CLASSES.EventCreationModal_Body_Form_EventID)[0] as HTMLInputElement;
-    idInput.value = eventID;
+    idInput.value = event.eventId;
 
     const deleteButton = document.getElementsByClassName(CLASSES.EventCreationModal_Body_Form_Buttons_Delete)[0] as HTMLButtonElement;
-    if (eventID === "") deleteButton.style.display = "none";
+    if (event.eventId === "") deleteButton.style.display = "none";
     else deleteButton.style.display = "block";
 
     const eventTitleInputElement = document.getElementsByClassName(CLASSES.EventCreationModal_Body_Form_TitleInput)[0] as HTMLInputElement;
-    eventTitleInputElement.value = title;
+    eventTitleInputElement.value = event.eventName;
 
     const startInputElement = document.getElementsByClassName(CLASSES.EventCreationModal_Body_Form_EventStartInput)[0] as HTMLInputElement;
-    startInputElement.value = toISOLocaleString(startValue);
+    startInputElement.value = toISOLocaleString(event.eventStart);
 
     const endInputElement = document.getElementsByClassName(CLASSES.EventCreationModal_Body_Form_EventEndInput)[0] as HTMLInputElement;
-    endInputElement.value = toISOLocaleString(endValue);
+    endInputElement.value = toISOLocaleString(event.eventEnd);
 
     const eventDescriptionInputElement = document.getElementsByClassName(CLASSES.EventCreationModal_Body_Form_EventDescriptionInput)[0] as HTMLInputElement;
-    eventDescriptionInputElement.value = description;
+    eventDescriptionInputElement.value = event.eventDescription;
 }
 
 function setupModalInput() {
@@ -141,15 +153,23 @@ function setupModalInput() {
             const eventStart = formData.get(FORM_IDS.EventStart)?.toString() ?? "";
             const eventEnd = formData.get(FORM_IDS.EventEnd)?.toString() ?? "";
 
+            const calendarEvent: CalendarEvent = {
+                eventId: eventID === undefined ? performance.now().toString(): eventID,
+                eventName: eventName,
+                eventStart: new Date(eventStart),
+                eventEnd: new Date(eventEnd),
+                eventDescription: eventDescription
+            }
+
             if (event.submitter?.classList.contains(CLASSES.EventCreationModal_Body_Form_Buttons_Submit)) {
                 if (eventID === "") {
                     eventID = performance.now().toString();
-                    await addEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd), eventDescription);
-                    renderEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd));
+                    await addEvent(calendarEvent);
+                    renderEvent(calendarEvent);
                 }
                 else if (eventID !== undefined) {
-                    await modifyEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd), eventDescription);
-                    reRenderEvent(eventID, eventName, new Date(eventStart), new Date(eventEnd));
+                    await modifyEvent(calendarEvent);
+                    reRenderEvent(calendarEvent);
                 }
             }
         },

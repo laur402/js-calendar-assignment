@@ -55,6 +55,6 @@ function loadSidebarCalendarDate() {
 
 function weekOffsetCalc(baseDate: Date, shiftDate: Date){
     const difference: number = getFirstDayOfWeek(shiftDate).getTime() - getFirstDayOfWeek(baseDate).getTime();
-    const weekOffset: number = difference / (7 * 24 * 60 * 60 * 1000);
+    const weekOffset: number = difference / TIME_IN_A_WEEK_MS;
     return Math.round(weekOffset);
 }

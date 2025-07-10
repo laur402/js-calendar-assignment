@@ -1,7 +1,13 @@
 "use strict";
 
-async function addEvent(eventId: string, eventName: string, eventStart: Date, eventEnd: Date, eventDescription: string) {
-    const eventToAdd: APIResponseEvent = {id: eventId, eventName, eventStart, eventEnd, eventDescription};
+async function addEvent(event: CalendarEvent) {
+    const eventToAdd: APIResponseEvent = {
+        id: event.eventId,
+        eventName: event.eventName,
+        eventStart: event.eventStart,
+        eventEnd: event.eventEnd,
+        eventDescription: event.eventDescription
+    };
     await fetch(`http://localhost:3000/events`, {
         method: "POST",
         body: JSON.stringify(eventToAdd)
@@ -14,8 +20,14 @@ async function removeEvent(eventId: string) {
     });
 }
 
-async function modifyEvent(eventId: string, eventName: string, eventStart: Date, eventEnd: Date, eventDescription: string) {
-    const APIEvent: APIResponseEvent = {id: eventId, eventName, eventStart, eventEnd, eventDescription};
+async function modifyEvent(event: CalendarEvent) {
+    const APIEvent: APIResponseEvent = {
+        id: event.eventId,
+        eventName: event.eventName,
+        eventStart: event.eventStart,
+        eventEnd: event.eventEnd,
+        eventDescription: event.eventDescription
+    };
     const value: Response = await fetch(`http://localhost:3000/events/${APIEvent.id}`, {
         method: "PUT",
         body: JSON.stringify(APIEvent)

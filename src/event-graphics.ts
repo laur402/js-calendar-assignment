@@ -1,5 +1,5 @@
 "use strict";
-function renderEvent(eventID: string, eventTitle: string, eventStart: Date, eventEnd: Date) {
+function renderEvent(calendarEvent: CalendarEvent) {
 
     const calendarColumns: HTMLCollection = document.getElementsByClassName(CLASSES.WeekView_CalendarGrid_CalendarColumn);
     const firstColumn = calendarColumns[0] as HTMLElement;
@@ -8,8 +8,8 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
 
     const eventOverlay = document.getElementsByClassName(CLASSES.WeekView_CalendarEventOverlay)[0] as HTMLElement;
 
-    const eventTime: number = eventStart.getTime() - getNormalizedLocalDate(eventStart).getTime(); //ms from start of day
-    const eventDuration: number = eventEnd.getTime() - eventStart.getTime(); //ms event duration
+    const eventTime: number = calendarEvent.eventStart.getTime() - getNormalizedLocalDate(calendarEvent.eventStart).getTime(); //ms from start of day
+    const eventDuration: number = calendarEvent.eventEnd.getTime() - calendarEvent.eventStart.getTime(); //ms event duration
 
     for (let i = 0; i < calendarColumns.length; i++) {
         const column = calendarColumns[i] as HTMLElement;
@@ -17,15 +17,15 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
         if (columnDateString === undefined) throw new AttributeError("Cannot get data-calendar-day attribute");
 
         const columnDate: Date = new Date(columnDateString);
-        const isEventThisWeek: boolean = isSameDay(columnDate, eventStart);
+        const isEventThisWeek: boolean = isSameDay(columnDate, calendarEvent.eventStart);
         const isEventOverflowIntoThisWeek: boolean = columnDate.getDay() === WeekDays.Monday
-            && getFirstDayOfWeek(columnDate) <= getFirstDayOfWeek(eventEnd)
-            && getFirstDayOfWeek(columnDate) >= getFirstDayOfWeek(eventStart);
+            && getFirstDayOfWeek(columnDate) <= getFirstDayOfWeek(calendarEvent.eventEnd)
+            && getFirstDayOfWeek(columnDate) >= getFirstDayOfWeek(calendarEvent.eventStart);
         if (!isEventThisWeek && !isEventOverflowIntoThisWeek) continue;
 
         let height: number = (columnHeight * eventDuration / TIME_IN_A_DAY_MS);
         if (isEventOverflowIntoThisWeek)
-            height -= ((columnDate.getTime() - eventStart.getTime()) * columnHeight / TIME_IN_A_DAY_MS);
+            height -= ((columnDate.getTime() - calendarEvent.eventStart.getTime()) * columnHeight / TIME_IN_A_DAY_MS);
         const columnsToFill: number = Math.floor(height / columnHeight)+1;
         for (let j = 0; j < columnsToFill; j++) {
             const eventGridColumn: number = i+j+1;
@@ -33,15 +33,14 @@ function renderEvent(eventID: string, eventTitle: string, eventStart: Date, even
             const eventBoxTop: number = j !== 0 || isEventOverflowIntoThisWeek ? 0 : (columnHeight * eventTime / TIME_IN_A_DAY_MS);
             const eventBoxBottom: number = height > columnHeight ? columnHeight : eventBoxTop + height;
 
-            const eventBox: HTMLElement = createEventBox(eventID, eventTitle, eventStart, eventEnd, eventBoxTop, eventBoxBottom, eventGridColumn);
+            const eventBox: HTMLElement = createEventBox(calendarEvent, eventBoxTop, eventBoxBottom, eventGridColumn);
             eventOverlay.appendChild(eventBox);
             height -= eventBox.offsetHeight;
         }
     }
 }
 
-function createEventBox(eventID: string, eventTitle: string, eventStart: Date, eventEnd: Date,
-                        eventBoxTop: number, eventBoxBottom: number, eventGridColumn: number): HTMLElement {
+function createEventBox(calendarEvent: CalendarEvent, eventBoxTop: number, eventBoxBottom: number, eventGridColumn: number): HTMLElement {
     const eventBox: HTMLElement = document.createElement("div");
 
     const calendarCells: HTMLCollection = document.getElementsByClassName(CLASSES.WeekView_CalendarGrid_CalendarColumn_Cell);
@@ -65,27 +64,27 @@ function createEventBox(eventID: string, eventTitle: string, eventStart: Date, e
     eventBox.style.padding = isThinHeightVersion ? "0 0.3rem" : "0.3rem 0.5rem";
     eventBox.onclick = async () => {
         callModal();
-        await inputFillingByID(eventID);
+        await inputFillingByID(calendarEvent.eventId);
     };
     if (isThinHeightVersion) {
         eventBox.style.gridTemplateColumns = "1fr 1fr";
         eventBox.style.columnGap = "0.2rem";
     }
     else eventBox.style.gridTemplateRows = "1fr auto";
-    eventBox.setAttribute(ATTRIBUTES.EventID, eventID);
+    eventBox.setAttribute(ATTRIBUTES.EventID, calendarEvent.eventId);
     eventBox.classList.add(CLASSES.WeekView_CalendarEventOverlay_EventBox);
 
     const eventTitleText: HTMLElement = document.createElement("div");
-    eventTitleText.innerText = eventTitle;
+    eventTitleText.innerText = calendarEvent.eventName;
     eventTitleText.style.fontSize = isSmallVersion ? "0.7rem" : "0.8rem";
     eventTitleText.classList.add(CLASSES.WeekView_CalendarEventOverlay_EventBox_EventTitle)
     eventBox.appendChild(eventTitleText);
 
-    let startTimeText: string = eventStart.toTimeString().split(":").slice(0, 2).join(":");
-    let endTimeText: string = eventEnd.toTimeString().split(":").slice(0, 2).join(":");
-    if (!isSameDay(eventStart, eventEnd)) {
-        startTimeText = `${THREE_LETTER_MONTHS[eventStart.getMonth()]} ${eventStart.getDate()} ${startTimeText}`;
-        endTimeText = `${THREE_LETTER_MONTHS[eventEnd.getMonth()]} ${eventEnd.getDate()} ${endTimeText}`;
+    let startTimeText: string = calendarEvent.eventStart.toTimeString().split(":").slice(0, 2).join(":");
+    let endTimeText: string = calendarEvent.eventEnd.toTimeString().split(":").slice(0, 2).join(":");
+    if (!isSameDay(calendarEvent.eventStart, calendarEvent.eventEnd)) {
+        startTimeText = `${THREE_LETTER_MONTHS[calendarEvent.eventStart.getMonth()]} ${calendarEvent.eventStart.getDate()} ${startTimeText}`;
+        endTimeText = `${THREE_LETTER_MONTHS[calendarEvent.eventEnd.getMonth()]} ${calendarEvent.eventEnd.getDate()} ${endTimeText}`;
     }
 
     const eventTimeText: HTMLElement = document.createElement("div");
@@ -98,9 +97,9 @@ function createEventBox(eventID: string, eventTitle: string, eventStart: Date, e
     return eventBox;
 }
 
-function reRenderEvent(eventID: string, eventTitle: string, eventStart: Date, eventEnd: Date) {
-    removeRenderEvent(eventID);
-    renderEvent(eventID, eventTitle, eventStart, eventEnd);
+function reRenderEvent(calendarEvent: CalendarEvent) {
+    removeRenderEvent(calendarEvent.eventId);
+    renderEvent(calendarEvent);
 }
 
 function clearEventOverlay() {

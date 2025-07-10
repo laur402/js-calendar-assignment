@@ -89,7 +89,7 @@ async function loadEvents() {
     clearEventOverlay();
     const events: CalendarEvent[] = await fetchEvents();
     events.forEach(event => {
-        renderEvent(event.eventId, event.eventName, new Date(event.eventStart), new Date(event.eventEnd));
+        renderEvent(event);
     })
 }
 

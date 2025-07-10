@@ -1,6 +1,7 @@
 const THREE_LETTER_MONTHS: readonly string[] = getMonthsByLocale("short");
-const TIME_IN_A_DAY_MS: number = 24*60*60*1000; //ms in a day
-const TIME_IN_AN_HOUR_MS: number = 60*60*1000;
+const TIME_IN_A_WEEK_MS: number = 7 * 24 * 60 * 60 * 1000;
+const TIME_IN_A_DAY_MS: number = 24 * 60 * 60 * 1000; //ms in a day
+const TIME_IN_AN_HOUR_MS: number = 60 * 60 * 1000;
 const MONTHS: readonly string[] = getMonthsByLocale("long");
 const THREE_LETTER_WEEK_DAYS: readonly string[] = getWeekdaysByLocale("short").map((value) => value.toUpperCase());
 const LOAD_TIME: Date = new Date();
