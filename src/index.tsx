@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client"
+import {Body} from "./React/Body";
 function App() {
     return (
-        <>
-            <div className={"testing"}>Hello world!</div>
-        </>
+        <Body />
     );
 }
 
