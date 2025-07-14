@@ -1,6 +1,8 @@
 "use strict";
 
-async function addEvent(event: CalendarEvent) {
+import {asyncTryCatch} from "./helper-functions";
+
+export async function addEvent(event: CalendarEvent) {
     const eventToAdd: APIResponseEvent = {
         id: event.eventId,
         eventName: event.eventName,
@@ -14,13 +16,13 @@ async function addEvent(event: CalendarEvent) {
     });
 }
 
-async function removeEvent(eventId: string) {
+export async function removeEvent(eventId: string) {
     await fetch(`http://localhost:3000/events/${eventId}`, {
         method: "DELETE"
     });
 }
 
-async function modifyEvent(event: CalendarEvent) {
+export async function modifyEvent(event: CalendarEvent) {
     const APIEvent: APIResponseEvent = {
         id: event.eventId,
         eventName: event.eventName,
@@ -37,7 +39,7 @@ async function modifyEvent(event: CalendarEvent) {
     }
 }
 
-async function getEvent(eventId: string): Promise<CalendarEvent | null> {
+export async function getEvent(eventId: string): Promise<CalendarEvent | null> {
     const eventFetch: Response = await fetch(`http://localhost:3000/events/${eventId}`);
     if (eventFetch.status === 200)
     {
@@ -59,7 +61,7 @@ async function getEvent(eventId: string): Promise<CalendarEvent | null> {
     else return null;
 }
 
-async function fetchEvents(): Promise<CalendarEvent[]> {
+export async function fetchEvents(): Promise<CalendarEvent[]> {
     let eventsFetch: Response | null = await asyncTryCatch(() => fetch("http://localhost:3000/events"),
         null, ()=> alert("Events server is unavailable!"));
     if (eventsFetch === null) return [];
@@ -83,7 +85,7 @@ async function fetchEvents(): Promise<CalendarEvent[]> {
     return eventList;
 }
 
-type CalendarEvent = {
+export type CalendarEvent = {
     eventId: string;
     eventName: string;
     eventStart: Date;

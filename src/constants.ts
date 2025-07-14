@@ -1,12 +1,13 @@
-const THREE_LETTER_MONTHS: readonly string[] = getMonthsByLocale("short");
-const TIME_IN_A_WEEK_MS: number = 7 * 24 * 60 * 60 * 1000;
-const TIME_IN_A_DAY_MS: number = 24 * 60 * 60 * 1000; //ms in a day
-const TIME_IN_AN_HOUR_MS: number = 60 * 60 * 1000;
-const MONTHS: readonly string[] = getMonthsByLocale("long");
-const THREE_LETTER_WEEK_DAYS: readonly string[] = getWeekdaysByLocale("short").map((value) => value.toUpperCase());
-const LOAD_TIME: Date = new Date();
+export const THREE_LETTER_MONTHS: readonly string[] = getMonthsByLocale("short");
+export const TIME_IN_A_WEEK_MS: number = 7 * 24 * 60 * 60 * 1000;
+export const TIME_IN_A_DAY_MS: number = 24 * 60 * 60 * 1000; //ms in a day
+export const TIME_IN_AN_HOUR_MS: number = 60 * 60 * 1000;
+export const TIME_IN_A_MINUTE_MS: number = 60 * 1000;
+export const MONTHS: readonly string[] = getMonthsByLocale("long");
+export const THREE_LETTER_WEEK_DAYS: readonly string[] = getWeekdaysByLocale("short").map((value) => value.toUpperCase());
+export const LOAD_TIME: Date = new Date();
 
-enum WeekDays {
+export enum WeekDays {
     "Sunday" = 0,
     "Monday",
     "Tuesday",
@@ -16,20 +17,20 @@ enum WeekDays {
     "Saturday"
 }
 
-type DateTimeFormatOptionsMonths = "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined;
-function getMonthsByLocale(monthFormat: DateTimeFormatOptionsMonths = "numeric", locale?: string) {
+export type DateTimeFormatOptionsMonths = "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined;
+export function getMonthsByLocale(monthFormat: DateTimeFormatOptionsMonths = "numeric", locale?: string) {
     const format = new Intl.DateTimeFormat(locale, {month: monthFormat});
     return [...Array(12).keys()]
         .map((value) => format.format(new Date(2000, value, 1)));
 }
-type DateTimeFormatOptionsWeekdays = "long" | "short" | "narrow" | undefined;
-function getWeekdaysByLocale(monthFormat: DateTimeFormatOptionsWeekdays, locale?: string) {
-    const format = new Intl.DateTimeFormat(locale, {weekday: monthFormat});
+export type DateTimeFormatOptionsWeekdays = "long" | "short" | "narrow" | undefined;
+export function getWeekdaysByLocale(weekdayFormat: DateTimeFormatOptionsWeekdays, locale?: string) {
+    const format = new Intl.DateTimeFormat(locale, {weekday: weekdayFormat});
     return [...Array(7).keys()]
         .map((value) => format.format(new Date().getTime() - (new Date().getDay() - value) * TIME_IN_A_DAY_MS));
 }
 
-enum CLASSES {
+export enum CLASSES {
     EventCreationModal = "event-creation-modal",
     EventCreationModalContent = "event-creation-modal-content",
     EventCreationModal_Body = "modal",
@@ -99,12 +100,12 @@ enum CLASSES {
     NewEventModalCaller = "new-event-modal-caller",
 }
 
-enum ATTRIBUTES {
+export enum ATTRIBUTES {
     CalendarDay = "data-calendar-day",
     EventID = "data-event-id",
     SidebarCalendarDate = "data-sidebar-calendar-date",
 }
-enum FORM_IDS {
+export enum FORM_IDS {
     EventID = "event-id",
     EventStart = "event-start",
     EventEnd = "event-end",

@@ -1,9 +1,14 @@
 import React from "react";
+import {ModalStateContext, useStateContext} from "./contexts";
 
 export function Aside() {
+    const modalState = useStateContext(ModalStateContext);
     return (
         <aside className="aside">
-            <button className="create-event-button new-event-modal-caller"><span
+            <button className="create-event-button new-event-modal-caller"
+                    onClick={()=>{
+                        modalState?.setValue(true);
+            }}><span
                 className="material-symbols-outlined">add</span><span>Create Event</span></button>
             <div className="calendar-module">
                 <div className="calendar-module__header">

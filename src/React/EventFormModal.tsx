@@ -1,10 +1,12 @@
-import React, {FormEvent, SyntheticEvent, useState} from "react";
+import React, {Dispatch, FormEvent, SetStateAction, SyntheticEvent, useContext, useState} from "react";
 import "../../event-creation-modal-layout.css";
-interface EventFormModalProps {
-    isModalActive: boolean,
-    setIsModalActive:(val: boolean) => void
-}
-export function EventFormModal({isModalActive, setIsModalActive}:EventFormModalProps){
+import {ModalStateContext, useStateContext} from "./contexts";
+import {AttributeError} from "../helper-functions";
+import {CLASSES, FORM_IDS} from "../constants";
+import {CalendarEvent} from "../event-storage";
+
+export function EventFormModal(){
+    const modalContext = useStateContext(ModalStateContext);
     const [eventID, setEventID] = useState("");
     const [eventName, setEventName] = useState("");
     const [eventStart, setEventStart] = useState("");
@@ -14,9 +16,9 @@ export function EventFormModal({isModalActive, setIsModalActive}:EventFormModalP
     const [isTitleError, setIsTitleError] = useState(false);
     const [isTimeError, setIsTimeError] = useState(false);
     return (
-        <section className="modal" style={{display: `${isModalActive ? "flex" : "none"}`}}>
+        <section className="modal" style={{display: `${modalContext.value ? "flex" : "none"}`}}>
             <form className="modal-content" id="new-event-modal-form"
-                  onSubmit={(e) => handleEventFormInput(e, setIsModalActive, (v) => setIsTitleError(v), (v) => setIsTimeError(v))}>
+                  onSubmit={(e) => handleEventFormInput(e, modalContext.setValue, (v) => setIsTitleError(v), (v) => setIsTimeError(v))}>
                 <input className="modal-content__event-id" type="hidden" name="event-id"
                        value={eventID}
                        onChange={(e) => setEventID(e.target.value)}/>
@@ -98,7 +100,7 @@ function dispatchEvent(eventData: EventFormData) {
     }
 }
 
-function handleEventFormInput(event: SyntheticEvent, setIsModalActive: (value: boolean) => void,
+function handleEventFormInput(event: SyntheticEvent, setIsModalActive: Dispatch<SetStateAction<boolean>>,
                               setIsTitleError: (value: boolean) => void, setIsTimeError: (value: boolean) => void)
 {
     event.preventDefault();
@@ -107,7 +109,8 @@ function handleEventFormInput(event: SyntheticEvent, setIsModalActive: (value: b
     const eventSubmitter = (event.nativeEvent as SubmitEvent).submitter;
     const isDeleteButton = eventSubmitter?.classList.contains(CLASSES.EventCreationModal_Body_Form_Buttons_Delete);
     if (isDeleteButton) {
-        /*await removeEvent(eventID);
+        /* TODO:
+        await removeEvent(eventID);
         removeRenderEvent(eventID);
         return;*/
     }
