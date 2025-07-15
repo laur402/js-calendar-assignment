@@ -37,6 +37,7 @@ export enum CLASSES {
     EventCreationModal_Body_Form = "modal-content",
     EventCreationModal_Body_Form_EventID = "modal-content__event-id",
     EventCreationModal_Body_Form_TitleInput = "modal-content__event-title-input",
+    EventCreationModal_Body_Form_EventTimeInputs = "modal-content__event-time-inputs",
     EventCreationModal_Body_Form_EventStartEndLabel = "modal-content__event-start-label",
     EventCreationModal_Body_Form_EventStartInput = "modal-content__event-start-input",
     EventCreationModal_Body_Form_EventEndInput = "modal-content__event-end-input",
@@ -98,6 +99,7 @@ export enum CLASSES {
     Button_Backgroundless = "button-backgroundless",
     Button_Borderless = "button-borderless",
     NewEventModalCaller = "new-event-modal-caller",
+    MaterialSymbolsOutlined = "material-symbols-outlined",
 }
 
 export enum ATTRIBUTES {

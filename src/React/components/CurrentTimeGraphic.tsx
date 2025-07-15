@@ -1,13 +1,13 @@
 import React from "react";
 import {useEffect, useState} from "react";
-import {getNormalizedLocalDate} from "../../helper-functions";
+import {getNormalizedLocalDate, getTimePercentageOfDay} from "../../helper-functions";
 import {CLASSES, TIME_IN_A_DAY_MS, TIME_IN_A_MINUTE_MS} from "../../constants";
 
 export function CurrentTimeGraphic({currentTimeGraphicColumn}:{currentTimeGraphicColumn: number}) {
-    const [currentTimeGraphicTop, setCurrentTimeGraphicTop] = useState(getCurrentTimePercentage());
+    const [currentTimeGraphicTop, setCurrentTimeGraphicTop] = useState(getTimePercentageOfDay(new Date()));
     useEffect(() => {
         const timer = setInterval(()=>{
-            setCurrentTimeGraphicTop(getCurrentTimePercentage());
+            setCurrentTimeGraphicTop(getTimePercentageOfDay(new Date()));
         }, TIME_IN_A_MINUTE_MS);
         return () => clearInterval(timer);
     });
@@ -19,8 +19,4 @@ export function CurrentTimeGraphic({currentTimeGraphicColumn}:{currentTimeGraphi
                  style={{position: "absolute"}} />
         </div>
     )
-}
-function getCurrentTimePercentage(){
-    const timeOfDay: number = new Date().getTime() - getNormalizedLocalDate(new Date()).getTime(); //ms from start of day
-    return timeOfDay / TIME_IN_A_DAY_MS * 100;
 }

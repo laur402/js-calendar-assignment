@@ -1,12 +1,13 @@
 import React from "react";
-import {leftPad} from "../../helper-functions";
+import {addHours, leftPad, toISOLocaleString} from "../../helper-functions";
 import {CLASSES} from "../../constants";
+import {EventListContext, ModalInputContext, ModalStateContext, useStateContext} from "../contexts";
 
-export function CalendarGridColumn({hoursInADay}:{hoursInADay: number}){
+export function CalendarGridColumn({hoursInADay, associatedDate}:{hoursInADay: number, associatedDate: Date}){
     return (
         <div className={CLASSES.WeekView_CalendarGrid_CalendarColumn}>
             {[...Array(hoursInADay).keys()].map(
-            ()=><CalendarGridColumnCell />
+                (hour)=><CalendarGridColumnCell associatedDate={addHours(associatedDate, hour)}/>
             )}
         </div>
     );
@@ -23,10 +24,23 @@ export function CalendarGridTimeColumn({hoursInADay}:{hoursInADay: number}) {
     );
 }
 
-function CalendarGridColumnCell() {
+function CalendarGridColumnCell({associatedDate}:{associatedDate: Date}) {
+    const modalState = useStateContext(ModalStateContext);
+    const modalInputState = useStateContext(ModalInputContext);
     return (
         <div className={CLASSES.WeekView_CalendarGrid_CalendarColumn_Cell}>
-            <button className={CLASSES.WeekView_CalendarGrid_CalendarColumn_Cell_Button}></button>
+            <button className={CLASSES.WeekView_CalendarGrid_CalendarColumn_Cell_Button}
+                    onClick={()=>{
+                        modalState?.setValue(true);
+                        modalInputState?.setValue({
+                            modalEventID: "",
+                            modalEventName: "",
+                            modalEventStart: toISOLocaleString(associatedDate),
+                            modalEventEnd: toISOLocaleString(addHours(associatedDate, 1)),
+                            modalEventDescription: "",
+                            isModalEventExisting: false
+                        })
+                    }}></button>
         </div>
     );
 }

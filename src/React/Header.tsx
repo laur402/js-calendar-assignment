@@ -1,39 +1,36 @@
 import React from "react";
+import {SidebarCalendarMonthOffsetContext, useStateContext, WeekViewWeekOffsetContext} from "./contexts";
+import {CLASSES} from "../constants";
 
 export function Header() {
+    const weekOffsetState = useStateContext(WeekViewWeekOffsetContext);
+    const monthOffsetState = useStateContext(SidebarCalendarMonthOffsetContext);
     return (
-        <header className="header">
-            <div className="header__app-title">
+        <header className={CLASSES.Header}>
+            <div className={CLASSES.Header_AppTitle}>
                 <img src="/logo.svg" alt="Calendar Logo" height="32"/>
                 <h1>Calendar</h1>
             </div>
-            <div className="header-buttons">
-                <button className="header-buttons__today button-backgroundless"
+            <div className={CLASSES.Header_Buttons}>
+                <button className={`${CLASSES.Header_Buttons_Today} ${CLASSES.Button_Backgroundless}`}
                         onClick={async () => {
-                            /*TODO:
-                            setWeekOffset(0);
-                            setSidebarCalendarOffset(0);
-                            await reloadMainCalendarElements();
-                            loadSidebarCalendar();*/
+                            weekOffsetState?.setValue(0);
+                            monthOffsetState?.setValue(0);
                 }}>Today</button>
-                <button className="header-buttons__week-left button-backgroundless button-borderless material-symbols-outlined"
+                <button className={`${CLASSES.Header_Buttons_WeekLeft} ${CLASSES.Button_Backgroundless} ${CLASSES.Button_Borderless} material-symbols-outlined`}
                         onClick={async ()=>{
-                            /*TODO:
-                            setWeekOffset(getWeekOffset()-1);
-                            await reloadMainCalendarElements();*/
+                            weekOffsetState?.setValue(weekOffsetState?.value - 1);
                         }}>
                     chevron_left
                 </button>
-                <button className="header-buttons__week-right button-backgroundless button-borderless material-symbols-outlined"
+                <button className={`${CLASSES.Header_Buttons_WeekRight} ${CLASSES.Button_Backgroundless} ${CLASSES.Button_Borderless} material-symbols-outlined`}
                         onClick={async () => {
-                            /*TODO:
-                            setWeekOffset(getWeekOffset()+1);
-                            await reloadMainCalendarElements();*/
+                            weekOffsetState?.setValue(weekOffsetState?.value + 1);
                         }}>
                     chevron_right
                 </button>
             </div>
-            <h2 className="header__month-year-date">Month Year</h2>
+            <h2 className={CLASSES.Header_MonthYearDate}>Month Year</h2>
         </header>
     );
 }

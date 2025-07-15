@@ -1,15 +1,35 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {CalendarGridColumn, CalendarGridTimeColumn} from "./components/CalendarGridElements";
 import {WeekViewHeaderDate} from "./components/WeekViewHeaderDate";
-import {addDays, getFirstDayOfWeek, getTimezone, isSameDay, leftPad} from "../helper-functions";
+import {
+    addDays,
+    getDaySpan,
+    getFirstDayOfWeek,
+    getNormalizedLocalDate, getTimePercentageOfDay,
+    getTimezone, isDuringATime,
+    isSameDay,
+    leftPad
+} from "../helper-functions";
 import {CLASSES, LOAD_TIME, THREE_LETTER_WEEK_DAYS, TIME_IN_A_WEEK_MS} from "../constants";
 import {CurrentTimeGraphic} from "./components/CurrentTimeGraphic";
+import {EventListContext, useStateContext, WeekViewWeekOffsetContext} from "./contexts";
+import {CalendarEvent, fetchEvents} from "../event-storage";
+import {EventElement, EventElementSettings} from "./components/EventElement";
 
 export function WeekView() {
+    const eventsListState = useStateContext(EventListContext);
     const timezoneOffset = getTimezone(LOAD_TIME);
     const timezoneOffsetString = leftPad(timezoneOffset, 2);
     const hoursInADay = 24;
-    const headerDates = getCalendarDateLabels(getOffsetDate());
+    const headerDates = getCalendarDates(getOffsetDate());
+
+    useEffect(()=>{
+        const fetchEventsFromAPI = async ()=>{
+            const fetchedEvents = await fetchEvents();
+            eventsListState.setValue(fetchedEvents);
+        }
+        fetchEventsFromAPI();
+    }, []);
     return (
         <section className={CLASSES.WeekViewContainer}>
             <header className={CLASSES.WeekView_DatesHeader}>
@@ -32,30 +52,22 @@ export function WeekView() {
                     {headerDates.map((value, index)=>{
                         if (value.isToday)
                             return <CurrentTimeGraphic currentTimeGraphicColumn={index} />
-                        else return null
                     })}
-                    {/*<EventElement calendarEvent={} elementStyles = {
-                        position: "absolute",
-                        gridColumn: `${eventGridColumn} / span 1`,
-                        top: eventBoxTop + "px",
-                        width: `${width}%`,
-                        left: `${100 - width}%`,
-                        height: eventBoxBottom - eventBoxTop + "px",
-                        minHeight: calendarCellHeight/4 + "px",
-                        //if (isThinHeightVersion) {
-                        //    eventBox.style.gridTemplateColumns = "1fr 1fr";
-                        //    eventBox.style.columnGap = "0.2rem";
-                        //}
-                        //else eventBox.style.gridTemplateRows = "1fr auto";
-                        }
-                        isThinHeightVersion: height < calendarCellHeight / 1.75;
-                        isThinWidthVersion: width <= 50; */
-                    }
+                    {headerDates.map((dateValue, dateIndex)=>{
+                        const filteredEvents = eventsListState.value.filter((event)=>{
+                            return isDuringATime(event.eventStart, event.eventEnd, dateValue.normalizedDate);
+                        })
+                        return filteredEvents.map((event, index)=> {
+                            const overlaps = getOverlaps(filteredEvents, index);
+                            return getEventElement(event, dateIndex+1, dateValue.normalizedDate, overlaps.length, hoursInADay);
+                        })
+                    })}
                 </div>
                 <section className={CLASSES.WeekView_CalendarGrid}>
                     <CalendarGridTimeColumn hoursInADay={hoursInADay} />
-                    {[...Array(7).keys()].map(
-                        ()=> <CalendarGridColumn hoursInADay={hoursInADay} />
+                    {headerDates.map(
+                        (dateValue)=>
+                            <CalendarGridColumn hoursInADay={hoursInADay} associatedDate={dateValue.normalizedDate} />
                     )}
                 </section>
             </section>
@@ -66,15 +78,54 @@ function getOffsetDate(){
     return new Date(LOAD_TIME.getTime() + getWeekOffset() * TIME_IN_A_WEEK_MS);
 }
 function getWeekOffset() {
-    return 0; //TODO: Replace with state logic, move towards root
+    const weekState = useStateContext(WeekViewWeekOffsetContext);
+    return weekState?.value;
 }
-function getCalendarDateLabels(offsetDate: Date) {
+function getCalendarDates(offsetDate: Date) {
     return [...Array(7).keys()].map(value => {
         const weekDate = addDays(getFirstDayOfWeek(offsetDate), value);
         return {
+            normalizedDate: getNormalizedLocalDate(weekDate),
             weekdayLabel: THREE_LETTER_WEEK_DAYS[weekDate.getDay()],
             dateLabel: weekDate.getDate(),
-            isToday: isSameDay(weekDate, LOAD_TIME)
+            isToday: isSameDay(weekDate, LOAD_TIME),
         }
     })
+}
+function getEventElement(event: CalendarEvent, column: number, columnDate: Date, overlappingEventCount: number, hoursInADay: number){
+        const top = isSameDay(event.eventStart, columnDate) ? getTimePercentageOfDay(event.eventStart) : 0;
+        const bottom = isSameDay(event.eventEnd, columnDate) ? getTimePercentageOfDay(event.eventEnd) : 100;
+        const height = bottom - top;
+        const width = 100 / Math.pow((overlappingEventCount + 1), 1/3); // in %
+        const isThinHeight = height < 100/(hoursInADay * 1.75);
+        const isThinWidth = width <= 50;
+        const eventElementSettings: EventElementSettings = {
+            isThinHeightVersion: isThinHeight,
+            isThinWidthVersion: isThinWidth,
+            elementStyles: {
+                position: "absolute",
+                gridColumn: `${column} / span 1`,
+                top: `${top}%`,
+                width: `${width}%`,
+                left: `${100 - width}%`,
+                height: `${height}%`,
+                minHeight: `${100/(hoursInADay*4)}%`,
+                padding: isThinHeight ? "0 0.3rem" : "0.3rem 0.5rem",
+                gridTemplateColumns: isThinHeight ? "1fr 1fr" : "",
+                columnGap: isThinHeight ? "0.2rem" : "",
+                gridTemplateRows: isThinHeight ? "" : "1fr auto",
+            }
+        }
+        return <EventElement calendarEvent={event} elementSettings={eventElementSettings} />
+}
+function getOverlaps(events: CalendarEvent[], currentEventIndex: number) {
+    const currentEvent = events[currentEventIndex];
+    const overlappingEvents = events
+        .slice(0, currentEventIndex)
+        .filter((value) => {
+            const maxTime = Math.max(currentEvent.eventStart.getTime(), value.eventStart.getTime());
+            const minTime = Math.min(currentEvent.eventEnd.getTime(), value.eventEnd.getTime());
+            return maxTime < minTime;
+        })
+    return overlappingEvents;
 }

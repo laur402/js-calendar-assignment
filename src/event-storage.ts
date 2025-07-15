@@ -1,6 +1,6 @@
 "use strict";
 
-import {asyncTryCatch} from "./helper-functions";
+import {asyncTryCatch, getNormalizedLocalDate, isDuringATime, isSameDay} from "./helper-functions";
 
 export async function addEvent(event: CalendarEvent) {
     const eventToAdd: APIResponseEvent = {
@@ -83,6 +83,14 @@ export async function fetchEvents(): Promise<CalendarEvent[]> {
     eventList.sort((a: CalendarEvent, b: CalendarEvent) => a.eventStart.getTime() - b.eventStart.getTime());
 
     return eventList;
+}
+
+export async function getEventsOfDay(date: Date) {
+    const normalizedDate = getNormalizedLocalDate(date);
+    const events = await fetchEvents();
+    return events.filter((value)=>{
+        return isDuringATime(value.eventStart, value.eventEnd, date);
+    })
 }
 
 export type CalendarEvent = {

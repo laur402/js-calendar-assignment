@@ -40,6 +40,11 @@ export function addDays(dateInput: Date, days: number): Date {
     date.setDate(date.getDate() + days);
     return date;
 }
+export function addHours(dateInput: Date, hours: number): Date {
+    const date: Date = new Date(dateInput);
+    date.setTime(date.getTime() + hours * TIME_IN_AN_HOUR_MS);
+    return date;
+}
 export function toYearMonthString (dateInput: Date): string {
     return `${dateInput.getFullYear()} ${MONTHS[dateInput.getMonth()]}`;
 }
@@ -49,6 +54,12 @@ export function isSameDay(date1: Date, date2: Date): boolean {
     const time1 = getNormalizedLocalDate(date1modified).getTime();
     const time2 = getNormalizedLocalDate(date2modified).getTime();
     return time1 === time2;
+}
+export function isDuringATime (startDate: Date, endDate: Date, comparisonPointDate: Date): boolean {
+    const startTime = getNormalizedLocalDate(startDate).getTime();
+    const endTime = getNormalizedLocalDate(endDate).getTime();
+    const comparisonTime = comparisonPointDate.getTime();
+    return startTime <= comparisonTime && comparisonTime <= endTime;
 }
 export function getNormalizedLocalDate(date: Date): Date {
     const mDate = new Date(date);
@@ -67,6 +78,17 @@ export function getTimezone(date: Date): number {
 }
 export function getDateString(date: Date): string {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+}
+export function getDaySpan(startDate: Date, endDate: Date){
+    const msDifference = getNormalizedLocalDate(endDate).getTime() - getNormalizedLocalDate(startDate).getTime();
+    return msDifference / TIME_IN_A_DAY_MS;
+}
+export function getTimePercentageOfDay(date: Date){
+    const timeOfDay: number = date.getTime() - getNormalizedLocalDate(date).getTime(); //ms from start of day
+    return timeOfDay / TIME_IN_A_DAY_MS * 100;
+}
+export function toReactISOString(date: Date){
+    return date.toISOString().split("Z").slice(0, -1).join("Z");
 }
 
 export async function asyncTryCatch<T>(operation: () => Promise<T>, defaultValue: T, errorFunction?: () => void): Promise<T> {
