@@ -7,7 +7,7 @@ export function CalendarGridColumn({hoursInADay, associatedDate}:{hoursInADay: n
     return (
         <div className={CLASSES.WeekView_CalendarGrid_CalendarColumn}>
             {[...Array(hoursInADay).keys()].map(
-                (hour)=><CalendarGridColumnCell associatedDate={addHours(associatedDate, hour)}/>
+                (hour)=><CalendarGridColumnCell key={hour+1} associatedDate={addHours(associatedDate, hour)}/>
             )}
         </div>
     );
@@ -16,7 +16,7 @@ export function CalendarGridTimeColumn({hoursInADay}:{hoursInADay: number}) {
     return (
         <div className={CLASSES.WeekView_CalendarGrid_TimeColumn}>
             {[...Array(hoursInADay).keys()].map(
-            (hour: number)=><div className={CLASSES.WeekView_CalendarGrid_TimeColumn_Cell}>
+            (hour: number)=><div key={hour+1} className={CLASSES.WeekView_CalendarGrid_TimeColumn_Cell}>
                 {hour+1 === hoursInADay ? "" : `${leftPad(hour+1, 2)}:00`}
             </div>
             )}

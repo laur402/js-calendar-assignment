@@ -21,7 +21,7 @@ export function WeekView() {
     const timezoneOffset = getTimezone(LOAD_TIME);
     const timezoneOffsetString = leftPad(timezoneOffset, 2);
     const hoursInADay = 24;
-    const headerDates = getCalendarDates(getOffsetDate());
+    const headerDates = getCalendarDates(getWeekViewWeekOffsetDate());
 
     useEffect(()=>{
         const fetchEventsFromAPI = async ()=>{
@@ -38,12 +38,12 @@ export function WeekView() {
                         UTC{`${timezoneOffset < 0 ? "-" : "+"}${timezoneOffsetString}`}
                     </div>
                     {headerDates.map((value) =>
-                        <WeekViewHeaderDate dayStr={value.weekdayLabel} dayNum={value.dateLabel} isToday={value.isToday}/>
+                        <WeekViewHeaderDate key={value.normalizedDate.getTime()} dayStr={value.weekdayLabel} dayNum={value.dateLabel} isToday={value.isToday}/>
                     )}
                 </div>
                 <div className={CLASSES.WeekView_DatesHeader_AllDayRow}>
-                    {[...Array(7).keys()].map(
-                        ()=><div className={CLASSES.WeekView_DatesHeader_AllDayRow_Cell}></div>
+                    {headerDates.map(
+                        (value)=><div key={value.normalizedDate.getTime()} className={CLASSES.WeekView_DatesHeader_AllDayRow_Cell}></div>
                     )}
                 </div>
             </header>
@@ -51,7 +51,7 @@ export function WeekView() {
                 <div className={CLASSES.WeekView_CalendarEventOverlay}>
                     {headerDates.map((value, index)=>{
                         if (value.isToday)
-                            return <CurrentTimeGraphic currentTimeGraphicColumn={index} />
+                            return <CurrentTimeGraphic key={value.normalizedDate.getTime()} currentTimeGraphicColumn={index} />
                     })}
                     {headerDates.map((dateValue, dateIndex)=>{
                         const filteredEvents = eventsListState.value.filter((event)=>{
@@ -65,16 +65,15 @@ export function WeekView() {
                 </div>
                 <section className={CLASSES.WeekView_CalendarGrid}>
                     <CalendarGridTimeColumn hoursInADay={hoursInADay} />
-                    {headerDates.map(
-                        (dateValue)=>
-                            <CalendarGridColumn hoursInADay={hoursInADay} associatedDate={dateValue.normalizedDate} />
-                    )}
+                    {headerDates.map((dateValue)=> {
+                        return <CalendarGridColumn key={dateValue.normalizedDate.getTime()} hoursInADay={hoursInADay} associatedDate={dateValue.normalizedDate}/>
+                    })}
                 </section>
             </section>
         </section>
     );
 }
-function getOffsetDate(){
+export function getWeekViewWeekOffsetDate(){
     return new Date(LOAD_TIME.getTime() + getWeekOffset() * TIME_IN_A_WEEK_MS);
 }
 function getWeekOffset() {
@@ -111,12 +110,12 @@ function getEventElement(event: CalendarEvent, column: number, columnDate: Date,
                 height: `${height}%`,
                 minHeight: `${100/(hoursInADay*4)}%`,
                 padding: isThinHeight ? "0 0.3rem" : "0.3rem 0.5rem",
-                gridTemplateColumns: isThinHeight ? "1fr 1fr" : "",
+                gridTemplateColumns: isThinHeight ? "1fr auto" : "",
                 columnGap: isThinHeight ? "0.2rem" : "",
                 gridTemplateRows: isThinHeight ? "" : "1fr auto",
             }
         }
-        return <EventElement calendarEvent={event} elementSettings={eventElementSettings} />
+        return <EventElement key={event.eventId} calendarEvent={event} elementSettings={eventElementSettings} />
 }
 function getOverlaps(events: CalendarEvent[], currentEventIndex: number) {
     const currentEvent = events[currentEventIndex];
