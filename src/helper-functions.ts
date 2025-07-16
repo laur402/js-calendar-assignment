@@ -109,6 +109,19 @@ export function getWeekDifference(startDate: Date, endDate: Date) {
     return Math.floor((endWeekTime - startWeekTime)/TIME_IN_A_WEEK_MS);
 }
 
+export type DateTimeFormatOptionsMonths = "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined;
+export function getMonthLabelsByLocale(monthFormat: DateTimeFormatOptionsMonths = "numeric", locale?: string) {
+    const format = new Intl.DateTimeFormat(locale, {month: monthFormat});
+    return [...Array(12).keys()]
+        .map((value) => format.format(new Date(2000, value, 1)));
+}
+export type DateTimeFormatOptionsWeekdays = "long" | "short" | "narrow" | undefined;
+export function getWeekdayLabelsByLocale(weekdayFormat: DateTimeFormatOptionsWeekdays, locale?: string) {
+    const format = new Intl.DateTimeFormat(locale, {weekday: weekdayFormat});
+    return [...Array(7).keys()]
+        .map((value) => format.format(new Date().getTime() - (new Date().getDay() - value) * TIME_IN_A_DAY_MS));
+}
+
 export async function asyncTryCatch<T>(operation: () => Promise<T>, defaultValue: T, errorFunction?: () => void): Promise<T> {
     try {
         const result: T = await operation();

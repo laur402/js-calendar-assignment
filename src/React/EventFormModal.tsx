@@ -1,42 +1,37 @@
 import React, {createContext, Dispatch, FormEvent, SetStateAction, SyntheticEvent, useContext, useState} from "react";
 import "../../event-creation-modal-layout.css";
-import {EventListContext, ModalInputContext, ModalStateContext, StateContext, useStateContext} from "./contexts";
 import {AttributeError} from "../helper-functions";
 import {CLASSES, FORM_IDS} from "../constants";
 import {addEvent, CalendarEvent, modifyEvent, removeEvent} from "../event-storage";
-import {ModalInput} from "./Body";
+import {useAppDispatch, useAppSelector} from "./redux/hooks";
+import {ModalInput, modalInputModify} from "./redux/modalInputSlice";
+import {eventListAdd, eventListModify, eventListRemoveByID} from "./redux/eventListSlice";
+import {modalStateHide} from "./redux/modalStateSlice";
+import {ThunkDispatch} from "@reduxjs/toolkit";
 
 export function EventFormModal(){
-    const modalState = useStateContext(ModalStateContext);
-    const modalInputState = useStateContext(ModalInputContext);
-    const eventsListState = useStateContext(EventListContext);
-
+    const dispatch = useAppDispatch();
+    const modalState = useAppSelector((state)=> state.modalState);
+    const modalInputState = useAppSelector(state => state.modalInput);
     const [isTitleError, setIsTitleError] = useState(false);
     const [isTimeError, setIsTimeError] = useState(false);
     return (
         <section className={`${CLASSES.EventCreationModal_Body} ${CLASSES.EventCreationModal}`}
                  style={{display: `${modalState.value ? "flex" : "none"}`}}>
             <form className={`${CLASSES.EventCreationModal_Body_Form}`} id="new-event-modal-form"
-                  onSubmit={(e) => handleEventFormInput(e, modalState.setValue, (v) => setIsTitleError(v), (v) => setIsTimeError(v), eventsListState)}>
+                  onSubmit={(e) => handleEventFormInput(e, dispatch, (v) => setIsTitleError(v), (v) => setIsTimeError(v))}>
                 <input className={`${CLASSES.EventCreationModal_Body_Form_EventID}`} type="hidden" name="event-id"
-                       value={modalInputState.value.modalEventID}
+                       value={modalInputState.modalEventID}
                        onChange={(e) =>
-                           modalInputState?.setValue((prevState)=> {
-                               const newState: ModalInput = {...prevState};
-                               newState.modalEventID = e.target.value;
-                               return newState;
-                           })} />
+                           dispatch(modalInputModify({modalEventID: e.target.value}))
+                }/>
 
                 <input className={`${CLASSES.EventCreationModal_Body_Form_TitleInput} ${isTitleError ? CLASSES.EventCreationModal_Body_Form_Input_Error : ""}`}
                        id={FORM_IDS.EventTitle} name="event-title"
                        type="text" placeholder="Event title" aria-label="Event title"
-                       value={modalInputState.value.modalEventName}
+                       value={modalInputState.modalEventName}
                        onChange={(e)=> {
-                           modalInputState?.setValue((prevState)=>{
-                               const newState: ModalInput = {...prevState};
-                               newState.modalEventName = e.target.value;
-                               return newState;
-                           });
+                           dispatch(modalInputModify({modalEventName: e.target.value}))
                            setIsTitleError(false);
                        }}/>
 
@@ -45,25 +40,17 @@ export function EventFormModal(){
                     <input className={`${CLASSES.EventCreationModal_Body_Form_EventStartInput} ${isTimeError ? CLASSES.EventCreationModal_Body_Form_Input_Error : ""}`}
                            id={FORM_IDS.EventStart} name="event-start"
                            type="datetime-local" aria-label="Event start"
-                           value={modalInputState.value.modalEventStart}
+                           value={modalInputState.modalEventStart}
                            onChange={(e)=> {
-                               modalInputState?.setValue((prevState)=>{
-                                   const newState: ModalInput = {...prevState};
-                                   newState.modalEventStart = e.target.value;
-                                   return newState;
-                               });
+                               dispatch(modalInputModify({modalEventStart: e.target.value}))
                                setIsTimeError(false);
                            }}/>
                     <input className={`${CLASSES.EventCreationModal_Body_Form_EventEndInput} ${isTimeError ? CLASSES.EventCreationModal_Body_Form_Input_Error : ""}`}
                            id={FORM_IDS.EventEnd} name="event-end"
                            type="datetime-local" aria-label="Event end"
-                           value={modalInputState.value.modalEventEnd}
+                           value={modalInputState.modalEventEnd}
                            onChange={(e)=>{
-                               modalInputState?.setValue((prevState: ModalInput)=>{
-                                   const newState: ModalInput = {...prevState};
-                                   newState.modalEventEnd = e.target.value;
-                                   return newState;
-                               });
+                               dispatch(modalInputModify({modalEventEnd: e.target.value}))
                                setIsTimeError(false);
                            }}/>
                 </div>
@@ -71,21 +58,18 @@ export function EventFormModal(){
                 <span className={`${CLASSES.MaterialSymbolsOutlined}`}>notes</span>
                 <textarea className={`${CLASSES.EventCreationModal_Body_Form_EventDescriptionInput}`} id={FORM_IDS.EventDescription} name="event-description"
                           rows={5} cols={2} placeholder="Add description" aria-label="Event description"
-                          value={modalInputState.value.modalEventDescription}
+                          value={modalInputState.modalEventDescription}
                           onChange={(e)=>
-                              modalInputState?.setValue((prevState: ModalInput)=>{
-                                  const newState: ModalInput = {...prevState};
-                                  newState.modalEventDescription = e.target.value;
-                                  return newState;
-                          })}></textarea>
+                              dispatch(modalInputModify({modalEventDescription: e.target.value}))
+                }></textarea>
 
                 <div className={`${CLASSES.EventCreationModal_Body_Form_Buttons}`}>
                     <button className={`${CLASSES.EventCreationModal_Body_Form_Buttons_Close}`}
                             onClick={(event)=>{
-                                event?.preventDefault()
-                                modalState?.setValue(false);
+                                event?.preventDefault();
+                                dispatch(modalStateHide());
                             }}>Cancel</button>
-                    {modalInputState.value.isModalEventExisting && <input type="submit" className={`${CLASSES.EventCreationModal_Body_Form_Buttons_Delete}`} value="Delete"/>}
+                    {modalInputState.isModalEventExisting && <input type="submit" className={`${CLASSES.EventCreationModal_Body_Form_Buttons_Delete}`} value="Delete"/>}
                     <input type="submit" className={`${CLASSES.EventCreationModal_Body_Form_Buttons_Submit}`} value="Save"/>
                 </div>
             </form>
@@ -106,7 +90,7 @@ function extractFormData(formData: FormData) {
     return eventData;
 }
 
-async function dispatchEvent(eventData: EventFormData, eventsListContext: StateContext<CalendarEvent[]>) {
+async function dispatchEvent(eventData: EventFormData, dispatch: ThunkDispatch<any, any, any>) {
     const calendarEvent: CalendarEvent = {
         eventId: eventData.eventId === undefined ? performance.now().toString() : eventData.eventId,
         eventName: eventData.eventName,
@@ -117,26 +101,15 @@ async function dispatchEvent(eventData: EventFormData, eventsListContext: StateC
     if (eventData.eventId === "") {
         calendarEvent.eventId = performance.now().toString();
         await addEvent(calendarEvent);
-        eventsListContext.setValue((prevState)=>{
-            const newState = [...prevState];
-            newState.push(calendarEvent);
-            return newState;
-        });
+        dispatch(eventListAdd(calendarEvent));
     } else if (eventData.eventId !== undefined) {
         await modifyEvent(calendarEvent);
-        eventsListContext?.setValue((prevState)=>{
-            const newState = [...prevState];
-            const matchingEventIndex = newState.findIndex(
-                (event)=> event.eventId === calendarEvent.eventId
-            );
-            newState[matchingEventIndex] = calendarEvent;
-            return newState;
-        });
+        dispatch(eventListModify(calendarEvent));
     }
 }
 
-async function handleEventFormInput(event: SyntheticEvent, setIsModalActive: Dispatch<SetStateAction<boolean>>,
-                              setIsTitleError: (value: boolean) => void, setIsTimeError: (value: boolean) => void, eventsListContext: StateContext<CalendarEvent[]>)
+async function handleEventFormInput(event: SyntheticEvent, dispatch: ThunkDispatch<any, any, any>,
+                              setIsTitleError: (value: boolean) => void, setIsTimeError: (value: boolean) => void)
 {
     event.preventDefault();
     const formData: FormData = new FormData(event.target as HTMLFormElement);
@@ -145,20 +118,15 @@ async function handleEventFormInput(event: SyntheticEvent, setIsModalActive: Dis
     const isDeleteButton = eventSubmitter?.classList.contains(CLASSES.EventCreationModal_Body_Form_Buttons_Delete);
     if (isDeleteButton) {
         await removeEvent(eventData.eventId);
-        eventsListContext.setValue((prevState)=>{
-            const newState = [...prevState];
-            const eventIndex = newState.findIndex((event)=>event.eventId === eventData.eventId);
-            newState.splice(eventIndex, 1);
-            return newState;
-        })
-        setIsModalActive(false);
+        dispatch(eventListRemoveByID(eventData.eventId))
+        dispatch(modalStateHide());
         return;
     }
     const validationResult = validateForm(eventData);
     switch (validationResult.type){
         case "success":
-            setIsModalActive(false);
-            await dispatchEvent(eventData, eventsListContext);
+            dispatch(modalStateHide());
+            await dispatchEvent(eventData, dispatch);
             break;
         case "error":
             switch (validationResult.error){

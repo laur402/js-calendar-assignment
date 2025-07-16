@@ -1,17 +1,22 @@
 import React from "react";
-import {CLASSES, getWeekdaysByLocale, LOAD_TIME} from "../../constants";
-import {SidebarCalendarMonthOffsetContext, useStateContext, WeekViewWeekOffsetContext} from "../contexts";
+import {CLASSES, LOAD_TIME} from "../../constants";
 import {
     addDays,
     cycleArray,
     getFirstDayOfMonth,
     getFirstDayOfWeek,
     getLastDayOfMonth,
-    getLastDayOfWeek, getWeekDifference, isSameMonth, toYearMonthString
+    getWeekDifference, isSameMonth, toYearMonthString, getWeekdayLabelsByLocale
 } from "../../helper-functions";
+import {useAppDispatch, useAppSelector} from "../redux/hooks";
+import {
+    sidebarCalendarMonthOffsetDecrement,
+    sidebarCalendarMonthOffsetIncrement
+} from "../redux/sidebarCalendarMonthOffsetSlice";
+import {weekViewWeekOffsetSet} from "../redux/weekViewWeekOffsetSlice";
 
 export function SidebarCalendarModule(){
-    const monthOffsetState = useStateContext(SidebarCalendarMonthOffsetContext);
+    const dispatch = useAppDispatch();
     const monthOffsetDate = getSidebarCalendarMonthOffsetDate();
     const firstDay: Date = getFirstDayOfMonth(new Date(monthOffsetDate));
     const lastDay: Date = getLastDayOfMonth(new Date(monthOffsetDate));
@@ -28,7 +33,7 @@ export function SidebarCalendarModule(){
                         ${CLASSES.Button_Borderless} \
                         ${CLASSES.MaterialSymbolsOutlined}`}
                         onClick={()=>{
-                            monthOffsetState.setValue((prevValue)=>prevValue - 1);
+                            dispatch(sidebarCalendarMonthOffsetDecrement())
                         }}>
                         chevron_left
                     </button>
@@ -38,13 +43,13 @@ export function SidebarCalendarModule(){
                         ${CLASSES.Button_Borderless} \
                         ${CLASSES.MaterialSymbolsOutlined}`}
                         onClick={()=>{
-                            monthOffsetState.setValue((prevValue)=>prevValue + 1);
+                            dispatch(sidebarCalendarMonthOffsetIncrement());
                         }}>
                         chevron_right
                     </button>
                 </div>
             </div>
-            {cycleArray(getWeekdaysByLocale("narrow"), -1).map((weekday, index)=>{
+            {cycleArray(getWeekdayLabelsByLocale("narrow"), -1).map((weekday, index)=>{
                 return <div key={index} className={CLASSES.CalendarModule_WeekDayRowCell}>
                     {weekday}
                 </div>
@@ -65,8 +70,7 @@ export function SidebarCalendarModule(){
 }
 
 function SidebarCalendarLabelButton({date, weekOffset, isCurrentMonth}:{date: Date, weekOffset: number, isCurrentMonth: boolean}) {
-    const weekViewWeekOffsetState = useStateContext(WeekViewWeekOffsetContext);
-
+    const dispatch = useAppDispatch();
     return (
         <button
             className={`${CLASSES.CalendarModule_DayCell} \
@@ -74,7 +78,7 @@ function SidebarCalendarLabelButton({date, weekOffset, isCurrentMonth}:{date: Da
             ${CLASSES.Button_Borderless} \
             ${isCurrentMonth ? "" : CLASSES.CalendarModule_DayCell_NotCurrent}`}
             onClick={() => {
-                weekViewWeekOffsetState?.setValue(weekOffset);
+                dispatch(weekViewWeekOffsetSet(weekOffset));
             }}>
             {date.getDate()}
         </button>
@@ -87,6 +91,6 @@ function getSidebarCalendarMonthOffsetDate(){
     return currentMonth;
 }
 function getSidebarCalendarMonthOffset(){
-    const monthOffsetState = useStateContext(SidebarCalendarMonthOffsetContext);
-    return monthOffsetState?.value;
+    const monthOffsetState = useAppSelector(state=>state.sidebarCalendarMonthOffset);
+    return monthOffsetState.value;
 }

@@ -1,25 +1,26 @@
 import React from "react";
-import {ModalInputContext, ModalStateContext, useStateContext} from "./contexts";
 import {addHours, toISOLocaleString} from "../helper-functions";
 import {LOAD_TIME} from "../constants";
 import {SidebarCalendarModule} from "./components/SidebarCalendarModule";
+import {useAppDispatch} from "./redux/hooks";
+import {modalStateShow} from "./redux/modalStateSlice";
+import {modalInputModify} from "./redux/modalInputSlice";
 
 export function Aside() {
-    const modalState = useStateContext(ModalStateContext);
-    const modalInputState = useStateContext(ModalInputContext);
+    const dispatch = useAppDispatch();
     return (
         <aside className="aside">
             <button className="create-event-button new-event-modal-caller"
                     onClick={()=>{
-                        modalState?.setValue(true);
-                        modalInputState?.setValue({
+                        dispatch(modalStateShow());
+                        dispatch(modalInputModify({
                             modalEventID: "",
                             modalEventName: "",
                             modalEventStart: toISOLocaleString(new Date()),
                             modalEventEnd: toISOLocaleString(addHours(new Date(), 1)),
                             modalEventDescription: "",
                             isModalEventExisting: false
-                        })
+                        }));
             }}><span
                 className="material-symbols-outlined">add</span><span>Create Event</span></button>
             <SidebarCalendarModule />

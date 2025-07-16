@@ -1,13 +1,14 @@
 import React, {useContext} from "react";
 import {CSSProperties} from "react";
-import {ModalInputContext, ModalStateContext} from "../contexts";
 import {isSameDay, toISOLocaleString} from "../../helper-functions";
 import {ATTRIBUTES, CLASSES, THREE_LETTER_MONTHS} from "../../constants";
 import {CalendarEvent} from "../../event-storage";
+import {useAppDispatch} from "../redux/hooks";
+import {modalStateShow} from "../redux/modalStateSlice";
+import {modalInputModify} from "../redux/modalInputSlice";
 
 export function EventElement({calendarEvent, elementSettings}:{calendarEvent: CalendarEvent, elementSettings: EventElementSettings}){
-    const modalContext = useContext(ModalStateContext);
-    const modalInputContext = useContext(ModalInputContext);
+    const dispatch = useAppDispatch();
     let startTimeText: string = calendarEvent.eventStart.toTimeString().split(":").slice(0, 2).join(":");
     let endTimeText: string = calendarEvent.eventEnd.toTimeString().split(":").slice(0, 2).join(":");
     if (!isSameDay(calendarEvent.eventStart, calendarEvent.eventEnd)) {
@@ -20,15 +21,15 @@ export function EventElement({calendarEvent, elementSettings}:{calendarEvent: Ca
              {...{[ATTRIBUTES.EventID]: calendarEvent.eventId}}
              style={elementSettings.elementStyles}
              onClick={()=>{
-                 modalContext?.setValue(true);
-                 modalInputContext?.setValue({
+                 dispatch(modalStateShow());
+                 dispatch(modalInputModify({
                      modalEventID: calendarEvent.eventId,
                      modalEventName: calendarEvent.eventName,
                      modalEventDescription: calendarEvent.eventDescription,
                      modalEventStart: toISOLocaleString(calendarEvent.eventStart),
                      modalEventEnd: toISOLocaleString(calendarEvent.eventEnd),
                      isModalEventExisting: true
-                 })
+                 }))
                  /*await inputFillingByID(calendarEvent.eventId);*/
              }}>
             <div className={CLASSES.WeekView_CalendarEventOverlay_EventBox_EventTitle}

@@ -1,10 +1,12 @@
-export const THREE_LETTER_MONTHS: readonly string[] = getMonthsByLocale("short");
+import {getMonthLabelsByLocale, getWeekdayLabelsByLocale} from "./helper-functions";
+
+export const THREE_LETTER_MONTHS: readonly string[] = getMonthLabelsByLocale("short");
 export const TIME_IN_A_WEEK_MS: number = 7 * 24 * 60 * 60 * 1000;
 export const TIME_IN_A_DAY_MS: number = 24 * 60 * 60 * 1000; //ms in a day
 export const TIME_IN_AN_HOUR_MS: number = 60 * 60 * 1000;
 export const TIME_IN_A_MINUTE_MS: number = 60 * 1000;
-export const MONTHS: readonly string[] = getMonthsByLocale("long");
-export const THREE_LETTER_WEEK_DAYS: readonly string[] = getWeekdaysByLocale("short").map((value) => value.toUpperCase());
+export const MONTHS: readonly string[] = getMonthLabelsByLocale("long");
+export const THREE_LETTER_WEEK_DAYS: readonly string[] = getWeekdayLabelsByLocale("short").map((value) => value.toUpperCase());
 export const LOAD_TIME: Date = new Date();
 
 export enum WeekDays {
@@ -15,19 +17,6 @@ export enum WeekDays {
     "Thursday",
     "Friday",
     "Saturday"
-}
-
-export type DateTimeFormatOptionsMonths = "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined;
-export function getMonthsByLocale(monthFormat: DateTimeFormatOptionsMonths = "numeric", locale?: string) {
-    const format = new Intl.DateTimeFormat(locale, {month: monthFormat});
-    return [...Array(12).keys()]
-        .map((value) => format.format(new Date(2000, value, 1)));
-}
-export type DateTimeFormatOptionsWeekdays = "long" | "short" | "narrow" | undefined;
-export function getWeekdaysByLocale(weekdayFormat: DateTimeFormatOptionsWeekdays, locale?: string) {
-    const format = new Intl.DateTimeFormat(locale, {weekday: weekdayFormat});
-    return [...Array(7).keys()]
-        .map((value) => format.format(new Date().getTime() - (new Date().getDay() - value) * TIME_IN_A_DAY_MS));
 }
 
 export enum CLASSES {

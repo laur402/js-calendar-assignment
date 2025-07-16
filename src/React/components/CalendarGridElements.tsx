@@ -1,7 +1,9 @@
 import React from "react";
 import {addHours, leftPad, toISOLocaleString} from "../../helper-functions";
 import {CLASSES} from "../../constants";
-import {EventListContext, ModalInputContext, ModalStateContext, useStateContext} from "../contexts";
+import {useAppDispatch} from "../redux/hooks";
+import {modalStateShow} from "../redux/modalStateSlice";
+import {modalInputModify} from "../redux/modalInputSlice";
 
 export function CalendarGridColumn({hoursInADay, associatedDate}:{hoursInADay: number, associatedDate: Date}){
     return (
@@ -25,21 +27,20 @@ export function CalendarGridTimeColumn({hoursInADay}:{hoursInADay: number}) {
 }
 
 function CalendarGridColumnCell({associatedDate}:{associatedDate: Date}) {
-    const modalState = useStateContext(ModalStateContext);
-    const modalInputState = useStateContext(ModalInputContext);
+    const dispatch = useAppDispatch();
     return (
         <div className={CLASSES.WeekView_CalendarGrid_CalendarColumn_Cell}>
             <button className={CLASSES.WeekView_CalendarGrid_CalendarColumn_Cell_Button}
                     onClick={()=>{
-                        modalState?.setValue(true);
-                        modalInputState?.setValue({
+                        dispatch(modalStateShow());
+                        dispatch((modalInputModify({
                             modalEventID: "",
                             modalEventName: "",
                             modalEventStart: toISOLocaleString(associatedDate),
                             modalEventEnd: toISOLocaleString(addHours(associatedDate, 1)),
                             modalEventDescription: "",
                             isModalEventExisting: false
-                        })
+                        })))
                     }}></button>
         </div>
     );

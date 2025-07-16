@@ -101,7 +101,7 @@ export type CalendarEvent = {
     eventDescription: string;
 }
 type APIResponseEvent = {
-    id: string,
+    id: string;
     eventName: string;
     eventStart: Date;
     eventEnd: Date;

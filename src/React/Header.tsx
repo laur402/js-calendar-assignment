@@ -1,12 +1,17 @@
 import React from "react";
-import {SidebarCalendarMonthOffsetContext, useStateContext, WeekViewWeekOffsetContext} from "./contexts";
 import {CLASSES, MONTHS} from "../constants";
 import {getWeekViewWeekOffsetDate} from "./WeekView";
 import {getFirstDayOfWeek, getLastDayOfWeek} from "../helper-functions";
+import {useAppDispatch} from "./redux/hooks";
+import {
+    weekViewWeekOffsetDecrement,
+    weekViewWeekOffsetIncrement,
+    weekViewWeekOffsetSet
+} from "./redux/weekViewWeekOffsetSlice";
+import {sidebarCalendarMonthOffsetSet} from "./redux/sidebarCalendarMonthOffsetSlice";
 
 export function Header() {
-    const weekOffsetState = useStateContext(WeekViewWeekOffsetContext);
-    const monthOffsetState = useStateContext(SidebarCalendarMonthOffsetContext);
+    const dispatch = useAppDispatch();
     return (
         <header className={CLASSES.Header}>
             <div className={CLASSES.Header_AppTitle}>
@@ -16,18 +21,18 @@ export function Header() {
             <div className={CLASSES.Header_Buttons}>
                 <button className={`${CLASSES.Header_Buttons_Today} ${CLASSES.Button_Backgroundless}`}
                         onClick={async () => {
-                            weekOffsetState?.setValue(0);
-                            monthOffsetState?.setValue(0);
+                            dispatch(weekViewWeekOffsetSet(0));
+                            dispatch(sidebarCalendarMonthOffsetSet(0));
                 }}>Today</button>
                 <button className={`${CLASSES.Header_Buttons_WeekLeft} ${CLASSES.Button_Backgroundless} ${CLASSES.Button_Borderless} ${CLASSES.MaterialSymbolsOutlined}`}
                         onClick={async ()=>{
-                            weekOffsetState?.setValue(weekOffsetState?.value - 1);
+                            dispatch(weekViewWeekOffsetDecrement());
                         }}>
                     chevron_left
                 </button>
                 <button className={`${CLASSES.Header_Buttons_WeekRight} ${CLASSES.Button_Backgroundless} ${CLASSES.Button_Borderless} ${CLASSES.MaterialSymbolsOutlined}`}
                         onClick={async () => {
-                            weekOffsetState?.setValue(weekOffsetState?.value + 1);
+                            dispatch(weekViewWeekOffsetIncrement());
                         }}>
                     chevron_right
                 </button>

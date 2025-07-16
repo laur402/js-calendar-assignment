@@ -12,12 +12,14 @@ import {
 } from "../helper-functions";
 import {CLASSES, LOAD_TIME, THREE_LETTER_WEEK_DAYS, TIME_IN_A_WEEK_MS} from "../constants";
 import {CurrentTimeGraphic} from "./components/CurrentTimeGraphic";
-import {EventListContext, useStateContext, WeekViewWeekOffsetContext} from "./contexts";
 import {CalendarEvent, fetchEvents} from "../event-storage";
 import {EventElement, EventElementSettings} from "./components/EventElement";
+import {useAppDispatch, useAppSelector} from "./redux/hooks";
+import {eventListSetList, getCalendarEvents} from "./redux/eventListSlice";
 
 export function WeekView() {
-    const eventsListState = useStateContext(EventListContext);
+    const dispatch = useAppDispatch();
+    const eventsListState = useAppSelector(getCalendarEvents);
     const timezoneOffset = getTimezone(LOAD_TIME);
     const timezoneOffsetString = leftPad(timezoneOffset, 2);
     const hoursInADay = 24;
@@ -26,7 +28,7 @@ export function WeekView() {
     useEffect(()=>{
         const fetchEventsFromAPI = async ()=>{
             const fetchedEvents = await fetchEvents();
-            eventsListState.setValue(fetchedEvents);
+            dispatch(eventListSetList(fetchedEvents));
         }
         fetchEventsFromAPI();
     }, []);
@@ -77,8 +79,8 @@ export function getWeekViewWeekOffsetDate(){
     return new Date(LOAD_TIME.getTime() + getWeekOffset() * TIME_IN_A_WEEK_MS);
 }
 function getWeekOffset() {
-    const weekState = useStateContext(WeekViewWeekOffsetContext);
-    return weekState?.value;
+    const weekState = useAppSelector(state=>state.weekViewWeekOffset);
+    return weekState.value;
 }
 function getCalendarDates(offsetDate: Date) {
     return [...Array(7).keys()].map(value => {

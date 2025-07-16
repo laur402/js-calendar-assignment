@@ -1,4 +1,4 @@
-import {Context, createContext, Dispatch, SetStateAction, useContext} from "react";
+/*import {Context, createContext, Dispatch, SetStateAction, useContext} from "react";
 import {ModalInput} from "./Body";
 import {CalendarEvent} from "../event-storage";
 
@@ -16,4 +16,4 @@ export function useStateContext<T>(stateContext: Context<T>){
 export interface StateContext<T> {
     value: T,
     setValue: Dispatch<SetStateAction<T>>
-}
+}*/
