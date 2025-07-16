@@ -1,4 +1,4 @@
-import {MONTHS, TIME_IN_A_DAY_MS, TIME_IN_AN_HOUR_MS} from "./constants";
+import {MONTHS, TIME_IN_A_DAY_MS, TIME_IN_A_WEEK_MS, TIME_IN_AN_HOUR_MS} from "./constants";
 
 export function leftPad<T>(input: T, size: number = 2): string{
     let s: string = String(input);
@@ -7,7 +7,7 @@ export function leftPad<T>(input: T, size: number = 2): string{
     }
     return s;
 }
-export function toISOLocaleString (date: Date): string {
+export function toISOLocaleString(date: Date): string {
     return `${date.getFullYear()}-${leftPad((date.getMonth()+1),2)}-${leftPad(date.getDate(),2)}T${leftPad(date.getHours(),2)}:${leftPad(date.getMinutes(),2)}`;
 }
 export function getFirstDayOfWeek(date: Date): Date {
@@ -55,6 +55,13 @@ export function isSameDay(date1: Date, date2: Date): boolean {
     const time2 = getNormalizedLocalDate(date2modified).getTime();
     return time1 === time2;
 }
+export function isSameMonth(date1: Date, date2: Date): boolean {
+    const date1modified = new Date(date1);
+    const date2modified = new Date(date2);
+    const time1 = toYearMonthString(getNormalizedLocalDate(date1modified));
+    const time2 = toYearMonthString(getNormalizedLocalDate(date2modified));
+    return time1 === time2;
+}
 export function isDuringATime (startDate: Date, endDate: Date, comparisonPointDate: Date): boolean {
     const startTime = getNormalizedLocalDate(startDate).getTime();
     const endTime = getNormalizedLocalDate(endDate).getTime();
@@ -89,6 +96,17 @@ export function getTimePercentageOfDay(date: Date){
 }
 export function toReactISOString(date: Date){
     return date.toISOString().split("Z").slice(0, -1).join("Z");
+}
+// Moves 'cycleBy' number of elements from end to start. If negative, moves from start to end.
+export function cycleArray<T>(array: T[], cycleBy: number){
+    const newArray = [...array];
+    const cutElements = newArray.splice(-cycleBy);
+    return [...cutElements, ...newArray];
+}
+export function getWeekDifference(startDate: Date, endDate: Date) {
+    const startWeekTime = getFirstDayOfWeek(getNormalizedLocalDate(startDate)).getTime();
+    const endWeekTime = getFirstDayOfWeek(getNormalizedLocalDate(endDate)).getTime();
+    return Math.floor((endWeekTime - startWeekTime)/TIME_IN_A_WEEK_MS);
 }
 
 export async function asyncTryCatch<T>(operation: () => Promise<T>, defaultValue: T, errorFunction?: () => void): Promise<T> {
