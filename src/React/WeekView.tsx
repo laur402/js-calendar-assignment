@@ -3,7 +3,7 @@ import {CalendarGridColumn, CalendarGridTimeColumn} from "./components/CalendarG
 import {WeekViewHeaderDate} from "./components/WeekViewHeaderDate";
 import {
     addDays,
-    getDaySpan,
+    getDayDifference,
     getFirstDayOfWeek,
     getNormalizedLocalDate, getTimePercentageOfDay,
     getTimezone, isDuringATime,

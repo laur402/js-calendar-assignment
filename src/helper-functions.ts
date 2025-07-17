@@ -1,6 +1,7 @@
-import {MONTHS, TIME_IN_A_DAY_MS, TIME_IN_A_WEEK_MS, TIME_IN_AN_HOUR_MS} from "./constants";
+import {MONTHS, TIME_IN_A_DAY_MS, TIME_IN_A_WEEK_MS, TIME_IN_AN_HOUR_MS, WeekDays} from "./constants";
 
 export function leftPad<T>(input: T, size: number = 2): string{
+    if (!Number.isFinite(size)) throw new Error("Size not finite.");
     let s: string = String(input);
     while (s.length < size) {
         s = "0" + s;
@@ -10,16 +11,16 @@ export function leftPad<T>(input: T, size: number = 2): string{
 export function toISOLocaleString(date: Date): string {
     return `${date.getFullYear()}-${leftPad((date.getMonth()+1),2)}-${leftPad(date.getDate(),2)}T${leftPad(date.getHours(),2)}:${leftPad(date.getMinutes(),2)}`;
 }
-export function getFirstDayOfWeek(date: Date): Date {
+export function getFirstDayOfWeek(date: Date, firstDay: WeekDays = WeekDays.Monday): Date {
     const firstDayOfTheWeek: Date = new Date(date);
-    while (firstDayOfTheWeek.getDay() !== 1){
+    while (firstDayOfTheWeek.getDay() !== firstDay){
         firstDayOfTheWeek.setDate(firstDayOfTheWeek.getDate() - 1);
     }
     return firstDayOfTheWeek;
 }
-export function getLastDayOfWeek(date: Date): Date {
+export function getLastDayOfWeek(date: Date, lastDay: WeekDays = WeekDays.Sunday): Date {
     const lastDayOfTheWeek: Date = new Date(date);
-    while (lastDayOfTheWeek.getDay() !== 0){
+    while (lastDayOfTheWeek.getDay() !== lastDay){
         lastDayOfTheWeek.setDate(lastDayOfTheWeek.getDate() + 1);
     }
     return lastDayOfTheWeek;
@@ -86,40 +87,36 @@ export function getTimezone(date: Date): number {
 export function getDateString(date: Date): string {
     return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 }
-export function getDaySpan(startDate: Date, endDate: Date){
-    const msDifference = getNormalizedLocalDate(endDate).getTime() - getNormalizedLocalDate(startDate).getTime();
-    return msDifference / TIME_IN_A_DAY_MS;
+export function getDayDifference(startDate: Date, endDate: Date, roundingPrecision: number = 0): number {
+    const msDifference = endDate.getTime() - startDate.getTime();
+    const preciseDayDifference = msDifference / TIME_IN_A_DAY_MS;
+    return Math.floor(preciseDayDifference * Math.pow(10, roundingPrecision)) / Math.pow(10, roundingPrecision);
 }
-export function getTimePercentageOfDay(date: Date){
+export function getDaySpan(startDate: Date, endDate: Date): number {
+    return Math.abs(getDayDifference(startDate, endDate));
+}
+export function getTimePercentageOfDay(date: Date, roundingPrecision: number = 0): number{
     const timeOfDay: number = date.getTime() - getNormalizedLocalDate(date).getTime(); //ms from start of day
-    return timeOfDay / TIME_IN_A_DAY_MS * 100;
+    const precisePercentage = timeOfDay / TIME_IN_A_DAY_MS * 100
+    return Math.round(precisePercentage * Math.pow(10, roundingPrecision)) / Math.pow(10, roundingPrecision);
 }
 export function toReactISOString(date: Date){
     return date.toISOString().split("Z").slice(0, -1).join("Z");
 }
 // Moves 'cycleBy' number of elements from end to start. If negative, moves from start to end.
 export function cycleArray<T>(array: T[], cycleBy: number){
+    const cycleByCapped = cycleBy % array.length;
     const newArray = [...array];
-    const cutElements = newArray.splice(-cycleBy);
+    const cutElements = newArray.splice(-cycleByCapped);
     return [...cutElements, ...newArray];
 }
-export function getWeekDifference(startDate: Date, endDate: Date) {
+export function getWeekDifference(startDate: Date, endDate: Date): number {
     const startWeekTime = getFirstDayOfWeek(getNormalizedLocalDate(startDate)).getTime();
     const endWeekTime = getFirstDayOfWeek(getNormalizedLocalDate(endDate)).getTime();
     return Math.floor((endWeekTime - startWeekTime)/TIME_IN_A_WEEK_MS);
 }
-
-export type DateTimeFormatOptionsMonths = "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined;
-export function getMonthLabelsByLocale(monthFormat: DateTimeFormatOptionsMonths = "numeric", locale?: string) {
-    const format = new Intl.DateTimeFormat(locale, {month: monthFormat});
-    return [...Array(12).keys()]
-        .map((value) => format.format(new Date(2000, value, 1)));
-}
-export type DateTimeFormatOptionsWeekdays = "long" | "short" | "narrow" | undefined;
-export function getWeekdayLabelsByLocale(weekdayFormat: DateTimeFormatOptionsWeekdays, locale?: string) {
-    const format = new Intl.DateTimeFormat(locale, {weekday: weekdayFormat});
-    return [...Array(7).keys()]
-        .map((value) => format.format(new Date().getTime() - (new Date().getDay() - value) * TIME_IN_A_DAY_MS));
+export function getWeekSpan(startDate: Date, endDate: Date): number {
+    return Math.abs(getWeekDifference(startDate, endDate));
 }
 
 export async function asyncTryCatch<T>(operation: () => Promise<T>, defaultValue: T, errorFunction?: () => void): Promise<T> {

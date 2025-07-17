@@ -1,5 +1,3 @@
-import {getMonthLabelsByLocale, getWeekdayLabelsByLocale} from "./helper-functions";
-
 export const THREE_LETTER_MONTHS: readonly string[] = getMonthLabelsByLocale("short");
 export const TIME_IN_A_WEEK_MS: number = 7 * 24 * 60 * 60 * 1000;
 export const TIME_IN_A_DAY_MS: number = 24 * 60 * 60 * 1000; //ms in a day
@@ -102,4 +100,17 @@ export enum FORM_IDS {
     EventEnd = "event-end",
     EventTitle = "event-title",
     EventDescription = "event-description",
+}
+
+export type DateTimeFormatOptionsMonths = "numeric" | "2-digit" | "long" | "short" | "narrow" | undefined;
+export function getMonthLabelsByLocale(monthFormat: DateTimeFormatOptionsMonths = "numeric", locale?: string) {
+    const format = new Intl.DateTimeFormat(locale, {month: monthFormat});
+    return [...Array(12).keys()]
+        .map((value) => format.format(new Date(2000, value, 1)));
+}
+export type DateTimeFormatOptionsWeekdays = "long" | "short" | "narrow" | undefined;
+export function getWeekdayLabelsByLocale(weekdayFormat: DateTimeFormatOptionsWeekdays, locale?: string) {
+    const format = new Intl.DateTimeFormat(locale, {weekday: weekdayFormat});
+    return [...Array(7).keys()]
+        .map((value) => format.format(new Date().getTime() - (new Date().getDay() - value) * TIME_IN_A_DAY_MS));
 }
