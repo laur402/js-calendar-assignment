@@ -1,13 +1,13 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface SidebarCalendarMonthOffset {
-    value: number
+    value: number;
 }
 const initialState: SidebarCalendarMonthOffset = {
-    value: 0
-}
+    value: 0,
+};
 const sidebarCalendarMonthOffsetSlice = createSlice({
-    name: "sidebarCalendarMonthOffset",
+    name: 'sidebarCalendarMonthOffset',
     initialState: initialState,
     reducers: {
         sidebarCalendarMonthOffsetIncrement: state => {
@@ -16,10 +16,17 @@ const sidebarCalendarMonthOffsetSlice = createSlice({
         sidebarCalendarMonthOffsetDecrement: state => {
             state.value -= 1;
         },
-        sidebarCalendarMonthOffsetSet: (state, action: PayloadAction<number>) => {
+        sidebarCalendarMonthOffsetSet: (
+            state,
+            action: PayloadAction<number>,
+        ) => {
             state.value = action.payload;
-        }
-    }
+        },
+    },
 });
-export const {sidebarCalendarMonthOffsetIncrement, sidebarCalendarMonthOffsetDecrement, sidebarCalendarMonthOffsetSet} = sidebarCalendarMonthOffsetSlice.actions;
+export const {
+    sidebarCalendarMonthOffsetIncrement,
+    sidebarCalendarMonthOffsetDecrement,
+    sidebarCalendarMonthOffsetSet,
+} = sidebarCalendarMonthOffsetSlice.actions;
 export default sidebarCalendarMonthOffsetSlice.reducer;

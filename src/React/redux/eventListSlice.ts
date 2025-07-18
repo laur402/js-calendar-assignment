@@ -1,21 +1,21 @@
-import {CalendarEvent} from "../../event-storage";
-import {createAction, createReducer, createSelector, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {RootState} from "./store";
+import { CalendarEvent } from '../../event-storage';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { RootState } from './store';
 
 type ReduxCalendarEvent = {
     [K in keyof CalendarEvent]: string;
-}
+};
 export interface ReduxEventList {
     value: ReduxCalendarEvent[];
 }
 export interface EventList {
-    value: CalendarEvent[]
+    value: CalendarEvent[];
 }
 const initialState: ReduxEventList = {
-    value: []
-}
+    value: [],
+};
 const eventListSlice = createSlice({
-    name: "eventList",
+    name: 'eventList',
     initialState: initialState,
     reducers: {
         eventListSetList: {
@@ -23,9 +23,11 @@ const eventListSlice = createSlice({
                 state.value = action.payload;
             },
             prepare: (events: CalendarEvent[]) => {
-                const newEvents = events.map((event)=>calendarEventToReduxCalendarEvent(event));
+                const newEvents = events.map(event =>
+                    calendarEventToReduxCalendarEvent(event),
+                );
                 return {
-                    payload: newEvents
+                    payload: newEvents,
                 };
             },
         },
@@ -35,57 +37,66 @@ const eventListSlice = createSlice({
             },
             prepare: (event: CalendarEvent) => {
                 return {
-                    payload: calendarEventToReduxCalendarEvent(event)
+                    payload: calendarEventToReduxCalendarEvent(event),
                 };
-            }
+            },
         },
         eventListRemoveByID: (state, action: PayloadAction<string>) => {
             const index = state.value.findIndex(
-                (event)=>
-                    event.eventId === action.payload
+                event => event.eventId === action.payload,
             );
             state.value.splice(index, 1);
         },
         eventListModify: {
             reducer: (state, action: PayloadAction<ReduxCalendarEvent>) => {
                 const index = state.value.findIndex(
-                    (event)=>
-                        event.eventId === action.payload.eventId
+                    event => event.eventId === action.payload.eventId,
                 );
                 state.value[index] = action.payload;
             },
             prepare: (event: CalendarEvent) => {
                 return {
-                    payload: calendarEventToReduxCalendarEvent(event)
+                    payload: calendarEventToReduxCalendarEvent(event),
                 };
-            }
-        }
-    }
+            },
+        },
+    },
 });
 
 const getReduxCalendarEvents = (state: RootState) => state.eventList.value;
 export const getCalendarEvents = createSelector(
     getReduxCalendarEvents,
-    (reduxEvents)=> {
+    reduxEvents => {
         return {
-            value: reduxEvents.map(event => reduxCalendarEventToCalendarEvent(event))
-        }
-    }
-)
-export const {eventListSetList, eventListAdd, eventListRemoveByID, eventListModify} = eventListSlice.actions;
-export default eventListSlice.reducer
+            value: reduxEvents.map(event =>
+                reduxCalendarEventToCalendarEvent(event),
+            ),
+        };
+    },
+);
+export const {
+    eventListSetList,
+    eventListAdd,
+    eventListRemoveByID,
+    eventListModify,
+} = eventListSlice.actions;
+export default eventListSlice.reducer;
 
-function calendarEventToReduxCalendarEvent(event: CalendarEvent): ReduxCalendarEvent {
+function calendarEventToReduxCalendarEvent(
+    event: CalendarEvent,
+): ReduxCalendarEvent {
     return {
         ...event,
         eventStart: event.eventStart.getTime().toString(),
-        eventEnd: event.eventEnd.getTime().toString()
-    }
+        eventEnd: event.eventEnd.getTime().toString(),
+    };
 }
-function reduxCalendarEventToCalendarEvent(event: ReduxCalendarEvent): CalendarEvent {
+function reduxCalendarEventToCalendarEvent(
+    event: ReduxCalendarEvent,
+): CalendarEvent {
     return {
         ...event,
         eventStart: new Date(Number(event.eventStart)),
-        eventEnd: new Date(Number(event.eventEnd))
-    }
+        eventEnd: new Date(Number(event.eventEnd)),
+    };
 }

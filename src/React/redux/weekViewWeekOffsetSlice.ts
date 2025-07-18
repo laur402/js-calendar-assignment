@@ -1,13 +1,13 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface WeekViewWeekOffset {
-    value: number
+    value: number;
 }
 const initialState: WeekViewWeekOffset = {
-    value: 0
-}
+    value: 0,
+};
 const weekViewWeekOffsetSlice = createSlice({
-    name: "weekViewWeekOffset",
+    name: 'weekViewWeekOffset',
     initialState: initialState,
     reducers: {
         weekViewWeekOffsetIncrement: state => {
@@ -18,8 +18,12 @@ const weekViewWeekOffsetSlice = createSlice({
         },
         weekViewWeekOffsetSet: (state, action: PayloadAction<number>) => {
             state.value = action.payload;
-        }
-    }
+        },
+    },
 });
-export const {weekViewWeekOffsetIncrement, weekViewWeekOffsetDecrement, weekViewWeekOffsetSet} = weekViewWeekOffsetSlice.actions
+export const {
+    weekViewWeekOffsetIncrement,
+    weekViewWeekOffsetDecrement,
+    weekViewWeekOffsetSet,
+} = weekViewWeekOffsetSlice.actions;
 export default weekViewWeekOffsetSlice.reducer;

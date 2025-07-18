@@ -1,13 +1,13 @@
-import React, {createContext, ReactNode, useContext, useState} from "react";
-import "../../week-view-layout.css";
-import {EventFormModal} from "./EventFormModal";
-import {Header} from "./Header";
-import {Aside} from "./Aside";
-import {WeekView} from "./WeekView";
-import {Provider} from "react-redux";
-import {store} from "./redux/store";
+import React, { ReactNode } from 'react';
+import '../../week-view-layout.css';
+import { EventFormModal } from './EventFormModal';
+import { Header } from './Header';
+import { Aside } from './Aside';
+import { WeekView } from './WeekView';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
 
-export function Body(){
+export function Body() {
     return (
         <Contexts>
             <EventFormModal />
@@ -20,13 +20,10 @@ export function Body(){
     );
 }
 
-function Contexts({children}:{children: ReactNode}){
+function Contexts({ children }: { children: ReactNode }) {
     return (
         <>
-            <Provider store={store}>
-                {children}
-            </Provider>
+            <Provider store={store}>{children}</Provider>
         </>
     );
 }
-
