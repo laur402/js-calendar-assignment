@@ -9,7 +9,8 @@ ul {
     list-style: none;
 }
 
-* {
+/*:root {
+    font-size: 14px;
     font-family: 'Roboto', sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
@@ -17,8 +18,9 @@ ul {
     font-variation-settings: 'wdth' 100;
     --input-padding: 0.5rem;
 }
+
 .modal {
-    display: flex;
+    display: grid;
     justify-content: center;
     align-items: center;
     min-width: 95dvw;
@@ -26,7 +28,7 @@ ul {
 }
 .modal-content {
     display: grid;
-    grid-template-rows: /*2fr*/ 1fr 1fr 3fr 1fr;
+    grid-template-rows: 1fr 1fr 3fr 1fr;
     grid-template-columns: 0.1fr 1fr;
     grid-gap: 0.5rem 1rem;
     background-color: whitesmoke;
@@ -71,12 +73,13 @@ ul {
         color: dodgerblue;
     }
 
-    display: flex;
+    display: grid;
+    grid-auto-flow: column;
 }
 .modal-content__buttons--submit {
     background-color: dodgerblue;
     border: none;
-    border-radius: 2rem;
+    border-radius: 100000000rem;
     color: white;
     font-weight: bold;
     padding: 0.4rem 0.8rem;
@@ -99,3 +102,4 @@ ul {
         color: red;
     }
 }
+

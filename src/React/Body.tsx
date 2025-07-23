@@ -8,22 +8,22 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 
 export function Body() {
-    return (
-        <Contexts>
-            <EventFormModal />
-            <Header />
-            <main>
-                <Aside />
-                <WeekView />
-            </main>
-        </Contexts>
-    );
+  return (
+    <Contexts>
+      <EventFormModal />
+      <Header />
+      <main>
+        <Aside />
+        <WeekView />
+      </main>
+    </Contexts>
+  );
 }
 
 function Contexts({ children }: { children: ReactNode }) {
-    return (
-        <>
-            <Provider store={store}>{children}</Provider>
-        </>
-    );
+  return (
+    <>
+      <Provider store={store}>{children}</Provider>
+    </>
+  );
 }
