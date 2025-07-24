@@ -2,16 +2,17 @@ import { CLASSES, TIME_IN_A_MINUTE_MS } from '../../../constants';
 import { CurrentTimeGraphic } from './CurrentTimeGraphic';
 import {
   getTimePercentageOfDay,
-  isDuringATime,
+  isOverlappingDateSpans,
   isSameDay,
 } from '../../../helper-functions';
 import { getOverlaps } from '../../weekViewHelperFunctions';
-import React, { useEffect, useState } from 'react';
+import React, { CSSProperties, useEffect, useState } from 'react';
 import { useAppSelector } from '../../redux/hooks';
 import { getCalendarEvents } from '../../redux/eventListSlice';
 import { CalendarDatesPackage } from '../../WeekView';
 import { CalendarEvent } from '../../../event-storage';
 import { EventElement, EventElementSettings } from '../EventElement';
+import { STYLE_VARS } from '../../StyleVariables';
 
 export function WeekViewCalendarGridOverlay({
   headerDates,
@@ -20,7 +21,6 @@ export function WeekViewCalendarGridOverlay({
   headerDates: CalendarDatesPackage[];
   hoursInADay: number;
 }) {
-  const eventsListState = useAppSelector(getCalendarEvents);
   const [currentTimeGraphicTop, setCurrentTimeGraphicTop] = useState(
     getTimePercentageOfDay(new Date()),
   );
@@ -30,49 +30,81 @@ export function WeekViewCalendarGridOverlay({
     }, TIME_IN_A_MINUTE_MS);
     return () => clearInterval(timer);
   });
+  const currentTimeColumn: number | null = headerDates.reduce(
+    (accum: number | null, value, index) => {
+      if (value.isToday) return index;
+      else return accum;
+    },
+    null,
+  );
+  const eventsListState = useAppSelector(getCalendarEvents);
+  const events = getEvents(headerDates, eventsListState.value, hoursInADay);
   return (
-    <div className={CLASSES.WeekView_CalendarEventOverlay}>
-      {headerDates.map((value, index) => {
-        if (value.isToday)
-          return (
-            <CurrentTimeGraphic
-              key={value.normalizedDate.getTime()}
-              style={{
-                position: 'absolute',
-                top: `${currentTimeGraphicTop}%`,
-                gridColumn: `${index + 1} / span 1`,
-              }}
-            />
-          );
-      })}
-      {headerDates.map((dateValue, dateIndex) => {
-        const filteredEvents = eventsListState.value.filter(event => {
-          return isDuringATime(
-            event.eventStart,
-            event.eventEnd,
-            dateValue.normalizedDate,
-          );
-        });
-        return filteredEvents.map((event, index) => {
-          const overlaps = getOverlaps(filteredEvents, index);
-          const eventElementSettings = getEventElementSettings(
-            event,
-            dateIndex + 1,
-            dateValue.normalizedDate,
-            overlaps.length,
-            hoursInADay,
-          );
-          return (
-            <EventElement
-              key={event.eventId}
-              calendarEvent={event}
-              elementSettings={eventElementSettings}
-            />
-          );
-        });
-      })}
+    <div
+      className={CLASSES.WeekView_CalendarEventOverlay}
+      style={EventOverlayStyle}
+    >
+      {currentTimeColumn && (
+        <CurrentTimeGraphic
+          style={{
+            position: 'absolute',
+            top: `${currentTimeGraphicTop}%`,
+            gridColumn: `${currentTimeColumn + 1} / span 1`,
+          }}
+        />
+      )}
+      {events}
     </div>
   );
+}
+
+const EventOverlayStyle: CSSProperties = {
+  gridColumn: 2,
+  gridRow: 1,
+  height: '100%',
+  width: '100%',
+  position: 'relative',
+  pointerEvents: 'none',
+
+  display: 'grid',
+  gridTemplateColumns: STYLE_VARS.columnSize,
+  gridTemplateRows: '1fr',
+  /*--columnGap: 0.5rem,
+columnGap: var(--column-gap),
+padding: 0 calc(var(--column-gap)/2),*/
+};
+
+function getEvents(
+  headerDates: CalendarDatesPackage[],
+  eventsList: CalendarEvent[],
+  hoursInADay: number,
+) {
+  return headerDates.map((dateValue, dateIndex) => {
+    const filteredEvents = eventsList.filter(event =>
+      isOverlappingDateSpans(
+        event.eventStart,
+        event.eventEnd,
+        dateValue.normalizedDate,
+      ),
+    );
+    return filteredEvents.map((event, index) => {
+      const overlaps = getOverlaps(filteredEvents, index);
+      const eventElementSettings = getEventElementSettings(
+        event,
+        dateIndex + 1,
+        dateValue.normalizedDate,
+        overlaps.length,
+        hoursInADay,
+      );
+      return (
+        <EventElement
+          key={event.eventId}
+          calendarEvent={event}
+          elementSettings={eventElementSettings}
+        />
+      );
+    });
+  });
 }
 
 function getEventElementSettings(

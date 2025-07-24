@@ -1,6 +1,6 @@
 'use strict';
 
-import { asyncTryCatch, isDuringATime } from './helper-functions';
+import { asyncTryCatch, isOverlappingDateSpans } from './helper-functions';
 
 export async function addEvent(event: CalendarEvent) {
   const eventToAdd: APIResponseEvent = {
@@ -47,14 +47,10 @@ export async function getEvent(eventId: string): Promise<CalendarEvent | null> {
     `http://localhost:3000/events/${eventId}`,
   );
   if (eventFetch.status === 200) {
-    const eventJSON: APIResponseEvent = JSON.parse(
+    const eventJSON = JSON.parse(
       await eventFetch.text(),
-      (key, value) => {
-        if (key === 'eventStart' || key === 'eventEnd') {
-          return new Date(value);
-        } else return value;
-      },
-    );
+      eventReviver,
+    ) as APIResponseEvent;
     const event: CalendarEvent = {
       eventId: eventJSON.id,
       eventName: eventJSON.eventName,
@@ -75,14 +71,10 @@ export async function fetchEvents(): Promise<CalendarEvent[]> {
   if (eventsFetch === null) return [];
 
   if (eventsFetch.status !== 200) throw new Error('Invalid event server link');
-  const APIEventList: APIResponseEvent[] = JSON.parse(
+  const APIEventList = JSON.parse(
     await eventsFetch.text(),
-    (key, value) => {
-      if (key === 'eventStart' || key === 'eventEnd') {
-        return new Date(value);
-      } else return value;
-    },
-  );
+    eventReviver,
+  ) as APIResponseEvent[];
   const eventList: CalendarEvent[] = APIEventList.map(
     (event: APIResponseEvent) => ({
       eventId: event.id,
@@ -100,24 +92,30 @@ export async function fetchEvents(): Promise<CalendarEvent[]> {
   return eventList;
 }
 
+function eventReviver(key: string, value: string) {
+  if (key === 'eventStart' || key === 'eventEnd') {
+    return new Date(value);
+  } else return value;
+}
+
 export async function getEventsOfDay(date: Date) {
   const events = await fetchEvents();
   return events.filter(value => {
-    return isDuringATime(value.eventStart, value.eventEnd, date);
+    return isOverlappingDateSpans(value.eventStart, value.eventEnd, date);
   });
 }
 
-export type CalendarEvent = {
+export interface CalendarEvent {
   eventId: string;
   eventName: string;
   eventStart: Date;
   eventEnd: Date;
   eventDescription: string;
-};
-type APIResponseEvent = {
+}
+interface APIResponseEvent {
   id: string;
   eventName: string;
   eventStart: Date;
   eventEnd: Date;
   eventDescription: string;
-};
+}

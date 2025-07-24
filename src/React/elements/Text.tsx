@@ -4,9 +4,9 @@ interface TextProps extends React.ComponentPropsWithoutRef<'div'> {
   textSize?: number;
 }
 export function Text(props: TextProps) {
-  const { textSize, ...rest } = props;
+  const { textSize, style, ...rest } = props;
   return (
-    <div style={{ fontSize: `${textSize ?? 1}rem`, ...props.style }} {...rest}>
+    <div style={{ fontSize: `${textSize ?? 1}rem`, ...style }} {...rest}>
       {props.children}
     </div>
   );

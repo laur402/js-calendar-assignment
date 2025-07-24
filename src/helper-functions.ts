@@ -6,9 +6,9 @@ import {
   WeekDays,
 } from './constants';
 
-export function leftPad<T>(input: T, size: number = 2): string {
+export function leftPad<T>(input: T, size = 2): string {
   if (!Number.isFinite(size)) throw new Error('Size not finite.');
-  let s: string = String(input);
+  let s = String(input);
   while (s.length < size) {
     s = '0' + s;
   }
@@ -22,7 +22,7 @@ export function getFirstDayOfWeek(
   firstDay: WeekDays = WeekDays.Monday,
 ): Date {
   const firstDayOfTheWeek: Date = new Date(date);
-  while (firstDayOfTheWeek.getDay() !== firstDay) {
+  while (firstDayOfTheWeek.getDay() !== firstDay.valueOf()) {
     firstDayOfTheWeek.setDate(firstDayOfTheWeek.getDate() - 1);
   }
   return firstDayOfTheWeek;
@@ -32,7 +32,7 @@ export function getLastDayOfWeek(
   lastDay: WeekDays = WeekDays.Sunday,
 ): Date {
   const lastDayOfTheWeek: Date = new Date(date);
-  while (lastDayOfTheWeek.getDay() !== lastDay) {
+  while (lastDayOfTheWeek.getDay() !== lastDay.valueOf()) {
     lastDayOfTheWeek.setDate(lastDayOfTheWeek.getDate() + 1);
   }
   return lastDayOfTheWeek;
@@ -75,15 +75,21 @@ export function isSameMonth(date1: Date, date2: Date): boolean {
   const time2 = toYearMonthString(getNormalizedLocalDate(date2modified));
   return time1 === time2;
 }
-export function isDuringATime(
+export function isOverlappingDateSpans(
   startDate: Date,
   endDate: Date,
   comparisonPointDate: Date,
+  //comparisonPointDateEnd?: Date,
 ): boolean {
   const startTime = getNormalizedLocalDate(startDate).getTime();
   const endTime = getNormalizedLocalDate(endDate).getTime();
   const comparisonTime = comparisonPointDate.getTime();
+  //if (comparisonPointDateEnd == null)
   return startTime <= comparisonTime && comparisonTime <= endTime;
+  /*const comparisonTimeEnd = comparisonPointDateEnd.getTime();
+  const maxTime = Math.max(startTime, comparisonTime);
+  const minTime = Math.min(endTime, comparisonTimeEnd);
+  return maxTime < minTime;*/
 }
 export function getNormalizedLocalDate(date: Date): Date {
   const mDate = new Date(date);
@@ -106,7 +112,7 @@ export function getDateString(date: Date): string {
 export function getDayDifference(
   startDate: Date,
   endDate: Date,
-  roundingPrecision: number = 0,
+  roundingPrecision = 0,
 ): number {
   const msDifference = endDate.getTime() - startDate.getTime();
   const preciseDayDifference = msDifference / TIME_IN_A_DAY_MS;
@@ -120,7 +126,7 @@ export function getDaySpan(startDate: Date, endDate: Date): number {
 }
 export function getTimePercentageOfDay(
   date: Date,
-  roundingPrecision: number = 0,
+  roundingPrecision = 0,
 ): number {
   const timeOfDay: number =
     date.getTime() - getNormalizedLocalDate(date).getTime(); //ms from start of day
@@ -159,8 +165,7 @@ export async function asyncTryCatch<T>(
   errorFunction?: () => void,
 ): Promise<T> {
   try {
-    const result: T = await operation();
-    return result;
+    return await operation();
   } catch /*(error)*/ {
     //console.error(error);
     if (errorFunction) {

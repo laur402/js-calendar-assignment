@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { CSSProperties, useEffect } from 'react';
 import { CalendarGrid } from './components/WeekView/CalendarGridElements';
 import {
   addDays,
@@ -27,9 +27,15 @@ export function WeekView() {
     void fetchEventsFromAPI();
   }, [dispatch]);
   return (
-    <section className={CLASSES.WeekViewContainer}>
+    <section
+      className={CLASSES.WeekViewContainer}
+      style={WeekViewContainerStyle}
+    >
       <WeekViewHeader headerDates={headerDates} />
-      <section className={CLASSES.WeekView_CalendarContainer}>
+      <section
+        className={CLASSES.WeekView_CalendarContainer}
+        style={CalendarContainerStyle}
+      >
         <WeekViewCalendarGridOverlay
           headerDates={headerDates}
           hoursInADay={hoursInADay}
@@ -39,6 +45,20 @@ export function WeekView() {
     </section>
   );
 }
+const WeekViewContainerStyle = {
+  display: 'grid',
+  gridTemplateRows: 'min-content auto',
+  paddingTop: '1rem',
+};
+
+const CalendarContainerStyle: CSSProperties = {
+  height: 'auto',
+  overflowY: 'scroll',
+  display: 'grid',
+  gridTemplateColumns: '3rem 1fr',
+  gridTemplateRows: '1fr',
+};
+
 function getCalendarDates(offsetDate: Date): CalendarDatesPackage[] {
   return [...Array(7).keys()].map(value => {
     const weekDate = addDays(getFirstDayOfWeek(offsetDate), value);

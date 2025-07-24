@@ -198,11 +198,17 @@ export function EventFormModal() {
   );
 }
 
-const Modal = {
+const Modal: CSSProperties = {
   justifyContent: 'center',
   alignItems: 'center',
   minWidth: '95dvw',
   minHeight: '95dvh',
+  /*border: none;*/
+  position: 'absolute',
+  width: '100vw',
+  height: '100vh',
+  background: '#ffffffaa',
+  zIndex: 20,
 };
 const ModalContent = {
   display: 'grid',
